@@ -1,0 +1,241 @@
+/* Sticky Left Section Component */
+/* Desktop: Text stays fixed on left, images scroll on right */
+/* Mobile: Simple stack of images (no sticky behavior) */
+
+.sticky-left-section {
+  background-color: var(--theme-background);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box; /* Ensure consistent width calculation */
+  padding: 0 var(--site-margin); /* Horizontal padding for site margins */
+}
+
+.sticky-left-section--alt-bg {
+  background-color: var(--theme-background-2); /* Light gray (#fafafa) instead of dark */
+  color: var(--theme-text); /* Keep text dark on light gray background */
+}
+
+.sticky-left-section__container {
+  display: grid;
+  grid-template-columns: 1fr var(--space-8) 1fr; /* Image column, 64px gap, text column */
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box; /* Ensure consistent width calculation */
+  /* Height will be set by JavaScript to match visuals exactly */
+}
+
+.sticky-left-section__content {
+  grid-column: 3; /* Third column (text) */
+  display: flex;
+  flex-direction: column;
+  gap: var(--content-space-button-margin); /* Match attractions-teasers: 40px */
+  justify-content: center;
+  align-items: flex-start; /* Left-align content */
+  padding: var(--section-space-main) 0; /* Vertical padding only */
+  position: sticky; /* Sticky positioning in CSS for smoother performance */
+  top: 0;
+  align-self: flex-start; /* Align to top of container */
+  z-index: 2;
+  box-sizing: border-box; /* Ensure padding is included in width calculation */
+  will-change: transform; /* Optimize for animations */
+}
+
+.sticky-left-section__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5); /* Match attractions-teasers: 32px */
+  align-items: flex-start; /* Left-align text within the centered container */
+  justify-content: center;
+  color: inherit;
+  max-width: 440px; /* Match attractions-teasers: w-[440px] */
+  width: 100%;
+}
+
+.sticky-left-section__title {
+  font-family: "Kippax Modern Condensed Medium", "Kippax Modern", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  line-height: var(--line-height-heading);
+  max-width: 616px; /* Match attractions-teasers */
+  width: 100%;
+  font-size: var(--font-size-h2); /* Match attractions-teasers: 64px */
+  letter-spacing: -0.64px;
+  margin: 0;
+  text-align: left; /* Left-aligned text */
+  color: inherit;
+}
+
+.sticky-left-section__title-word {
+  display: inline-block;
+}
+
+.sticky-left-section__description {
+  font-family: var(--primary-family);
+  font-weight: 400;
+  line-height: var(--line-height-text);
+  max-width: 567px; /* Match attractions-teasers */
+  width: 100%;
+  font-size: var(--font-size-text-main); /* Match attractions-teasers: 20px */
+  margin: 0;
+  text-align: left; /* Left-aligned text */
+  color: inherit;
+}
+
+.sticky-left-section__description p {
+  margin-bottom: 12px;
+}
+
+.sticky-left-section__description p:last-child {
+  margin-bottom: 0;
+}
+
+.sticky-left-section__button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--content-space-button-group-gap); /* Match attractions-teasers: 12px */
+  align-items: center;
+  justify-content: flex-start; /* Left-aligned to match text container */
+  width: 100%;
+  max-width: 440px; /* Match text container width */
+}
+
+.sticky-left-section__button {
+  background-color: rgba(255, 255, 255, 0);
+  border: var(--border-width-main) solid rgba(31, 29, 30, 0.2);
+  padding: var(--size-0-75) var(--size-1-5);
+  border-radius: var(--radius-round);
+  font-family: var(--primary-family);
+  font-weight: 400;
+  line-height: var(--line-height-text);
+  color: inherit;
+  font-size: var(--font-size-text-main);
+  white-space: pre;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.sticky-left-section--alt-bg .sticky-left-section__button {
+  border-color: rgba(31, 29, 30, 0.2); /* Dark border on light gray background */
+  color: var(--theme-text); /* Dark text on light gray background */
+}
+
+.sticky-left-section__button:hover {
+  background-color: rgba(31, 29, 30, 0.05);
+}
+
+.sticky-left-section--alt-bg .sticky-left-section__button:hover {
+  background-color: rgba(31, 29, 30, 0.05); /* Same hover as default since both are light backgrounds */
+}
+
+.sticky-left-section__visuals {
+  grid-column: 1; /* First column (images) */
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  gap: var(--space-4); /* 16px gap between images (matches Figma) */
+  box-sizing: border-box; /* Ensure consistent width calculation */
+  padding: var(--section-space-main) 0; /* Vertical padding only, no horizontal */
+  will-change: transform; /* Optimize for scroll animations */
+}
+
+.sticky-left-section__visual {
+  width: 100%;
+  aspect-ratio: 1 / 1; /* Square images */
+  position: relative;
+  overflow: hidden; /* Ensure images never overflow container */
+  box-sizing: border-box;
+}
+
+.sticky-left-section__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100%; /* Prevent overflow past container edge */
+  max-height: 100%; /* Prevent overflow past container edge */
+  object-fit: cover;
+  object-position: 50% 50%;
+  pointer-events: none;
+  display: block;
+  box-sizing: border-box;
+}
+
+/* Mobile Styles - Simple stack of images */
+/* On mobile: Text content first, then images stack vertically below */
+/* Matching Figma "Attractions - M" design */
+@media (max-width: 768px) {
+  .sticky-left-section {
+    overflow: visible; /* Allow natural flow on mobile */
+    padding: 24px 0; /* Vertical padding between sections */
+  }
+
+  .sticky-left-section__container {
+    flex-direction: column; /* Stack vertically on mobile */
+    min-height: auto !important; /* Remove min-height constraint - override JS */
+    gap: 0; /* No gap - handled by padding */
+  }
+
+  .sticky-left-section__content {
+    flex: none;
+    width: 100%;
+    order: 1; /* Content appears first on mobile */
+    padding: 0 24px 28px 24px; /* Mobile padding: top 0, bottom 28px, horizontal 24px */
+    position: static !important; /* Force static positioning on mobile - no sticky behavior */
+    top: auto !important; /* Remove any top positioning */
+    align-items: flex-start; /* Left-align content on mobile */
+    justify-content: flex-start; /* Align to top */
+    align-self: auto; /* Reset align-self on mobile */
+    will-change: auto; /* Remove will-change on mobile */
+  }
+
+  .sticky-left-section__text {
+    gap: 36px; /* Gap between title and description on mobile (matches Figma) */
+    max-width: 100%; /* Full width on mobile */
+  }
+
+  .sticky-left-section__title {
+    font-size: 48px; /* Mobile H2 size */
+    letter-spacing: -0.48px;
+  }
+
+  .sticky-left-section__description {
+    font-size: 18px; /* Mobile text size (matches Figma) */
+  }
+
+  .sticky-left-section__description p {
+    margin-bottom: 12px;
+  }
+
+  .sticky-left-section__button-group {
+    margin-top: 0; /* No extra margin - gap handled by content gap */
+    gap: 8px; /* Mobile button gap */
+  }
+
+  .sticky-left-section__button {
+    padding: 12px 24px; /* Mobile button padding */
+    font-size: 18px; /* Mobile button text size */
+  }
+
+  .sticky-left-section__visuals {
+    flex: none;
+    width: 100%;
+    order: 2; /* Images appear after content */
+    display: flex;
+    flex-direction: column; /* Stack images vertically */
+    gap: 16px; /* 16px gap between images (matches Figma) */
+    padding: 0 16px; /* Horizontal padding on images container */
+    will-change: auto; /* Remove will-change on mobile */
+  }
+
+  .sticky-left-section__visual {
+    width: 100%;
+    aspect-ratio: auto; /* Remove square constraint */
+    height: 343px; /* Fixed height for each image on mobile (matches Figma) */
+  }
+
+  .sticky-left-section__image {
+    width: 100%;
+    height: 100%;
+  }
+}

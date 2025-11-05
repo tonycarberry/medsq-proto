@@ -1,0 +1,315 @@
+/* Nav Component */
+.nav-component {
+  width: 100%;
+}
+
+.nav {
+  background-color: var(--theme-background-dark);
+  display: flex;
+  gap: var(--space-3);
+  height: 84px;
+  align-items: center;
+  padding: 0 var(--site-margin);
+  width: 100%;
+}
+
+.nav__logo-wrap {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  overflow: hidden;
+}
+
+.nav__logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.nav__logo {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+
+.nav__menu {
+  flex: 1;
+  display: flex;
+  gap: var(--space-3);
+  height: 100%;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.nav__menu-links {
+  flex: 1;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav__link {
+  display: flex;
+  gap: var(--space-2);
+  height: 100%;
+  align-items: center;
+  padding: 0 var(--space-3);
+  font-family: var(--primary-family);
+  font-weight: 400;
+  line-height: var(--line-height-text);
+  color: #ffffff;
+  font-size: var(--font-size-text-main);
+  white-space: nowrap;
+}
+
+.nav__actions {
+  display: flex;
+  gap: var(--space-3);
+  height: 100%;
+  align-items: center;
+}
+
+.nav__action-group {
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+
+.nav__dropdown {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-2);
+  height: 100%;
+  align-items: center;
+  padding: 0 var(--space-3);
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.nav__dropdown > span {
+  font-family: var(--primary-family);
+  font-weight: 400;
+  line-height: var(--line-height-text);
+  color: #ffffff;
+  font-size: var(--font-size-text-main);
+  white-space: nowrap;
+}
+
+.nav__dropdown-icon {
+  width: 17px;
+  height: 8px;
+  flex-shrink: 0;
+}
+
+.nav__icon-link {
+  display: flex;
+  gap: var(--space-2);
+  height: 100%;
+  align-items: center;
+  padding: 0 var(--space-3);
+}
+
+.nav__icon {
+  width: 17.6px;
+  height: 17.6px;
+  flex-shrink: 0;
+}
+
+.nav__button {
+  background-color: var(--button-primary-background);
+  border: var(--border-width-main) solid var(--button-primary-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3) var(--size-1-5);
+  border-radius: 0;
+  font-family: var(--primary-family);
+  font-weight: 400;
+  line-height: var(--line-height-text);
+  color: var(--button-primary-text);
+  font-size: var(--font-size-text-main);
+  white-space: nowrap;
+}
+
+/* Mobile Menu Toggle Button */
+.nav__mobile-menu-toggle {
+  display: none; /* Hidden on desktop by default */
+  background: none;
+  border: none;
+  padding: 0 var(--space-3);
+  cursor: pointer;
+  height: 100%;
+  min-width: 40px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.nav__burger-icon {
+  width: 28px;
+  height: 14px;
+  display: block;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+/* Fallback burger icon - shows when image fails to load */
+.nav__mobile-menu-toggle::before {
+  content: "";
+  display: block;
+  width: 28px;
+  height: 2px;
+  background-color: #ffffff;
+  box-shadow: 0 6px 0 0 #ffffff, 0 12px 0 0 #ffffff;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.nav__mobile-menu-toggle img {
+  display: block;
+  position: relative;
+  z-index: 2;
+}
+
+/* When image is hidden by JS, fallback will be visible */
+.nav__mobile-menu-toggle img[style*="display: none"] {
+  z-index: 0;
+}
+
+/* Hide broken images so fallback shows */
+.nav__mobile-menu-toggle img[src=""],
+.nav__mobile-menu-toggle img:not([src]) {
+  display: none;
+}
+
+/* Mobile Menu Overlay */
+.nav__mobile-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--theme-background-dark);
+  z-index: 1000;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease-in-out;
+  overflow-y: auto;
+}
+
+.nav__mobile-menu--open {
+  transform: translateY(0);
+}
+
+.nav__mobile-menu-content {
+  padding: 80px 24px 40px 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: space-between;
+}
+
+.nav__mobile-menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.nav__mobile-link {
+  font-family: var(--primary-family);
+  font-weight: 400;
+  font-size: var(--font-size-text-main);
+  line-height: var(--line-height-text);
+  color: #ffffff;
+  text-decoration: none;
+  padding: var(--space-3) 0;
+  border-bottom: var(--border-width-main) solid rgba(255, 255, 255, 0.1);
+}
+
+.nav__mobile-link:last-child {
+  border-bottom: none;
+}
+
+.nav__mobile-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 48px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--primary-family);
+}
+
+.nav__mobile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: auto;
+  padding-top: var(--space-5);
+}
+
+.nav__mobile-dropdown {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: none;
+  border: none;
+  padding: var(--space-3) 0;
+  cursor: pointer;
+  font-family: var(--primary-family);
+  font-weight: 400;
+  font-size: var(--font-size-text-main);
+  line-height: var(--line-height-text);
+  color: #ffffff;
+}
+
+.nav__mobile-dropdown-icon {
+  width: 17px;
+  height: 8px;
+  flex-shrink: 0;
+}
+
+/* Mobile Styles */
+@media (max-width: 1024px) {
+  .nav__menu-links {
+    display: none !important; /* Hide desktop links on mobile/tablet */
+  }
+
+  .nav__mobile-menu-toggle {
+    display: flex !important; /* Show burger menu on mobile/tablet */
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav__icon-link {
+    display: none !important; /* Hide desktop menu icon on mobile/tablet */
+  }
+
+  .nav__button {
+    display: none !important; /* Hide button on mobile/tablet */
+  }
+
+  .nav__dropdown {
+    display: none !important; /* Hide language selector on mobile/tablet */
+  }
+
+  .nav {
+    padding: 8px 24px; /* Mobile padding: 8px vertical, 24px horizontal (matches Figma) */
+    height: auto; /* Allow height to adjust with padding */
+    min-height: 72px; /* Minimum height to match Figma */
+  }
+}

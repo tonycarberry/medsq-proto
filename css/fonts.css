@@ -1,0 +1,32 @@
+/* Kippax Modern Font Faces */
+@font-face {
+  font-family: "Kippax Modern";
+  src: url("../fonts/KippaxModern-Rg.otf?v=2") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Kippax Modern";
+  src: url("../fonts/KippaxModern-Md.otf?v=2") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Kippax Modern Condensed Bold";
+  src: url("../fonts/KippaxModern-CndBd.otf?v=2") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Kippax Modern Condensed Medium";
+  src: url("../fonts/KippaxModern-CndMd.otf?v=2") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}

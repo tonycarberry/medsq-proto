@@ -1,0 +1,58 @@
+/* Intro Text Component */
+.intro-text-component {
+  width: 100%;
+}
+
+.intro-text {
+  background-color: var(--theme-background-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.intro-text__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--content-space-button-margin);
+  padding: var(--section-space-main) var(--site-margin);
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.intro-text__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  align-items: flex-start;
+  justify-content: center;
+  color: #ffffff;
+  width: 100%;
+}
+
+.intro-text__heading {
+  font-family: "Kippax Modern Condensed Medium", "Kippax Modern", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  line-height: var(--line-height-heading);
+  max-width: 1024px;
+  width: 100%;
+  font-size: var(--font-size-h2);
+  letter-spacing: -0.64px;
+  margin: 0;
+}
+
+.intro-text__body {
+  font-family: var(--primary-family);
+  font-weight: 400;
+  line-height: var(--line-height-text);
+  max-width: 885px;
+  width: 100%;
+  font-size: var(--font-size-text-large);
+  margin: 0;
+}
+
+.intro-text__word {
+  display: inline;
+}

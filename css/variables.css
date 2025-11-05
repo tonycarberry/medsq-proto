@@ -1,0 +1,55 @@
+/* Design Tokens - CSS Variables */
+:root {
+  /* Colors */
+  --theme-text: #1f1d1e;
+  --theme-background: #ffffff;
+  --theme-background-dark: #1f1d1e;
+  --theme-background-2: #fafafa; /* Light gray background for alternating sections */
+  --button-primary-background: #c6fb50;
+  --button-primary-border: #c6fb50;
+  --button-primary-text: #1f1d1e;
+
+  /* Spacing */
+  --space-2: 12px;
+  --space-3: 16px;
+  --space-4: 16px;
+  --space-5: 32px;
+  --space-6: 40px;
+  --space-8: 64px;
+  --site-margin: 56px;
+  --site-gutter: 0px;
+  --section-space-none: 0px;
+  --section-space-small: 80px;
+  --section-space-main: 112px;
+  --content-space-button-margin: 40px;
+  --content-space-button-group-gap: 12px;
+  --section-height-full: 900px;
+
+  /* Sizing */
+  --size-0-75: 12px;
+  --size-1-5: 24px;
+  --size-2: 32px;
+  --size-4: 64px;
+  --space-7: 48px;
+
+  /* Border & Radius */
+  --border-width-main: 1.5px;
+  --radius-small: 8px;
+  --radius-main: 16px;
+  --radius-round: 99999px;
+
+  /* Typography */
+  --primary-family: "Kippax Modern", sans-serif;
+  --font-size-text-main: 20px;
+  --font-size-text-large: 24px; /* Reduced from 32px for better desktop readability */
+  --font-size-text-small: 16px;
+  --font-size-h1: 112px;
+  --font-size-h2: 80px; /* Increased H2 size */
+  --font-size-h3: 48px;
+  --font-size-h4: 32px;
+  --font-size-h5: 24px;
+  --font-size-h6: 18px;
+  --font-size-display: 156px;
+  --line-height-text: 1.5;
+  --line-height-heading: 1;
+}
