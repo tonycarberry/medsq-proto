@@ -62,6 +62,11 @@
   color: #ffffff;
   font-size: var(--font-size-text-main);
   white-space: nowrap;
+  position: relative;
+}
+
+.nav__link--active {
+  box-shadow: inset 0px -2px 0px 0px #ffffff;
 }
 
 .nav__actions {
