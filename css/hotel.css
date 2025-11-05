@@ -1,0 +1,218 @@
+/* Hotel Page Specific Styles */
+
+/* Hide Hero Title */
+.hero__title {
+  display: none;
+}
+
+/* Booking Form */
+.booking-form {
+  background-color: #f9f4ee;
+  border-top: 1px solid #f6c8b1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  width: 100%;
+  box-shadow: 0px 1px 0px 0px #f6c8b1;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.booking-form__field {
+  border: 1px solid #faf6f2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 40px;
+  color: #351c0c;
+  font-family: var(--primary-family);
+  font-weight: 400;
+  line-height: 0;
+  flex-shrink: 0;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.booking-form__field:first-child {
+  width: 339px;
+  padding: 16px 40px;
+}
+
+.booking-form__field:nth-child(2) {
+  width: 339px;
+  padding: 16px 24px;
+}
+
+.booking-form__field:nth-child(3) {
+  width: 398px;
+  padding: 16px 24px;
+}
+
+.booking-form__label {
+  font-size: var(--font-size-text-main);
+  line-height: 1.5;
+  color: #351c0c;
+  margin: 0;
+}
+
+.booking-form__value {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #351c0c;
+}
+
+.booking-form__button {
+  background-color: #652c27;
+  border: none;
+  padding: 16px 24px;
+  color: white;
+  font-family: var(--primary-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  cursor: pointer;
+  height: 84px;
+  flex-shrink: 0;
+  width: 367px;
+}
+
+.booking-form__button:hover {
+  background-color: #7a352f;
+}
+
+/* Intro Text Secondary White Background Override */
+.intro-text-secondary-component--white .intro-text-secondary {
+  background-color: #ffffff;
+}
+
+/* Intro Text Secondary Heading */
+.intro-text-secondary__heading {
+  font-family: "Instrument Serif", serif;
+  font-weight: 400;
+  font-size: 80px;
+  line-height: 1.1;
+  letter-spacing: -0.8px;
+  color: var(--dark-900, #1f1d1e);
+  margin: 0 0 var(--space-7) 0;
+  max-width: 1024px;
+  width: 100%;
+}
+
+/* Hotel Vibes Section - Using Attraction Component Styles */
+/* Background color modifiers for attractions on hotel page */
+.attraction--peach {
+  background-color: #f6c8b1;
+}
+
+.attraction--dark {
+  background-color: #652c27;
+}
+
+.attraction--dark .attraction__text {
+  color: #ffffff;
+}
+
+.attraction--yellow {
+  background-color: #ecef81;
+}
+
+/* Override title font to match original hotel-vibes design */
+.attraction--peach .attraction__title,
+.attraction--dark .attraction__title,
+.attraction--yellow .attraction__title {
+  font-family: "Instrument Serif", serif;
+  font-weight: 400;
+  font-size: 56px;
+  letter-spacing: -0.56px;
+}
+
+/* Override sticky-left-section titles to use serif font on hotel page only */
+.sticky-left-section__title {
+  font-family: "Instrument Serif", serif;
+  font-weight: 400;
+  font-size: 56px;
+  letter-spacing: -0.56px;
+}
+
+/* Add extra spacing above first sticky-left-section to account for sticky booking form */
+.sticky-left-section:first-of-type {
+  margin-top: 80px;
+  padding-top: 80px;
+}
+
+/* Add extra padding to the content area of the first sticky section to create more gap */
+.sticky-left-section:first-of-type .sticky-left-section__content {
+  padding-top: calc(var(--section-space-main) + 80px) !important;
+}
+
+/* Remove gap underneath the last sticky-left-section (rooms) */
+.sticky-left-section:last-of-type {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.sticky-left-section:last-of-type .sticky-left-section__visuals {
+  padding: var(--section-space-main) 0 0 0 !important; /* Keep top padding, remove bottom */
+}
+
+.sticky-left-section:last-of-type .sticky-left-section__content {
+  padding-bottom: 0 !important;
+}
+
+/* Hotel Final Section */
+.hotel-final-section {
+  background-color: var(--theme-background-dark);
+  width: 100%;
+  padding: 0 var(--site-margin) var(--section-space-main) var(--site-margin); /* Remove top padding to eliminate gap */
+}
+
+.hotel-final-section__content {
+  height: 454px;
+  width: 100%;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .booking-form {
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .booking-form__field {
+    width: 100%;
+    padding: var(--space-6) 24px;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #faf6f2;
+  }
+
+  .booking-form__field:last-of-type {
+    border-bottom: none;
+  }
+
+  .booking-form__button {
+    width: 100%;
+    height: auto;
+    padding: var(--space-6) 24px;
+  }
+
+  .intro-text-secondary__heading {
+    font-size: 48px;
+    letter-spacing: -0.48px;
+  }
+
+  .sticky-left-section__title {
+    font-size: 48px;
+    letter-spacing: -0.48px;
+  }
+
+  .hotel-final-section {
+    padding: var(--section-space-small) 24px;
+  }
+
+  .hotel-final-section__content {
+    height: 300px;
+  }
+}

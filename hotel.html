@@ -6,7 +6,10 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>Food & Drink - Medlock Square</title>
+    <title>Hotel - Medlock Square</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:wght@400&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="css/fonts.css?v=2" />
     <link rel="stylesheet" href="css/variables.css?v=4" />
     <link rel="stylesheet" href="css/nav.css?v=2" />
@@ -17,11 +20,11 @@
     <link rel="stylesheet" href="css/attraction.css?v=7" />
     <link rel="stylesheet" href="css/sticky-left.css?v=1" />
     <link rel="stylesheet" href="css/styles.css?v=2" />
+    <link rel="stylesheet" href="css/hotel.css?v=2" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
     <script src="js/nav.js" defer></script>
     <script src="js/animations.js" defer></script>
-    <script src="js/image-debug.js" defer></script>
   </head>
   <body>
     <!-- Nav Component -->
@@ -65,9 +68,9 @@
         </div>
         <div class="nav__menu">
           <div class="nav__menu-links">
-            <a href="hotel.html" class="nav__link">Hotel</a>
+            <a href="hotel.html" class="nav__link nav__link--active">Hotel</a>
             <a href="attractions.html" class="nav__link">Attractions</a>
-            <a href="food-and-drink.html" class="nav__link nav__link--active">Food & Drink</a>
+            <a href="food-and-drink.html" class="nav__link">Food & Drink</a>
             <a href="#" class="nav__link">Offices</a>
             <a href="conferences-and-events.html" class="nav__link">Conferences & Events</a>
           </div>
@@ -114,150 +117,148 @@
       <div class="hero">
         <div class="hero__background" aria-hidden="true">
           <div class="hero__bg-color"></div>
-          <img src="assets/food-drink-1.png" alt="" class="hero__image" />
+          <img src="http://localhost:3845/assets/ff23c7e90675612971846f8207980c361c2d23f9.png" alt="" class="hero__image" />
         </div>
         <div class="hero__content">
           <div class="hero__text">
-            <h1 class="hero__title">We've been cooking something special</h1>
+            <h1 class="hero__title">Medlock Hotel</h1>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Intro Text Secondary Component -->
-    <section class="intro-text-secondary-component">
+    <!-- Booking Form -->
+    <div class="booking-form">
+      <div class="booking-form__field">
+        <div class="booking-form__label">Check in</div>
+        <div class="booking-form__value">Sun 21 Feb</div>
+      </div>
+      <div class="booking-form__field">
+        <div class="booking-form__label">Check out</div>
+        <div class="booking-form__value">Wed 24 Feb</div>
+      </div>
+      <div class="booking-form__field">
+        <div class="booking-form__label">Guests</div>
+        <div class="booking-form__value">2 adults, 1 child</div>
+      </div>
+      <button class="booking-form__button">BOOK NOW</button>
+    </div>
+
+    <!-- Intro Text Section -->
+    <section class="intro-text-secondary-component intro-text-secondary-component--white">
       <div class="intro-text-secondary">
         <div class="intro-text-secondary__content">
           <div class="intro-text-secondary__text">
-            <p class="intro-text-secondary__large">From craft beers and cocktail to sizzling street food stalls. Rooftop dining with skyline views to intimate restaurants serving up bold, global flavors—this is where your taste buds come to play.</p>
+            <h2 class="intro-text-secondary__heading">Introducing the Medlock Hotel.</h2>
+            <p class="intro-text-secondary__large">More than just a place to stay. A perfect blend of comfort, style, and excitement. Situated in the heart of the Entertainment District, it's a vibrant hub where guests can immerse themselves in the electrifying atmosphere of their favourite events.</p>
             <div class="intro-text-secondary__small">
-              <p>Whether you're in the mood for a laid-back hangout or a sophisticated night out, the new entertainment destination offers a vibrant mix of atmospheres, dishes, and drinks that will satisfy every craving. Grab a seat, take a sip, and start your experience as you mean to go on.</p>
+              <p>From dining in the sky, to cheering on the biggest artists and sports figures in the world, we've got it covered.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Sticky Left Section: Sky Bar -->
+    <!-- Hotel Vibes Section -->
+    <section class="attractions-section">
+      <!-- You're welcome at ours anytime -->
+      <div class="attraction attraction--peach">
+        <div class="attraction__content">
+          <div class="attraction__text">
+            <h2 class="attraction__title">You're welcome at ours anytime.</h2>
+            <div class="attraction__description">
+              <p>Match day. Gig with the girls. City break. Missed the last train home. We got you.</p>
+            </div>
+          </div>
+        </div>
+        <div class="attraction__visual">
+          <img src="assets/hotel/image 18.png" alt="" class="attraction__image" />
+        </div>
+      </div>
+
+      <!-- Big flavours at The Brasserie -->
+      <div class="attraction attraction--dark">
+        <div class="attraction__content">
+          <div class="attraction__text">
+            <h2 class="attraction__title">Big flavours at The Brasserie</h2>
+            <div class="attraction__description">
+              <p>Serving up delicious food and drinks, all day and night, to match your 24hr lifestyle.</p>
+            </div>
+          </div>
+        </div>
+        <div class="attraction__visual">
+          <img src="assets/hotel/image 18-1.png" alt="" class="attraction__image" />
+        </div>
+      </div>
+
+      <!-- A tune. A flavour. A process. -->
+      <div class="attraction attraction--yellow">
+        <div class="attraction__content">
+          <div class="attraction__text">
+            <h2 class="attraction__title">A tune. A flavour. A process.</h2>
+            <div class="attraction__description">
+              <p>We're a day and night place. Just you or all your mates place.</p>
+            </div>
+          </div>
+        </div>
+        <div class="attraction__visual">
+          <img src="assets/hotel/image 19.png" alt="" class="attraction__image" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Sticky Left Section 1 -->
     <section class="sticky-left-section">
       <div class="sticky-left-section__container">
         <div class="sticky-left-section__visuals">
           <div class="sticky-left-section__visual">
-            <img src="assets/3cc3574067b9a6cfdbf9d5490a01b7fc9400b17e.png" alt="" class="sticky-left-section__image" />
+            <img src="http://localhost:3845/assets/0b5e4d4205be1378e7a851b9ba315818a10c9ff4.png" alt="" class="sticky-left-section__image" />
           </div>
           <div class="sticky-left-section__visual">
-            <img src="assets/68856543f9aad4d279ab00f8f5d7f9317f69a7b3.png" alt="" class="sticky-left-section__image" />
-          </div>
-          <div class="sticky-left-section__visual">
-            <img src="assets/ebc9baff76ba4ed43c14f2563d0a23415d1a715c.png" alt="" class="sticky-left-section__image" />
+            <img src="http://localhost:3845/assets/271ac4be4b80828c18cfeb160755160b4dacf732.png" alt="" class="sticky-left-section__image" />
           </div>
         </div>
         <div class="sticky-left-section__content">
           <div class="sticky-left-section__text">
-            <h2 class="sticky-left-section__title">Sky Bar</h2>
+            <h2 class="sticky-left-section__title">Effortless comfort, everyday luxury</h2>
             <div class="sticky-left-section__description">
-              <p>Where breathtaking views and unparalleled luxury come together.</p>
-              <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+              <p>Discover relaxed sophistication in our beautifully designed <strong>Standard Rooms</strong> – where comfort, quality, and style come together seamlessly.</p>
+              <p>Thoughtfully crafted for travellers who value both design and practicality, each room offers a calming retreat with premium finishes, plush bedding, and smart technology to make your stay effortless.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Sticky Left Section: Blend -->
+    <!-- Sticky Left Section 2 -->
     <section class="sticky-left-section sticky-left-section--alt-bg">
       <div class="sticky-left-section__container">
         <div class="sticky-left-section__visuals">
           <div class="sticky-left-section__visual">
-            <img src="assets/5c4f03f3770be8c078b84bc92f321971a6e6d2f1.png" alt="" class="sticky-left-section__image" />
+            <img src="http://localhost:3845/assets/ed7b9439aecbf4060a3ed53e0f09148d88b0133b.png" alt="" class="sticky-left-section__image" />
           </div>
           <div class="sticky-left-section__visual">
-            <img src="assets/92b0f039b9cd4f0935f4c7461b4972749c3634ec.png" alt="" class="sticky-left-section__image" />
+            <img src="http://localhost:3845/assets/84c82ad49c84fbb4fa36d50ca45e61419c46a03a.png" alt="" class="sticky-left-section__image" />
+          </div>
+          <div class="sticky-left-section__visual">
+            <img src="http://localhost:3845/assets/bd1579f779b48e952b8fd178950719741a9e303a.png" alt="" class="sticky-left-section__image" />
           </div>
         </div>
         <div class="sticky-left-section__content">
           <div class="sticky-left-section__text">
-            <h2 class="sticky-left-section__title">Blend</h2>
+            <h2 class="sticky-left-section__title">Elevate your stay to the extraordinary</h2>
             <div class="sticky-left-section__description">
-              <p>By day, it's the city's baristas, bakers, and delis. By night, its mixologists, breweries and wine merchants.</p>
-              <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+              <p>For those who demand nothing but the best, our <strong>Penthouse Suites</strong> deliver the pinnacle of Manchester luxury.</p>
+              <p>Boasting expansive living spaces, designer furnishings, and breathtaking skyline or stadium views, these suites are a statement in sophistication. Unwind in your private lounge, soak in the spa-style bathroom, or entertain guests with a backdrop that captures the city's vibrant energy.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Sticky Left Section: Hotel Brasserie -->
-    <section class="sticky-left-section">
-      <div class="sticky-left-section__container">
-        <div class="sticky-left-section__visuals">
-          <div class="sticky-left-section__visual">
-            <img src="assets/46ab9ff4e57c6c472014ef0198d9c9fe129a5d44.png" alt="" class="sticky-left-section__image" />
-          </div>
-          <div class="sticky-left-section__visual">
-            <img src="assets/56590ff02ca0bd37bd29960427b308d34a0b8bff.png" alt="" class="sticky-left-section__image" />
-          </div>
-          <div class="sticky-left-section__visual">
-            <img src="assets/d0ca265ab0bdb81466bb91be67028797db80fba2.png" alt="" class="sticky-left-section__image" />
-          </div>
-        </div>
-        <div class="sticky-left-section__content">
-          <div class="sticky-left-section__text">
-            <h2 class="sticky-left-section__title">Hotel Brasserie</h2>
-            <div class="sticky-left-section__description">
-              <p>The hotel brasserie is where culinary excellence meets timeless elegance. ​</p>
-              <p>Whether staying at the hotel as a guest, or simply dining, every meal is a celebration of flavour, artistry and sophistication. ​</p>
-              <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Sticky Left Section: Market Hall -->
-    <section class="sticky-left-section sticky-left-section--alt-bg">
-      <div class="sticky-left-section__container">
-        <div class="sticky-left-section__visuals">
-          <div class="sticky-left-section__visual">
-            <img src="assets/food-drink-1.png" alt="" class="sticky-left-section__image" />
-          </div>
-          <div class="sticky-left-section__visual">
-            <img src="assets/dcc96f016e4d90cdd6bed3214971292facfc9478.png" alt="" class="sticky-left-section__image" />
-          </div>
-        </div>
-        <div class="sticky-left-section__content">
-          <div class="sticky-left-section__text">
-            <h2 class="sticky-left-section__title">Market Hall</h2>
-            <div class="sticky-left-section__description">
-              <p>A dynamic space where diverse vendors offer an array of gourmet delights, craft beverages, and artisanal products, creating an immersive gastronomic experience.</p>
-              <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Sticky Left Section: Level 0 -->
-    <section class="sticky-left-section">
-      <div class="sticky-left-section__container">
-        <div class="sticky-left-section__visuals">
-          <div class="sticky-left-section__visual">
-            <img src="assets/70aa2afe3486d4e15724cf6e531755ff65247769.png" alt="" class="sticky-left-section__image" />
-          </div>
-          <div class="sticky-left-section__visual">
-            <img src="assets/c6fcf401d4c14dedd5f4ca84a3ee9c0ca6a13ff3.png" alt="" class="sticky-left-section__image" />
-          </div>
-        </div>
-        <div class="sticky-left-section__content">
-          <div class="sticky-left-section__text">
-            <h2 class="sticky-left-section__title">Level 0</h2>
-            <div class="sticky-left-section__description">
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-              <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- Final Section (Placeholder) -->
+    <section class="hotel-final-section">
+      <div class="hotel-final-section__content"></div>
     </section>
 
     <!-- Ticker Component -->
