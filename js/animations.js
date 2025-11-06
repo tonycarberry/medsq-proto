@@ -255,13 +255,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // Get all word elements
     const wordElements = introTextBody.querySelectorAll(".intro-text__word");
 
-    // Set initial state: words start at 50% opacity (faded state)
+    // Set initial state: words start at 20% opacity (faded state)
     gsap.set(wordElements, {
-      opacity: 0.5, // 50% opacity - faded gray state
+      opacity: 0.2, // 20% opacity - faded gray state
     });
 
     // Create scroll-triggered timeline that animates words sequentially word-by-word
-    // Each word transitions from 50% to 100% opacity based on scroll progress
+    // Each word transitions from 20% to 100% opacity based on scroll progress
     // Animation completes when section reaches center/just below center of screen
     const wordTimeline = gsap.timeline({
       scrollTrigger: {

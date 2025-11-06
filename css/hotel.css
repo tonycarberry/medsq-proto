@@ -118,6 +118,23 @@
   background-color: #ecef81;
 }
 
+/* Remove top and bottom padding from hotel page attraction sections */
+.attraction--peach,
+.attraction--dark,
+.attraction--yellow {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.attraction--peach .attraction__content,
+.attraction--dark .attraction__content,
+.attraction--yellow .attraction__content {
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: var(--site-margin);
+  padding-right: var(--site-margin);
+}
+
 /* Override title font to match original hotel-vibes design */
 .attraction--peach .attraction__title,
 .attraction--dark .attraction__title,
@@ -206,6 +223,16 @@
   .sticky-left-section__title {
     font-size: 48px;
     letter-spacing: -0.48px;
+  }
+
+  /* Remove top and bottom padding from hotel page attraction sections on mobile */
+  .attraction--peach .attraction__content,
+  .attraction--dark .attraction__content,
+  .attraction--yellow .attraction__content {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 24px;
+    padding-right: 24px;
   }
 
   .hotel-final-section {
