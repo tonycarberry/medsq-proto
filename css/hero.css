@@ -108,13 +108,21 @@
   overflow: hidden;
 }
 
-/* Base images that are always visible */
+/* Base images that appear after logo fade-in */
 .hero__zipwire-base {
   position: absolute;
   max-width: none;
   object-fit: cover;
   object-position: 50% 50%;
+  opacity: 0; /* Hidden initially, shown after 1 second */
+  transform: scale(0.5); /* Start at 50% scale */
+  transform-origin: center center;
+  transition: opacity 0s, transform 0.2s ease-in-out; /* Scale animation when appearing */
+}
+
+.hero__zipwire-base.visible {
   opacity: 1;
+  transform: scale(1); /* Scale to 100% */
 }
 
 .hero__zipwire-overflow-img {
@@ -138,11 +146,14 @@
   width: 100%;
   height: 100%;
   opacity: 0;
-  /* No transition - instant cut between images */
+  transform: scale(0.5); /* Start at 50% scale */
+  transform-origin: center center;
+  transition: opacity 0s, transform 0.2s ease-in-out; /* Scale animation when appearing */
 }
 
 .hero__zipwire-frame.active {
   opacity: 1;
+  transform: scale(1); /* Scale to 100% */
 }
 
 .hero__vector-container {
@@ -158,12 +169,13 @@
   max-width: none;
   width: 100%;
   height: 100%;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
+  transform: scale(0.5); /* Start at 50% scale */
+  transform-origin: center center;
+  transition: transform 0.2s ease-in-out; /* 0.2 second scale animation */
 }
 
 .hero__vector-image.visible {
-  opacity: 1;
+  transform: scale(1); /* Scale to 100% */
 }
 
 /* Mobile Styles */

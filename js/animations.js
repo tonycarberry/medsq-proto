@@ -5,10 +5,10 @@ document.addEventListener("DOMContentLoaded", function () {
     gsap.registerPlugin(ScrollTrigger);
   }
 
-  // Hero vector image (text) fade-in on page load (homepage only)
-  const heroVectorImage = document.querySelector(".hero--homepage .hero__vector-image");
+  // Hero vector image (logo/text) scale-in on page load (homepage only)
+  const heroVectorImage = document.querySelector(".hero__vector-image");
   if (heroVectorImage) {
-    // Fade in the text over 0.3 seconds
+    // Scale in the logo from 50% to 100% over 0.2 seconds
     setTimeout(() => {
       heroVectorImage.classList.add("visible");
     }, 0);
@@ -16,17 +16,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Hero zipwire frames cycling animation - cycles through all variant frames every 2 seconds (homepage only)
   // Based on Figma variants: Variant2, Variant3, Variant4, Variant5, Variant6, Variant7, Variant8
-  const heroZipwireFrames = document.querySelectorAll(".hero--homepage .hero__zipwire-frame");
+  const heroZipwireFrames = document.querySelectorAll(".hero__zipwire-frame");
+  const heroZipwireBases = document.querySelectorAll(".hero__zipwire-base");
+  
   if (heroZipwireFrames.length > 0) {
     let currentFrameIndex = 0;
+    let cyclingInterval = null;
 
-    // Set initial state: first frame is active
-    heroZipwireFrames[0].classList.add("active");
-
-    // Start cycling after 1 second delay (after text fade-in completes)
+    // Start showing images after 1 second (logo scales in over 0.2s, then 0.8s gap before images appear)
     setTimeout(() => {
-      // Cycle through frames every 2 seconds
-      setInterval(() => {
+      // Show the base images
+      heroZipwireBases.forEach((base) => {
+        base.classList.add("visible");
+      });
+
+      // Show the first frame image
+      heroZipwireFrames[0].classList.add("active");
+
+      // Start cycling through remaining frames after 2 seconds (first image displays for 2 seconds)
+      cyclingInterval = setInterval(() => {
         // Remove active class from current frame (instant cut - no transition)
         heroZipwireFrames[currentFrameIndex].classList.remove("active");
 
@@ -36,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Add active class to new frame (instant cut - no transition)
         heroZipwireFrames[currentFrameIndex].classList.add("active");
       }, 2000); // 2 second interval
-    }, 1000); // 1 second delay after text fade-in
+    }, 1000); // 1 second delay: logo scales in over 0.2s, then images appear after 1s total
   }
 
   // Standard hero elements (not homepage)

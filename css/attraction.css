@@ -14,14 +14,13 @@
 }
 
 .attraction {
-  background-color: var(--theme-background);
   display: flex;
-  align-items: center; /* Vertically center columns */
+  align-items: flex-end; /* Align items to bottom */
   justify-content: center;
   overflow: hidden;
   width: 100%;
   gap: 0; /* No gap between content and visual */
-  min-height: 719px; /* Minimum height matching Figma design */
+  height: 544px; /* Fixed height matching Figma design */
   margin: 0; /* Remove any default margins */
   padding: 0; /* Remove any default padding */
   border: none; /* Remove any borders */
@@ -29,46 +28,49 @@
   line-height: normal; /* Reset line-height after section */
 }
 
-/* Alternate layout: odd-numbered attractions have image on left, content on right */
-/* Desktop only - mobile uses column layout */
-@media (min-width: 769px) {
-  .attraction:nth-child(odd) {
-    flex-direction: row-reverse;
-  }
+/* Background colors for alternating attractions */
+.attraction--dark {
+  background-color: #5d2923;
+}
+
+.attraction--yellow {
+  background-color: #f3f586;
 }
 
 .attraction__content {
   flex: 0 0 50%; /* Exactly 50% width */
   display: flex;
   flex-direction: column;
-  gap: var(--content-space-button-margin);
-  padding: 0; /* Remove padding */
+  gap: 10px;
+  padding: 0;
   align-items: center; /* Center content */
   justify-content: center;
+  background-color: #ffffff; /* White background for content area */
+  height: 100%;
 }
 
 .attraction__text {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
-  align-items: flex-start; /* Left-align content within container */
+  gap: 24px; /* var(--spacing/8,24px) */
+  align-items: flex-start; /* Start alignment for text content */
   justify-content: center;
   color: var(--theme-text);
-  max-width: 440px; /* Match Figma: w-[440px] */
+  max-width: 530px; /* Match Figma: w-[530px] */
   width: 100%;
+  text-align: center; /* Center text alignment */
 }
 
 .attraction__title {
   font-family: "Kippax Modern Condensed Medium", "Kippax Modern", sans-serif;
   font-weight: 500;
   font-style: normal;
-  line-height: var(--line-height-heading);
-  max-width: 616px;
+  line-height: 1; /* leading-none */
   width: 100%;
-  font-size: var(--font-size-h2);
+  font-size: 64px; /* var(--font-size/h2,64px) */
   letter-spacing: -0.64px;
   margin: 0;
-  text-align: left; /* Left-aligned text */
+  text-align: center; /* Center-aligned text */
 }
 
 .attraction__title-word {
@@ -76,18 +78,17 @@
 }
 
 .attraction__description {
-  font-family: var(--primary-family);
+  font-family: "Manrope", sans-serif;
   font-weight: 400;
-  line-height: var(--line-height-text);
-  max-width: 567px;
+  line-height: 32px; /* leading-[32px] */
   width: 100%;
-  font-size: var(--font-size-text-main);
+  font-size: 20px; /* text-[20px] */
   margin: 0;
-  text-align: left; /* Left-aligned text */
+  text-align: center; /* Center-aligned text */
 }
 
 .attraction__description p {
-  margin-bottom: 12px; /* Increased paragraph padding as requested */
+  margin-bottom: 12px; /* mb-[12px] */
 }
 
 .attraction__description p:last-child {
@@ -127,15 +128,13 @@
 }
 
 .attraction__visual {
-  flex: 0 0 50%; /* Exactly 50% width */
-  width: 50%; /* Explicitly set width */
-  aspect-ratio: 1 / 1; /* Square 1:1 ratio - width determines height */
+  flex: 0 0 50%; /* Exactly 50% width (720px) */
+  width: 50%;
+  height: 544px; /* Match container height */
   position: relative;
-  overflow: hidden; /* Prevent zoomed image from overflowing - ensure images never move past frame edge */
-  min-width: 0; /* Allow flexbox to shrink if needed */
+  overflow: hidden;
+  min-width: 0;
   box-sizing: border-box;
-  /* Initial state: visible - JavaScript will mask and animate if available */
-  clip-path: inset(0 0% 0 0);
 }
 
 .attraction__image {
@@ -146,53 +145,49 @@
   pointer-events: none;
   width: 100%;
   height: 100%;
-  max-width: 100%; /* Prevent overflow past container edge */
-  max-height: 100%; /* Prevent overflow past container edge */
-  display: block; /* Ensure proper rendering */
-  border: none; /* Remove any default borders */
-  outline: none; /* Remove any outline */
-  box-sizing: border-box; /* Ensure padding/border included in dimensions */
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
 }
 
 /* Mobile Styles */
 @media (max-width: 768px) {
   .attraction {
-    flex-direction: column !important; /* Stack vertically on mobile - override row-reverse */
-    align-items: stretch;
-  }
-
-  /* Reset any row-reverse that might interfere with mobile layout */
-  .attraction:nth-child(odd) {
     flex-direction: column !important;
+    align-items: stretch;
+    height: auto;
+    min-height: auto;
   }
 
-  /* Ensure image always appears above text on mobile, regardless of HTML order */
   .attraction__visual {
-    order: -1; /* Always appear first on mobile */
-    flex: none; /* Remove 50% width constraint */
+    order: -1;
+    flex: none;
     width: 100%;
-    height: 375px; /* Fixed height on mobile */
-    aspect-ratio: auto; /* Remove square constraint on mobile */
+    height: 375px;
   }
 
   .attraction__content {
-    order: 1; /* Always appear second on mobile */
-    flex: none; /* Remove 50% width constraint */
+    order: 1;
+    flex: none;
     width: 100%;
-    padding: 24px 24px 40px 24px; /* Mobile padding: pt-24px, pb-40px, px-24px */
-    gap: 28px; /* Mobile gap: 28px */
+    padding: 24px;
+    gap: 28px;
   }
 
   .attraction__text {
-    gap: 24px; /* Mobile gap: 24px instead of 32px */
+    gap: 24px;
   }
 
   .attraction__title {
-    font-size: 48px; /* Mobile: 48px instead of 64px */
-    letter-spacing: -0.48px; /* Mobile: -0.48px instead of -0.64px */
+    font-size: 48px;
+    letter-spacing: -0.48px;
   }
 
   .attraction__description {
-    font-size: 16px; /* Mobile: 16px instead of 18px */
+    font-size: 16px;
+    line-height: 24px;
   }
 }
