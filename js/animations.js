@@ -460,11 +460,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // Create scroll-triggered animation for mask reveal
-        // Mask reveals from left to right with easing
+        // Mask reveals from left to right
         // Starts earlier in the scroll timeline so it's further along when visible
         gsap.to(visual, {
           clipPath: "inset(0 0% 0 0)", // Fully revealed - 0% from right
-          ease: "power2.in", // Ease in - starts slow and builds up speed
+          ease: "none", // Linear easing - no easing
           scrollTrigger: {
             trigger: attractionSection,
             start: "top 100%", // Start when the top of the section enters the viewport from the bottom
