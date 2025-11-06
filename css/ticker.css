@@ -4,10 +4,16 @@
 }
 
 .ticker {
-  height: 660px; /* Match Figma design: 660px height */
+  height: 598px; /* Match Figma design: 598px height for desktop */
   overflow: hidden;
   position: relative;
   width: 100%;
+}
+
+@media (max-width: 768px) {
+  .ticker {
+    height: 519px; /* Match Figma design: 519px height for mobile */
+  }
 }
 
 .ticker__background {
@@ -26,13 +32,22 @@
 .ticker__image {
   position: absolute;
   object-fit: cover;
-  object-position: center center; /* Center horizontally and vertically */
-  width: 100%;
-  height: 120%; /* Slightly taller for parallax movement, visually matches Figma */
-  top: 0; /* Position controlled by JavaScript transform for parallax effect */
-  left: 0;
-  transform-origin: center center; /* Transform from center */
+  object-position: center bottom; /* Anchor to bottom, center horizontally */
+  width: 101.28%; /* Match Figma desktop: 101.28% width */
+  height: 110.37%; /* Match Figma desktop: 110.37% height */
+  bottom: 0; /* Anchor to bottom of frame */
+  left: -0.64%; /* Match Figma desktop: -0.64% left offset */
+  max-width: none; /* Allow image to exceed container width */
+  transform-origin: center bottom; /* Transform from bottom center */
   will-change: transform; /* Optimize for animations */
+}
+
+@media (max-width: 768px) {
+  .ticker__image {
+    width: 353.57%; /* Match Figma mobile: 353.57% width */
+    height: 115.61%; /* Match Figma mobile: 115.61% height */
+    left: -126.78%; /* Match Figma mobile: -126.78% left offset */
+  }
 }
 
 .ticker__content {
@@ -51,15 +66,15 @@
 }
 
 .ticker__text {
-  font-family: "Kippax Modern Condensed Bold", "Kippax Modern", sans-serif;
-  font-weight: 700;
+  font-family: "Kippax Modern Condensed Medium", "Kippax Modern", sans-serif;
+  font-weight: 500;
   font-style: normal;
   line-height: var(--line-height-heading);
-  color: #ffffff;
-  font-size: var(--font-size-h1);
-  text-transform: uppercase;
+  color: #ffffff; /* White text color */
+  font-size: var(--font-size-h2); /* Match Figma: 64px H2 size */
+  text-transform: none; /* Match Figma: title case, not uppercase */
   white-space: nowrap;
-  letter-spacing: -1.12px;
+  letter-spacing: -0.64px; /* Match Figma: -0.64px tracking */
   margin: 0;
   padding: 0;
   flex-shrink: 0;

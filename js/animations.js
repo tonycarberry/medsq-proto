@@ -5,8 +5,8 @@ document.addEventListener("DOMContentLoaded", function () {
     gsap.registerPlugin(ScrollTrigger);
   }
 
-  // Hero vector image (text) fade-in on page load
-  const heroVectorImage = document.querySelector(".hero__vector-image");
+  // Hero vector image (text) fade-in on page load (homepage only)
+  const heroVectorImage = document.querySelector(".hero--homepage .hero__vector-image");
   if (heroVectorImage) {
     // Fade in the text over 0.3 seconds
     setTimeout(() => {
@@ -14,9 +14,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 0);
   }
 
-  // Hero zipwire frames cycling animation - cycles through all variant frames every 2 seconds
+  // Hero zipwire frames cycling animation - cycles through all variant frames every 2 seconds (homepage only)
   // Based on Figma variants: Variant2, Variant3, Variant4, Variant5, Variant6, Variant7, Variant8
-  const heroZipwireFrames = document.querySelectorAll(".hero__zipwire-frame");
+  const heroZipwireFrames = document.querySelectorAll(".hero--homepage .hero__zipwire-frame");
   if (heroZipwireFrames.length > 0) {
     let currentFrameIndex = 0;
 
@@ -39,11 +39,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 1000); // 1 second delay after text fade-in
   }
 
-  const heroTitle = document.querySelector(".hero__title");
-  const heroSubtitle = document.querySelector(".hero__subtitle");
-  const heroImage = document.querySelector(".hero__image");
-  const heroBgColor = document.querySelector(".hero__bg-color");
-  const heroSection = document.querySelector(".hero-component");
+  // Standard hero elements (not homepage)
+  const heroTitle = document.querySelector(".hero:not(.hero--homepage) .hero__title");
+  const heroSubtitle = document.querySelector(".hero:not(.hero--homepage) .hero__subtitle");
+  const heroImage = document.querySelector(".hero:not(.hero--homepage) .hero__image");
+  const heroBgColor = document.querySelector(".hero:not(.hero--homepage) .hero__bg-color");
+  const heroSection = document.querySelector(".hero:not(.hero--homepage)");
 
   // Hero title word-by-word animation (copying reference site style)
   if (heroTitle) {
@@ -126,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Ticker image parallax scroll animation
-  // Matches Figma frames: Start when section bottom is at viewport bottom, end when section bottom is at viewport top
+  // Image is anchored to bottom of frame, parallax moves it up to show less sky as user scrolls
   const tickerImage = document.querySelector(".ticker__image");
   const tickerSection = document.querySelector(".ticker-component");
 
@@ -137,28 +138,29 @@ document.addEventListener("DOMContentLoaded", function () {
       const imageHeight = tickerImage.offsetHeight;
 
       // Calculate the extra height available for parallax movement
+      // Image is taller than container, so we can move it up to reveal less sky
       const extraHeight = imageHeight - sectionHeight;
 
-      // Start position (Frame 1): When section bottom is at viewport bottom
-      // Image should show more top (sky) - image shifted down (positive Y)
-      const startY = extraHeight * 0.3; // Shift down to show more sky at start
+      // Start position: Image anchored to bottom, showing more sky (image positioned lower)
+      // Since image is anchored to bottom, positive Y moves it down (shows more sky)
+      const startY = extraHeight * 0.6; // Start with image shifted down significantly to show more sky
 
-      // End position (Frame 2): When section bottom is at viewport top
-      // Image should show more bottom (people/ground) - image shifted up (negative Y)
-      const endY = -extraHeight * 0.5; // Shift up to show more bottom at end
+      // End position: Image moved up to show less sky (more of the bottom/people visible)
+      // Negative Y moves image up (shows less sky, more bottom)
+      const endY = -extraHeight * 0.4; // End with image shifted up significantly to show less sky
 
       // Set initial position to start frame (showing more sky)
+      // Image is anchored to bottom, so we use transform Y to shift it
       gsap.set(tickerImage, {
-        y: startY, // Start position matching Frame 1
-        top: 0, // Reset top since we're using transform
+        y: startY, // Start position - image shifted down to show more sky
       });
 
-      // Create parallax effect matching Figma frames
-      // Start: section bottom at viewport bottom (user scrolling up from below)
-      // End: section bottom at viewport top (section moved up as user scrolled down)
-      // As section moves up, image moves up within frame (from showing sky to showing bottom)
+      // Create parallax effect: as user scrolls, image moves up to reveal less sky
+      // Start: section bottom at viewport bottom
+      // End: section bottom at viewport top
+      // As section moves up, image moves up within frame (from showing sky to showing less sky)
       gsap.to(tickerImage, {
-        y: endY, // End position matching Frame 2 - image moves up as section moves up
+        y: endY, // End position - image moved up to show less sky
         ease: "none",
         scrollTrigger: {
           trigger: tickerSection,
@@ -290,7 +292,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Intro text secondary large scroll-based word-by-word opacity animation
-  // Each word switches instantly between 100% (on) and 40% (off) opacity in a staggered sequence
+  // Matches intro-text__body animation style: words fade from 20% to 100% opacity
   // Works on both homepage and attractions page
   const introTextSecondarySections = document.querySelectorAll(".intro-text-secondary-component");
 
@@ -309,34 +311,36 @@ document.addEventListener("DOMContentLoaded", function () {
         // Get all word elements
         const wordElements = introTextSecondaryLarge.querySelectorAll(".intro-text-secondary__word");
 
-        // Set initial state: all words start at 40% opacity (off state)
+        // Set initial state: words start at 20% opacity (faded state) - matching intro-text__body
         gsap.set(wordElements, {
-          opacity: 0.4, // 40% opacity - faded state before animation
+          opacity: 0.2, // 20% opacity - faded gray state
         });
 
-        // Create a timeline for staggered word-by-word animation
-        // Each word switches instantly from 40% to 100% opacity
+        // Create scroll-triggered timeline that animates words sequentially word-by-word
+        // Each word transitions from 20% to 100% opacity based on scroll progress
+        // Animation completes when section reaches center/just below center of screen
         const wordTimeline = gsap.timeline({
           scrollTrigger: {
             trigger: section,
-            start: "top 75%", // Start animation when top of section reaches 75% of viewport
+            start: "top 75%", // Start animation earlier
             end: "center center", // Complete when section is at center of viewport
-            scrub: true, // Scroll-linked animation
-            // markers: true, // Uncomment for debugging
+            scrub: true, // Smooth scroll-linked animation
+            // Markers can be enabled for debugging
+            // markers: true,
           },
         });
 
-        // Add each word to the timeline with stagger
-        // Each word switches instantly between 40% and 100% opacity
+        // Add each word to the timeline sequentially with a small stagger
+        // This ensures words animate one after another, not line-by-line
         wordElements.forEach((word, index) => {
           wordTimeline.to(
             word,
             {
-              opacity: 1, // 100% opacity - on state
-              duration: 0.01, // Very short duration for instant switch (but allows scrub to work)
-              ease: "none", // No easing - instant switch
+              opacity: 1, // 100% opacity - full visibility
+              duration: 0.2, // Quick transition per word
+              ease: "power1.out",
             },
-            index * 0.03 // Stagger delay between each word (0.03s per word - faster animation)
+            index * 0.05 // Small stagger (0.05s per word) to ensure sequential animation
           );
         });
 
@@ -351,7 +355,7 @@ document.addEventListener("DOMContentLoaded", function () {
           // Fade in when the word-by-word animation reaches the end
           // Add to the same timeline so it triggers after all words have animated
           const totalWords = wordElements.length;
-          const animationEndTime = totalWords * 0.03; // Time when last word finishes
+          const animationEndTime = totalWords * 0.05; // Time when last word finishes
 
           wordTimeline.to(
             introTextSecondarySmall,
