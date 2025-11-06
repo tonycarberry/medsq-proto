@@ -32,12 +32,13 @@
 }
 
 .intro-text-secondary__large {
-  font-family: var(--primary-family);
-  font-weight: 400;
-  line-height: var(--line-height-text);
-  max-width: 885px;
+  font-family: "Kippax Modern Condensed Medium", "Kippax Modern", sans-serif;
+  font-weight: 500;
+  line-height: var(--line-height-heading); /* Line height 1 */
+  max-width: 1024px; /* Match Figma max-width */
   width: 100%;
-  font-size: var(--font-size-text-large); /* Match intro-text__body */
+  font-size: 64px; /* Match Figma H2 size */
+  letter-spacing: -0.64px; /* Match Figma letter-spacing */
   margin: 0;
   text-align: center;
 }
@@ -47,17 +48,19 @@
 }
 
 .intro-text-secondary__small {
-  font-family: var(--primary-family);
+  font-family: "Kippax Modern", sans-serif; /* Regular weight */
   font-weight: 400;
-  line-height: var(--line-height-text);
-  max-width: 644px;
+  line-height: var(--line-height-text); /* Line height 1.5 */
+  max-width: 644px; /* Match Figma max-width */
   width: 100%;
-  font-size: var(--font-size-text-main);
+  font-size: var(--font-size-text-main); /* 20px */
   margin: 0;
+  text-align: center; /* Center align to match Figma */
 }
 
 .intro-text-secondary__small p {
   margin-bottom: 12px;
+  text-align: center; /* Center align paragraphs */
 }
 
 .intro-text-secondary__small p:last-child {
@@ -71,7 +74,8 @@
   }
 
   .intro-text-secondary__large {
-    font-size: var(--font-size-text-large);
+    font-size: 64px; /* Keep same size on mobile or adjust if needed */
+    letter-spacing: -0.64px;
   }
 
   .intro-text-secondary__small {
