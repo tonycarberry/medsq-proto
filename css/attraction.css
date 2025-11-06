@@ -28,13 +28,39 @@
   line-height: normal; /* Reset line-height after section */
 }
 
-/* Background colors for alternating attractions */
+/* Alternate layout: odd attractions have image on left, text on right */
+.attraction:nth-child(odd) {
+  flex-direction: row-reverse;
+}
+
+/* Background colors - each attraction gets a unique color */
+.attraction:nth-child(1) {
+  background-color: #87CEEB; /* Sky blue - Medlock Hotel */
+}
+
+.attraction:nth-child(2) {
+  background-color: #98FB98; /* Mint green - Food & Drink */
+}
+
+.attraction:nth-child(3) {
+  background-color: #E6E6FA; /* Lavender - Altitude */
+}
+
+.attraction:nth-child(4) {
+  background-color: #FF69B4; /* Bright pink - Co-op Live */
+}
+
+.attraction:nth-child(5) {
+  background-color: #FFA500; /* Bright orange - Etihad Stadium */
+}
+
+/* Keep old classes for backwards compatibility but they won't override nth-child */
 .attraction--dark {
-  background-color: #5d2923;
+  /* Overridden by nth-child selectors */
 }
 
 .attraction--yellow {
-  background-color: #f3f586;
+  /* Overridden by nth-child selectors */
 }
 
 .attraction__content {
@@ -100,9 +126,9 @@
   flex-wrap: wrap;
   gap: var(--content-space-button-group-gap);
   align-items: center;
-  justify-content: flex-start; /* Left-aligned to match text container */
+  justify-content: center; /* Center buttons below text */
   width: 100%;
-  max-width: 440px; /* Match text container width */
+  max-width: 530px; /* Match text container width from Figma */
 }
 
 .attraction__button {

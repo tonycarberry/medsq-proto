@@ -53,3 +53,53 @@
   --line-height-text: 1.5;
   --line-height-heading: 1;
 }
+
+/* Typography: Prevent single-word orphans (widows) */
+/* 
+ * Browser Support:
+ * - text-wrap: pretty: Chrome 123+, Edge 123+, Safari 17.4+ (March 2024+)
+ * - text-wrap: balance: Chrome 114+, Edge 114+, Safari 17+ (fallback for older browsers)
+ * 
+ * Fallback: For browsers that don't support text-wrap, we use:
+ * - orphans: 2 (print media, limited browser support)
+ * - Manual non-breaking spaces (&nbsp;) can be added between last two words if needed
+ */
+body {
+  /* Modern browsers: Prevents orphans (single words on last line) */
+  text-wrap: pretty;
+
+  /* Fallback for older browsers: Balance text across lines */
+  text-wrap: balance;
+
+  /* Print media fallback (limited support) */
+  orphans: 2;
+  widows: 2;
+}
+
+/* Apply to all text elements */
+p,
+.intro-text__body,
+.intro-text-secondary__small,
+.intro-text-secondary__small p,
+.attraction__description,
+.attraction__description p,
+.sticky-left-section__description,
+.sticky-left-section__description p,
+.hero__subtitle {
+  text-wrap: pretty;
+  text-wrap: balance; /* Fallback */
+  orphans: 2;
+  widows: 2;
+}
+
+/* Headlines: Apply to all headlines (excluding very short 2-3 word headlines which can be handled manually) */
+.hero__title,
+.intro-text__heading,
+.intro-text-secondary__large,
+.attraction__title,
+.sticky-left-section__title {
+  text-wrap: pretty;
+  text-wrap: balance; /* Fallback */
+  orphans: 2;
+  widows: 2;
+}

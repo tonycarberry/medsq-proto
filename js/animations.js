@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentFrameIndex = 0;
     let cyclingInterval = null;
 
-    // Start showing images after 1 second (logo scales in over 0.2s, then 0.8s gap before images appear)
+    // Start showing images immediately after logo animation finishes (0.2s - logo scales in over 0.2s)
     setTimeout(() => {
       // Show the base images
       heroZipwireBases.forEach((base) => {
@@ -33,18 +33,36 @@ document.addEventListener("DOMContentLoaded", function () {
       // Show the first frame image
       heroZipwireFrames[0].classList.add("active");
 
+      // Hide base images after first frame appears (they only show with first frame)
+      setTimeout(() => {
+        heroZipwireBases.forEach((base) => {
+          base.style.transition = "none";
+          base.offsetHeight; // Force reflow
+          base.classList.remove("visible");
+        });
+      }, 400); // Hide base images after first frame animation completes (0.2s)
+
       // Start cycling through remaining frames after 2 seconds (first image displays for 2 seconds)
       cyclingInterval = setInterval(() => {
-        // Remove active class from current frame (instant cut - no transition)
-        heroZipwireFrames[currentFrameIndex].classList.remove("active");
-
+        // Remove transition from old image and hide it instantly
+        const oldFrame = heroZipwireFrames[currentFrameIndex];
+        oldFrame.style.transition = "none";
+        // Force reflow to ensure transition is removed before class change
+        oldFrame.offsetHeight;
+        oldFrame.classList.remove("active");
+        
         // Move to next frame (loop back to 0 after last frame)
         currentFrameIndex = (currentFrameIndex + 1) % heroZipwireFrames.length;
 
-        // Add active class to new frame (instant cut - no transition)
-        heroZipwireFrames[currentFrameIndex].classList.add("active");
+        // Add active class to new frame with scale animation
+        const newFrame = heroZipwireFrames[currentFrameIndex];
+        // Reset transition to allow scale animation (use CSS default)
+        newFrame.style.transition = "";
+        // Force reflow to ensure transition is reset before class change
+        newFrame.offsetHeight;
+        newFrame.classList.add("active");
       }, 2000); // 2 second interval
-    }, 1000); // 1 second delay: logo scales in over 0.2s, then images appear after 1s total
+    }, 200); // 0.2 seconds delay: logo scales in over 0.2s, then images appear immediately after
   }
 
   // Standard hero elements (not homepage)

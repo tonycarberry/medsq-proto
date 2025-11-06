@@ -107,7 +107,7 @@
 }
 
 .attraction--dark {
-  background-color: #652c27;
+  background-color: #4B0082; /* Deep purple - Random Variation 1 */
 }
 
 .attraction--dark .attraction__text {
@@ -115,7 +115,7 @@
 }
 
 .attraction--yellow {
-  background-color: #ecef81;
+  background-color: #E6E6FA; /* Lavender - Random Variation 1 */
 }
 
 /* Remove top and bottom padding from hotel page attraction sections */
