@@ -3,11 +3,11 @@
   /* Colors */
   --theme-text: #1f1d1e;
   --theme-background: #ffffff;
-  --theme-background-dark: #1f1d1e;
+  --theme-background-dark: #1E1E28
   --theme-background-2: #fafafa; /* Light gray background for alternating sections */
-  --button-primary-background: #c6fb50;
-  --button-primary-border: #c6fb50;
-  --button-primary-text: #1f1d1e;
+  --button-primary-background: #f2fa7d;
+  --button-primary-border: #f2fa7d;
+  --button-primary-text: #1E1E28;
 
   /* Spacing */
   --space-2: 12px;

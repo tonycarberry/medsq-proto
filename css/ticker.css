@@ -70,7 +70,7 @@
   font-weight: 500;
   font-style: normal;
   line-height: var(--line-height-heading);
-  color: #ffffff; /* White text color */
+  color: var(--button-primary-background); /* Brand yellow to match nav button */
   font-size: var(--font-size-h2); /* Match Figma: 64px H2 size */
   text-transform: none; /* Match Figma: title case, not uppercase */
   white-space: nowrap;

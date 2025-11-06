@@ -103,19 +103,19 @@
 /* Hotel Vibes Section - Using Attraction Component Styles */
 /* Background color modifiers for attractions on hotel page */
 .attraction--peach {
-  background-color: #f6c8b1;
+  background-color: var(--button-primary-background); /* Brand yellow */
 }
 
 .attraction--dark {
-  background-color: #4B0082; /* Deep purple - Random Variation 1 */
+  background-color: var(--button-primary-background); /* Brand yellow */
 }
 
 .attraction--dark .attraction__text {
-  color: #ffffff;
+  color: var(--theme-text); /* Dark text on yellow background */
 }
 
 .attraction--yellow {
-  background-color: #E6E6FA; /* Lavender - Random Variation 1 */
+  background-color: var(--button-primary-background); /* Brand yellow */
 }
 
 /* Remove top and bottom padding from hotel page attraction sections */
@@ -151,6 +151,15 @@
   font-weight: 400;
   font-size: 56px;
   letter-spacing: -0.56px;
+}
+
+/* Hotel page: Image container column (visuals) should be brand yellow */
+.sticky-left-section .sticky-left-section__visuals {
+  background-color: var(--button-primary-background); /* Brand yellow */
+}
+
+.sticky-left-section .sticky-left-section__content {
+  background-color: #ffffff; /* White background for text column */
 }
 
 /* Add extra spacing above first sticky-left-section to account for sticky booking form */

@@ -35,23 +35,23 @@
 
 /* Background colors - each attraction gets a unique color */
 .attraction:nth-child(1) {
-  background-color: #87CEEB; /* Sky blue - Medlock Hotel */
+  background-color: #f2fa7d; /* Yellow - Medlock Hotel */
 }
 
 .attraction:nth-child(2) {
-  background-color: #98FB98; /* Mint green - Food & Drink */
+  background-color: #f2fa7d; /* Yellow - Food & Drink */
 }
 
 .attraction:nth-child(3) {
-  background-color: #E6E6FA; /* Lavender - Altitude */
+  background-color: #f2fa7d; /* Yellow - Altitude */
 }
 
 .attraction:nth-child(4) {
-  background-color: #FF69B4; /* Bright pink - Co-op Live */
+  background-color: #f2fa7d; /* Yellow - Co-op Live */
 }
 
 .attraction:nth-child(5) {
-  background-color: #FFA500; /* Bright orange - Etihad Stadium */
+  background-color: #f2fa7d; /* Yellow - Etihad Stadium */
 }
 
 /* Keep old classes for backwards compatibility but they won't override nth-child */
