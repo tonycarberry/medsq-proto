@@ -5,6 +5,40 @@ document.addEventListener("DOMContentLoaded", function () {
     gsap.registerPlugin(ScrollTrigger);
   }
 
+  // Hero vector image (text) fade-in on page load
+  const heroVectorImage = document.querySelector(".hero__vector-image");
+  if (heroVectorImage) {
+    // Fade in the text over 0.3 seconds
+    setTimeout(() => {
+      heroVectorImage.classList.add("visible");
+    }, 0);
+  }
+
+  // Hero zipwire frames cycling animation - cycles through all variant frames every 2 seconds
+  // Based on Figma variants: Variant2, Variant3, Variant4, Variant5, Variant6, Variant7, Variant8
+  const heroZipwireFrames = document.querySelectorAll(".hero__zipwire-frame");
+  if (heroZipwireFrames.length > 0) {
+    let currentFrameIndex = 0;
+
+    // Set initial state: first frame is active
+    heroZipwireFrames[0].classList.add("active");
+
+    // Start cycling after 1 second delay (after text fade-in completes)
+    setTimeout(() => {
+      // Cycle through frames every 2 seconds
+      setInterval(() => {
+        // Remove active class from current frame (instant cut - no transition)
+        heroZipwireFrames[currentFrameIndex].classList.remove("active");
+
+        // Move to next frame (loop back to 0 after last frame)
+        currentFrameIndex = (currentFrameIndex + 1) % heroZipwireFrames.length;
+
+        // Add active class to new frame (instant cut - no transition)
+        heroZipwireFrames[currentFrameIndex].classList.add("active");
+      }, 2000); // 2 second interval
+    }, 1000); // 1 second delay after text fade-in
+  }
+
   const heroTitle = document.querySelector(".hero__title");
   const heroSubtitle = document.querySelector(".hero__subtitle");
   const heroImage = document.querySelector(".hero__image");
@@ -101,18 +135,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const initParallax = () => {
       const sectionHeight = tickerSection.offsetHeight;
       const imageHeight = tickerImage.offsetHeight;
-      
+
       // Calculate the extra height available for parallax movement
       const extraHeight = imageHeight - sectionHeight;
-      
+
       // Start position (Frame 1): When section bottom is at viewport bottom
       // Image should show more top (sky) - image shifted down (positive Y)
       const startY = extraHeight * 0.3; // Shift down to show more sky at start
-      
+
       // End position (Frame 2): When section bottom is at viewport top
       // Image should show more bottom (people/ground) - image shifted up (negative Y)
       const endY = -extraHeight * 0.5; // Shift up to show more bottom at end
-      
+
       // Set initial position to start frame (showing more sky)
       gsap.set(tickerImage, {
         y: startY, // Start position matching Frame 1
@@ -338,12 +372,49 @@ document.addEventListener("DOMContentLoaded", function () {
   const attractionVisuals = document.querySelectorAll(".attraction__visual");
 
   if (attractionVisuals.length > 0 && typeof ScrollTrigger !== "undefined") {
+    // Check if we're on hotel page and need to skip animations for peach section and below
+    const peachSection = document.querySelector(".attraction--peach");
+    let sectionsToSkip = new Set();
+
+    if (peachSection) {
+      // Find the parent attractions-section
+      const attractionsSection = peachSection.closest(".attractions-section");
+      if (attractionsSection) {
+        // Get all attraction sections in this container
+        const allAttractions = Array.from(attractionsSection.querySelectorAll(".attraction"));
+        // Find the index of the peach section
+        const peachIndex = allAttractions.indexOf(peachSection);
+        // Add peach section and all subsequent sections to skip set
+        if (peachIndex !== -1) {
+          allAttractions.slice(peachIndex).forEach((section) => {
+            sectionsToSkip.add(section);
+          });
+        }
+      }
+    }
+
     attractionVisuals.forEach((visual) => {
       // Get the parent attraction section for ScrollTrigger
       const attractionSection = visual.closest(".attraction");
       const attractionImage = visual.querySelector(".attraction__image");
 
       if (attractionSection) {
+        // Skip animation if this section should be excluded
+        if (sectionsToSkip.has(attractionSection)) {
+          // Set visual to be fully visible (no mask) and image to normal scale
+          gsap.set(visual, {
+            clipPath: "inset(0 0% 0 0)", // Fully revealed - no mask
+          });
+          if (attractionImage) {
+            gsap.set(attractionImage, {
+              scale: 1,
+              x: 0,
+              transformOrigin: "center center",
+            });
+          }
+          return; // Skip animation for this section
+        }
+
         // Set initial state: fully masked (clip-path inset right at 100%)
         gsap.set(visual, {
           clipPath: "inset(0 100% 0 0)", // Fully masked - 100% from right
@@ -360,14 +431,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Create scroll-triggered animation for mask reveal
         // Mask reveals from left to right with easing
-        // Starts later so transition is visible when scrolling down
+        // Starts earlier in the scroll timeline so it's further along when visible
         gsap.to(visual, {
           clipPath: "inset(0 0% 0 0)", // Fully revealed - 0% from right
-          ease: "power2.out", // Easing for smooth reveal
+          ease: "power2.in", // Ease in - starts slow and builds up speed
           scrollTrigger: {
             trigger: attractionSection,
-            start: "top 80%", // Start later - when section is more visible in viewport
-            end: "top 50%", // End when section is centered - moderate scroll distance for visible transition
+            start: "top 100%", // Start when the top of the section enters the viewport from the bottom
+            end: "top 40%", // End when the top of the section is 40% down from the top of the viewport
             scrub: 0.15, // Slower, smoother scroll-linked animation (animates in/out based on scroll position)
             // markers: true, // Uncomment for debugging
           },
