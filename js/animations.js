@@ -567,6 +567,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const stickyLeftTitles = document.querySelectorAll(".sticky-left-section__title");
 
   if (stickyLeftTitles.length > 0 && typeof ScrollTrigger !== "undefined") {
+    // Check if we're on mobile
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
     stickyLeftTitles.forEach((title) => {
       // Split title text into words and wrap each in a span
       const text = title.textContent.trim();
@@ -578,33 +581,42 @@ document.addEventListener("DOMContentLoaded", function () {
       // Get all word elements
       const wordElements = title.querySelectorAll(".sticky-left-section__title-word");
 
-      // Set initial state: words are invisible and positioned to the right
-      gsap.set(wordElements, {
-        opacity: 0,
-        x: 50,
-      });
-
       // Get the parent sticky-left section for ScrollTrigger
       const stickyLeftSection = title.closest(".sticky-left-section");
 
-      if (stickyLeftSection) {
-        // Create scroll-triggered animation
-        // Words fade in and slide in from the right sequentially
-        gsap.to(wordElements, {
+      if (isMobile) {
+        // On mobile: make titles visible immediately (no animation)
+        gsap.set(wordElements, {
           opacity: 1,
           x: 0,
-          duration: 0.8,
-          stagger: 0.1, // 0.1 second delay between each word
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: stickyLeftSection,
-            start: "top 75%", // Start when top of section enters 75% of viewport
-            end: "top 50%", // End when top reaches middle of viewport
-            scrub: false, // Not scrubbed - plays once when triggered
-            once: true, // Only play once
-            // markers: true, // Uncomment for debugging
-          },
         });
+      } else {
+        // On desktop: animate titles on scroll
+        // Set initial state: words are invisible and positioned to the right
+        gsap.set(wordElements, {
+          opacity: 0,
+          x: 50,
+        });
+
+        if (stickyLeftSection) {
+          // Create scroll-triggered animation
+          // Words fade in and slide in from the right sequentially
+          gsap.to(wordElements, {
+            opacity: 1,
+            x: 0,
+            duration: 0.8,
+            stagger: 0.1, // 0.1 second delay between each word
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: stickyLeftSection,
+              start: "top 75%", // Start when top of section enters 75% of viewport
+              end: "top 50%", // End when top reaches middle of viewport
+              scrub: false, // Not scrubbed - plays once when triggered
+              once: true, // Only play once
+              // markers: true, // Uncomment for debugging
+            },
+          });
+        }
       }
     });
   }
