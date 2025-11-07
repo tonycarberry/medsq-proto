@@ -95,9 +95,11 @@
   line-height: 1.1;
   letter-spacing: -0.8px;
   color: var(--dark-900, #1f1d1e);
-  margin: 0 0 var(--space-7) 0;
+  margin: 0 auto var(--space-7) auto;
   max-width: 1024px;
   width: 100%;
+  text-align: center;
+  align-self: center;
 }
 
 /* Hotel Vibes Section - Using Attraction Component Styles */

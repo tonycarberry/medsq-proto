@@ -515,88 +515,96 @@ document.addEventListener("DOMContentLoaded", function () {
   const foodAttractionVisuals = document.querySelectorAll(".food-attraction__visual");
 
   if (foodAttractionVisuals.length > 0 && typeof ScrollTrigger !== "undefined") {
+    const isMobileViewport = window.innerWidth <= 768;
+
     foodAttractionVisuals.forEach((visual) => {
-      // Get the parent attraction section for ScrollTrigger
       const attractionSection = visual.closest(".food-attraction");
       const imageContainers = Array.from(visual.querySelectorAll(".food-attraction__image-container"));
 
-      if (attractionSection && imageContainers.length > 0) {
-        // Set initial state for each image: fully masked so yellow container shows first
+      if (!attractionSection || imageContainers.length === 0) {
+        return;
+      }
+
+      if (isMobileViewport) {
         imageContainers.forEach((container) => {
           const image = container.querySelector(".food-attraction__image");
           if (image) {
             gsap.set(image, {
-              clipPath: "inset(0 100% 0 0)", // Hide image entirely (yellow container visible)
+              clipPath: "inset(0 0% 0 0)",
               scale: 1,
               x: 0,
+              yPercent: 0,
               transformOrigin: "center center",
             });
           }
         });
 
-        // Create scroll-triggered animation for mask reveal on each image container
-        // Stagger the animations so images reveal one-by-one as user scrolls
-        imageContainers.forEach((container, index) => {
-          // Calculate stagger delay: each image starts revealing after the previous one
-          // Use a tighter scroll window so the wipe happens faster (matches homepage pacing)
-          const staggerStep = 12; // Scroll percentage offset between stacked images
-          const baseStart = 85; // Start later in viewport so more of image is visible before wipe begins
-          const baseEnd = 55; // Maintain ~30% window while shifting later
-          const startValue = Math.max(baseStart - index * staggerStep, 25);
-          const endValue = Math.max(baseEnd - index * staggerStep, 5);
-          const startPoint = `top ${startValue}%`;
-          const endPoint = `top ${endValue}%`;
-
-          const image = container.querySelector(".food-attraction__image");
-          if (!image) {
-            return;
-          }
-
-          // Create scroll-triggered animation for mask reveal
-          // Mask reveals from left to right, yellow background shows first, then image wipes across
-          gsap.to(image, {
-            clipPath: "inset(0 0% 0 0)", // Fully revealed - 0% from right
-            ease: "none", // Linear easing - no easing
-            scrollTrigger: {
-              trigger: attractionSection,
-              start: startPoint, // Staggered start points for sequential reveal
-              end: endPoint, // Staggered end points
-              scrub: 0.1, // Faster scrub for snappier wipe animation
-              // markers: true, // Uncomment for debugging
-            },
-          });
-
-          // Create scroll-triggered animation for image zoom
-          // Images zoom to 110% as user scrolls
-          gsap.to(image, {
-            scale: 1.1, // Zoom to 110%
-            ease: "none", // Linear easing for smooth scroll-linked movement
-            scrollTrigger: {
-              trigger: attractionSection,
-              start: "top bottom", // Start when section enters viewport
-              end: "bottom top", // End when section leaves viewport
-              scrub: 0.15, // Smooth scroll-linked animation
-            },
-          });
-
-          // Add subtle parallax movement to create depth between stacked images
-          const parallaxAmount = (index % 2 === 0 ? 18 : -15) + index * 4; // Stronger depth per stacked image
-          gsap.to(image, {
-            yPercent: parallaxAmount,
-            ease: "none",
-            force3D: true,
-            scrollTrigger: {
-              trigger: attractionSection,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 0.25,
-            },
-          });
-        });
+        return;
       }
+
+      imageContainers.forEach((container) => {
+        const image = container.querySelector(".food-attraction__image");
+        if (image) {
+          gsap.set(image, {
+            clipPath: "inset(0 100% 0 0)",
+            scale: 1,
+            x: 0,
+            transformOrigin: "center center",
+          });
+        }
+      });
+
+      imageContainers.forEach((container, index) => {
+        const staggerStep = 12;
+        const baseStart = 85;
+        const baseEnd = 55;
+        const startValue = Math.max(baseStart - index * staggerStep, 25);
+        const endValue = Math.max(baseEnd - index * staggerStep, 5);
+        const startPoint = `top ${startValue}%`;
+        const endPoint = `top ${endValue}%`;
+
+        const image = container.querySelector(".food-attraction__image");
+        if (!image) {
+          return;
+        }
+
+        gsap.to(image, {
+          clipPath: "inset(0 0% 0 0)",
+          ease: "none",
+          scrollTrigger: {
+            trigger: attractionSection,
+            start: startPoint,
+            end: endPoint,
+            scrub: 0.1,
+          },
+        });
+
+        gsap.to(image, {
+          scale: 1.1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: attractionSection,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.15,
+          },
+        });
+
+        const parallaxAmount = (index % 2 === 0 ? 18 : -15) + index * 4;
+        gsap.to(image, {
+          yPercent: parallaxAmount,
+          ease: "none",
+          force3D: true,
+          scrollTrigger: {
+            trigger: attractionSection,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.25,
+          },
+        });
+      });
     });
 
-    // Refresh ScrollTrigger to handle sections already in view
     ScrollTrigger.refresh();
   }
 
@@ -626,8 +634,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (attractionSection) {
         const isMobile = window.innerWidth <= 768;
-        const startPoint = isMobile ? "top 45%" : "top 65%";
-        const endPoint = isMobile ? "top 25%" : "top 35%";
+        const startPoint = isMobile ? "top 80%" : "top 65%";
+        const endPoint = isMobile ? "top 40%" : "top 35%";
 
         const titleTimeline = gsap.timeline({
           scrollTrigger: {
@@ -664,6 +672,36 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             descriptionStart
           );
+        }
+
+        // Animate images after text on mobile
+        if (isMobile) {
+          const images = attractionSection.querySelectorAll(".food-attraction__image-container");
+          if (images.length > 0) {
+            const wordCount = wordElements.length;
+            const descriptionStart = wordCount * 0.08 + 0.2;
+            const imagesStart = descriptionStart + 0.4; // Start after description animation
+
+            // Set initial state: images are invisible
+            gsap.set(images, {
+              opacity: 0,
+              y: 30,
+            });
+
+            // Animate images in sequence after text
+            images.forEach((image, index) => {
+              titleTimeline.to(
+                image,
+                {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.5,
+                  ease: "power2.out",
+                },
+                imagesStart + index * 0.1 // Stagger images
+              );
+            });
+          }
         }
       }
     });
@@ -806,6 +844,104 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       }
     });
+  }
+
+  // Sticky Left Section height sync (Attractions page only)
+  if (document.body.classList.contains("page-attractions")) {
+    const stickySections = Array.from(document.querySelectorAll(".sticky-left-section"));
+
+    if (stickySections.length > 0) {
+      const updateStickyLeftHeights = () => {
+        const isDesktop = window.innerWidth > 768;
+        let didUpdate = false;
+
+        stickySections.forEach((sectionEl) => {
+          const container = sectionEl.querySelector(".sticky-left-section__container");
+          const visuals = sectionEl.querySelector(".sticky-left-section__visuals");
+
+          if (!container || !visuals) {
+            return;
+          }
+
+          if (!isDesktop) {
+            const resetProps = [
+              [container, "minHeight"],
+              [container, "height"],
+              [sectionEl, "minHeight"],
+              [sectionEl, "height"],
+            ];
+
+            resetProps.forEach(([element, prop]) => {
+              if (element.style[prop] !== "") {
+                element.style[prop] = "";
+                didUpdate = true;
+              }
+            });
+            return;
+          }
+
+          const visualsHeight = visuals.getBoundingClientRect().height;
+          if (visualsHeight <= 0) {
+            return;
+          }
+
+          const heightValue = `${visualsHeight}px`;
+
+          const assignments = [
+            [container, "minHeight", heightValue],
+            [container, "height", heightValue],
+            [sectionEl, "minHeight", heightValue],
+            [sectionEl, "height", heightValue],
+          ];
+
+          assignments.forEach(([element, prop, value]) => {
+            if (element.style[prop] !== value) {
+              element.style[prop] = value;
+              didUpdate = true;
+            }
+          });
+        });
+
+        if (didUpdate && typeof ScrollTrigger !== "undefined") {
+          ScrollTrigger.refresh();
+        }
+      };
+
+      const scheduleHeightUpdate = () => {
+        updateStickyLeftHeights();
+        setTimeout(updateStickyLeftHeights, 120);
+      };
+
+      scheduleHeightUpdate();
+      window.addEventListener("load", scheduleHeightUpdate, { once: true });
+
+      let resizeTimeout;
+      window.addEventListener("resize", () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(updateStickyLeftHeights, 150);
+      });
+
+      if ("ResizeObserver" in window) {
+        const observers = [];
+        stickySections.forEach((sectionEl) => {
+          const visuals = sectionEl.querySelector(".sticky-left-section__visuals");
+          if (!visuals) {
+            return;
+          }
+          const observer = new ResizeObserver(updateStickyLeftHeights);
+          observer.observe(visuals);
+          observers.push(observer);
+        });
+
+        window.addEventListener(
+          "beforeunload",
+          () => {
+            observers.forEach((observer) => observer.disconnect());
+          },
+          { once: true }
+        );
+      }
+    }
   }
 
   // Sticky Left Section - No parallax scrolling, just static layout

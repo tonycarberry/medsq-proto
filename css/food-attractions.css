@@ -29,11 +29,11 @@
 .food-attraction:nth-child(2),
 .food-attraction:nth-child(3),
 .food-attraction:nth-child(4) {
-  height: 720px;
+  height: 880px; /* Extra headroom for parallax movement */
 }
 
 .food-attraction:nth-child(5) {
-  height: 759px;
+  height: 920px; /* Extra headroom for parallax movement */
 }
 
 .food-attraction__content {
@@ -207,44 +207,44 @@
 /* Blend - Second attraction: images container positioning */
 .food-attraction:nth-child(2) .food-attraction__images {
   width: 833px;
-  height: 721px;
+  height: 880px;
   left: 58px;
-  top: 34px;
+  top: 0;
 }
 
 .food-attraction:nth-child(2) .food-attraction__image-container:nth-child(1) {
   height: 348px;
   left: 58px;
-  top: 327px;
+  top: 532px;
   width: 443px;
 }
 
 .food-attraction:nth-child(2) .food-attraction__image-container:nth-child(2) {
   height: 358px;
   left: 371px;
-  top: 34px;
+  top: 0;
   width: 460px;
 }
 
 /* Hotel Brasserie - Third attraction: images container positioning */
 .food-attraction:nth-child(3) .food-attraction__images {
   width: 818px;
-  height: 772px;
+  height: 880px;
   left: 605px;
-  top: -42px;
+  top: 0;
 }
 
 .food-attraction:nth-child(3) .food-attraction__image-container:nth-child(1) {
   height: 408px;
   left: 249px;
-  top: 289px;
+  top: 472px;
   width: 520px;
 }
 
 .food-attraction:nth-child(3) .food-attraction__image-container:nth-child(2) {
   height: 314px;
   left: 5px;
-  top: 86px;
+  top: 0;
   width: 404px;
 }
 
@@ -306,8 +306,12 @@
   width: 404px;
 }
 
-/* Mobile Styles */
+/* Mobile Styles - Matching Figma "Attractions - M" design */
 @media (max-width: 768px) {
+  .food-attractions-section {
+    gap: 0;
+  }
+
   .food-attraction {
     position: relative;
     display: flex;
@@ -315,57 +319,34 @@
     max-width: none;
     margin: 0;
     height: auto;
-    padding: 0;
+    padding: 24px 0; /* Vertical padding matching Figma: py-[24px] */
+    background-color: var(--theme-background); /* White background */
   }
 
-  .food-attraction__visual {
-    position: static;
-    width: 100%;
-    height: auto;
-    pointer-events: auto;
-  }
-
-  .food-attraction__images {
-    position: static !important;
-    width: 100% !important;
-    height: auto !important;
-    left: 0 !important;
-    top: 0 !important;
-  }
-
-  .food-attraction__image-container {
-    position: relative !important;
-    width: 100% !important;
-    height: auto !important;
-    margin: 0 0 16px 0;
-  }
-
-  .food-attraction__image-container:last-child {
-    margin-bottom: 0;
-  }
-
-  .food-attraction__image {
-    position: relative !important;
-    width: 100% !important;
-    height: auto !important;
-    max-width: 100% !important;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
+  /* Alternating backgrounds: even sections use light gray */
+  .food-attraction:nth-child(even) {
+    background-color: var(--theme-background-2); /* Light gray #fafafa */
   }
 
   .food-attraction__content {
     position: static;
     width: 100%;
-    padding: 24px;
-    gap: 28px;
+    padding: 0 24px 28px 24px; /* px-[24px], pb-[28px], pt-[0] matching Figma */
+    gap: 28px; /* gap-[var(--content-space/button-margin,28px)] */
     align-items: flex-start;
+    order: 1; /* Content appears first */
+    display: flex;
+    flex-direction: column;
   }
 
   .food-attraction__text {
-    gap: 24px;
+    gap: 36px; /* gap-[var(--space/7,36px)] - gap between title and description */
     max-width: 100%;
     align-items: flex-start;
     text-align: left;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 
   .food-attraction:nth-child(even) .food-attraction__content {
@@ -378,13 +359,101 @@
   }
 
   .food-attraction__title {
-    font-size: 48px;
-    letter-spacing: -0.48px;
+    font-size: 48px; /* text-[length:var(--font-size/h2,48px)] */
+    letter-spacing: -0.48px; /* tracking-[-0.48px] */
+    margin: 0;
   }
 
   .food-attraction__description {
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 18px; /* text-[length:var(--font-size/text-main,18px)] */
+    line-height: 1.5; /* leading-[1.5] */
     text-align: left;
+  }
+
+  .food-attraction__description p {
+    margin-bottom: 12px; /* mb-[12px] */
+  }
+
+  .food-attraction__description p:last-child {
+    margin-bottom: 0;
+  }
+
+  .food-attraction__visual {
+    position: static;
+    width: 100%;
+    height: auto;
+    pointer-events: auto;
+    order: 2; /* Images appear after content */
+    margin-top: 0; /* No gap between content and images */
+    overflow: visible !important; /* Ensure images aren't clipped */
+  }
+
+  /* Override all desktop absolute positioning for images container */
+  .food-attraction__images,
+  .food-attraction:nth-child(1) .food-attraction__images,
+  .food-attraction:nth-child(2) .food-attraction__images,
+  .food-attraction:nth-child(3) .food-attraction__images,
+  .food-attraction:nth-child(4) .food-attraction__images,
+  .food-attraction:nth-child(5) .food-attraction__images {
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    left: auto !important;
+    top: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 28px; /* Equal spacing between images - matching content spacing */
+    padding: 0 16px; /* px-[var(--space/4,16px)] - 16px horizontal padding */
+    box-sizing: border-box;
+    overflow: visible !important; /* Allow images to display properly */
+  }
+
+  /* Override all desktop absolute positioning for image containers */
+  .food-attraction__image-container,
+  .food-attraction:nth-child(1) .food-attraction__image-container:nth-child(1),
+  .food-attraction:nth-child(1) .food-attraction__image-container:nth-child(2),
+  .food-attraction:nth-child(1) .food-attraction__image-container:nth-child(3),
+  .food-attraction:nth-child(2) .food-attraction__image-container:nth-child(1),
+  .food-attraction:nth-child(2) .food-attraction__image-container:nth-child(2),
+  .food-attraction:nth-child(3) .food-attraction__image-container:nth-child(1),
+  .food-attraction:nth-child(3) .food-attraction__image-container:nth-child(2),
+  .food-attraction:nth-child(4) .food-attraction__image-container:nth-child(1),
+  .food-attraction:nth-child(4) .food-attraction__image-container:nth-child(2),
+  .food-attraction:nth-child(5) .food-attraction__image-container:nth-child(1),
+  .food-attraction:nth-child(5) .food-attraction__image-container:nth-child(2) {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    left: auto !important;
+    top: auto !important;
+    margin: 0 !important;
+    display: block !important;
+    flex-shrink: 0;
+    background-color: transparent !important;
+    overflow: visible !important;
+  }
+
+  .food-attraction__image-container:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Override all desktop image positioning */
+  .food-attraction__image,
+  .food-attraction:nth-child(1) .food-attraction__image-container:nth-child(1) .food-attraction__image,
+  .food-attraction:nth-child(4) .food-attraction__image-container:nth-child(1) .food-attraction__image,
+  .food-attraction:nth-child(5) .food-attraction__image-container:nth-child(1) .food-attraction__image {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+    max-height: none !important;
+    object-fit: cover !important;
+    object-position: 50% 50% !important;
+    display: block !important;
+    inset: auto !important;
   }
 }
