@@ -33,12 +33,11 @@
   justify-content: center;
   align-items: flex-start; /* Left-align content */
   padding: var(--section-space-main) 0; /* Vertical padding only */
-  position: sticky; /* Sticky positioning in CSS for smoother performance */
+  position: sticky; /* Sticky positioning in CSS */
   top: 0;
   align-self: flex-start; /* Align to top of container */
   z-index: 2;
   box-sizing: border-box; /* Ensure padding is included in width calculation */
-  will-change: transform; /* Optimize for animations */
 }
 
 .sticky-left-section__text {
@@ -136,7 +135,6 @@
   gap: var(--space-4); /* 16px gap between images (matches Figma) */
   box-sizing: border-box; /* Ensure consistent width calculation */
   padding: var(--section-space-main) 0; /* Vertical padding only, no horizontal */
-  will-change: transform; /* Optimize for scroll animations */
 }
 
 .sticky-left-section__visual {
@@ -171,12 +169,14 @@
   }
 
   .sticky-left-section__container {
+    display: flex; /* Change from grid to flex on mobile */
     flex-direction: column; /* Stack vertically on mobile */
     min-height: auto !important; /* Remove min-height constraint - override JS */
     gap: 0; /* No gap - handled by padding */
   }
 
   .sticky-left-section__content {
+    grid-column: auto; /* Remove grid-column on mobile */
     flex: none;
     width: 100%;
     order: 1; /* Content appears first on mobile */
@@ -218,6 +218,7 @@
   }
 
   .sticky-left-section__visuals {
+    grid-column: auto; /* Remove grid-column on mobile */
     flex: none;
     width: 100%;
     order: 2; /* Images appear after content */
@@ -231,7 +232,7 @@
   .sticky-left-section__visual {
     width: 100%;
     aspect-ratio: auto; /* Remove square constraint */
-    height: 343px; /* Fixed height for each image on mobile (matches Figma) */
+    height: 257px; /* Fixed height for each image on mobile (matches Figma) */
   }
 
   .sticky-left-section__image {

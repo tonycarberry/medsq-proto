@@ -152,58 +152,32 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Ticker image parallax scroll animation
-  // Image is anchored to bottom of frame, parallax moves it up to show less sky as user scrolls
+  // Ticker image zoom animation - zooms from 100% to 110% as user scrolls
   const tickerImage = document.querySelector(".ticker__image");
   const tickerSection = document.querySelector(".ticker-component");
-
+  
   if (tickerImage && tickerSection && typeof ScrollTrigger !== "undefined") {
-    // Wait for layout to calculate proper movement distance
-    const initParallax = () => {
-      const sectionHeight = tickerSection.offsetHeight;
-      const imageHeight = tickerImage.offsetHeight;
+    // Set initial scale and enable GPU acceleration
+    gsap.set(tickerImage, {
+      scale: 1,
+      transformOrigin: "50% 50%",
+      willChange: "transform",
+      force3D: true, // Force GPU acceleration
+    });
 
-      // Calculate the extra height available for parallax movement
-      // Image is taller than container, so we can move it up to reveal less sky
-      const extraHeight = imageHeight - sectionHeight;
-
-      // Start position: Image anchored to bottom, showing more sky (image positioned lower)
-      // Since image is anchored to bottom, positive Y moves it down (shows more sky)
-      const startY = extraHeight * 0.6; // Start with image shifted down significantly to show more sky
-
-      // End position: Image moved up to show less sky (more of the bottom/people visible)
-      // Negative Y moves image up (shows less sky, more bottom)
-      const endY = -extraHeight * 0.4; // End with image shifted up significantly to show less sky
-
-      // Set initial position to start frame (showing more sky)
-      // Image is anchored to bottom, so we use transform Y to shift it
-      gsap.set(tickerImage, {
-        y: startY, // Start position - image shifted down to show more sky
-      });
-
-      // Create parallax effect: as user scrolls, image moves up to reveal less sky
-      // Start: section bottom at viewport bottom
-      // End: section bottom at viewport top
-      // As section moves up, image moves up within frame (from showing sky to showing less sky)
-      gsap.to(tickerImage, {
-        y: endY, // End position - image moved up to show less sky
-        ease: "none",
-        scrollTrigger: {
-          trigger: tickerSection,
-          start: "bottom bottom", // Start when bottom of section is at bottom of viewport
-          end: "bottom top", // End when bottom of section is at top of viewport
-          scrub: true, // Smooth scroll-linked animation (no jumps)
-        },
-      });
-    };
-
-    // Initialize after layout is ready
-    if (tickerImage.offsetHeight > 0 && tickerSection.offsetHeight > 0) {
-      initParallax();
-    } else {
-      window.addEventListener("load", initParallax);
-      setTimeout(initParallax, 100); // Fallback
-    }
+    // Animate scale from 1.0 to 1.1 (100% to 110%) during scroll
+    gsap.to(tickerImage, {
+      scale: 1.1, // Zoom to 110%
+      ease: "none",
+      force3D: true, // Force GPU acceleration for smoother animation
+      scrollTrigger: {
+        trigger: tickerSection,
+        start: "top bottom", // Start when top of section enters bottom of viewport
+        end: "bottom top", // End when bottom of section reaches top of viewport
+        scrub: true, // Smooth scroll-linked animation
+        invalidateOnRefresh: true,
+      },
+    });
   }
 
   // Ticker text horizontal scrolling animation

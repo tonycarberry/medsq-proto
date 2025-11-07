@@ -7,7 +7,7 @@
   background-color: var(--theme-background);
   display: flex;
   align-items: center;
-  padding: var(--space-2) var(--site-margin);
+  padding: var(--space-2) 32px;
   width: 100%;
   position: relative;
 }
@@ -264,7 +264,7 @@
   }
 
   .nav {
-    padding: 8px 24px; /* Mobile padding: 8px vertical, 24px horizontal (matches Figma) */
+    padding: 8px 32px; /* Mobile padding: 8px vertical, 32px horizontal */
     height: auto; /* Allow height to adjust with padding */
     min-height: 72px; /* Minimum height to match Figma */
   }

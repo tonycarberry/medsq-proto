@@ -103,19 +103,39 @@
 /* Hotel Vibes Section - Using Attraction Component Styles */
 /* Background color modifiers for attractions on hotel page */
 .attraction--peach {
-  background-color: var(--button-primary-background); /* Brand yellow */
+  background-color: #5d2923; /* Dark red/burgundy */
+}
+
+.attraction--peach .attraction__content {
+  background-color: #5d2923; /* Dark red/burgundy background for text area */
+}
+
+.attraction--peach .attraction__text {
+  color: #ffffff; /* White text on dark background */
 }
 
 .attraction--dark {
-  background-color: var(--button-primary-background); /* Brand yellow */
+  background-color: #f3f586; /* Yellow */
+}
+
+.attraction--dark .attraction__content {
+  background-color: #f6c8b1; /* Peach background for text area */
 }
 
 .attraction--dark .attraction__text {
-  color: var(--theme-text); /* Dark text on yellow background */
+  color: var(--theme-text); /* Dark text on peach background */
 }
 
 .attraction--yellow {
-  background-color: var(--button-primary-background); /* Brand yellow */
+  background-color: #5d2923; /* Dark red/burgundy */
+}
+
+.attraction--yellow .attraction__content {
+  background-color: #ecef81; /* Light yellow-green background for text area */
+}
+
+.attraction--yellow .attraction__text {
+  color: var(--theme-text); /* Dark text on light yellow-green background */
 }
 
 /* Remove top and bottom padding from hotel page attraction sections */
@@ -153,9 +173,38 @@
   letter-spacing: -0.56px;
 }
 
-/* Hotel page: Image container column (visuals) should be brand yellow */
+/* Hotel page: Image container column (visuals) should be white */
+/* Ensure html and body have white backgrounds on hotel page */
+html {
+  background-color: #ffffff;
+}
+
+.sticky-left-section {
+  background-color: #ffffff; /* White background for entire section */
+  overflow: hidden; /* Clip zoomed images */
+  position: relative; /* Ensure proper stacking */
+}
+
+.sticky-left-section--alt-bg {
+  background-color: #ffffff; /* White background for alt variant too */
+}
+
+.sticky-left-section .sticky-left-section__container {
+  background-color: #ffffff; /* White background for container */
+}
+
 .sticky-left-section .sticky-left-section__visuals {
-  background-color: var(--button-primary-background); /* Brand yellow */
+  background-color: #ffffff; /* White background */
+  overflow: hidden; /* Clip zoomed images */
+  position: relative; /* Ensure proper stacking context */
+}
+
+.sticky-left-section .sticky-left-section__visual {
+  background-color: #ffffff; /* White background for each image container */
+}
+
+.sticky-left-section .sticky-left-section__image {
+  background-color: #ffffff; /* White background for images */
 }
 
 .sticky-left-section .sticky-left-section__content {

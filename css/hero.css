@@ -1,6 +1,8 @@
 /* Hero Component */
 .hero-component {
   width: 100%;
+  padding-left: 32px;
+  padding-right: 32px;
 }
 
 /* Standard Hero (for non-homepage pages) */
@@ -73,13 +75,13 @@
 .hero--homepage {
   position: relative;
   width: 100%;
-  height: 825px; /* Match Figma frame height */
+  min-height: 825px; /* Minimum height, allows for padding */
   background-color: var(--theme-background);
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 65px; /* Top margin from Figma */
-  padding-bottom: 64px; /* Bottom margin (825px - 65px - 696px = 64px) */
+  align-items: center; /* Vertically center the content */
+  justify-content: center; /* Horizontally center the content */
+  padding-top: var(--section-space-small); /* Top padding */
+  padding-bottom: var(--section-space-small); /* Bottom padding */
 }
 
 .hero__content-wrapper {
@@ -181,12 +183,20 @@
 /* Mobile Styles */
 @media (max-width: 768px) {
   /* Standard hero mobile */
+  .hero-component {
+    padding-left: 32px; /* Consistent 32px padding */
+    padding-right: 32px; /* Consistent 32px padding */
+  }
+
   .hero {
     height: 519px; /* Match Figma mobile height */
+    margin-left: -32px; /* Extend background to edge */
+    margin-right: -32px; /* Extend background to edge */
+    width: calc(100% + 64px); /* Compensate for negative margins */
   }
 
   .hero__content {
-    padding: var(--section-space-small) var(--space-5);
+    padding: var(--section-space-small) 32px; /* Add padding back to content */
   }
 
   .hero__title {
@@ -195,35 +205,39 @@
 
   /* Homepage hero mobile */
   .hero--homepage {
-    height: auto;
     min-height: auto;
-    padding-top: 40px;
-    padding-bottom: 40px;
+    padding-top: var(--section-space-small); /* Top padding */
+    padding-bottom: var(--section-space-small); /* Bottom padding */
+    margin-left: -32px; /* Extend background to edge */
+    margin-right: -32px; /* Extend background to edge */
+    width: calc(100% + 64px); /* Compensate for negative margins */
   }
 
   .hero__content-wrapper {
     position: relative;
-    width: 100%;
-    max-width: 693px;
+    width: 100%; /* Full width of hero--homepage */
+    max-width: 286px; /* Match Figma mobile: 286px */
     height: auto;
-    padding: 0 24px;
+    aspect-ratio: 286 / 287; /* Match Figma: 286px width / 287px height */
   }
 
   .hero__zipwire-container {
     position: relative;
     left: auto;
     top: auto;
-    width: 100%;
-    max-width: 595px;
+    width: calc(100% * 246 / 286); /* 246px / 286px = ~86% - images smaller than logo */
+    max-width: 246px;
     height: auto;
-    aspect-ratio: 595 / 609;
+    aspect-ratio: 246 / 252; /* Match Figma: 246px width / 252px height */
+    margin-left: calc(100% * 20 / 286); /* 20px offset from Figma */
+    margin-top: calc(100% * 18 / 287); /* 18px offset from Figma */
   }
 
   .hero__vector-container {
     position: absolute;
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
+    width: 100%; /* Logo takes full width of content-wrapper */
+    height: 100%; /* Logo takes full height of content-wrapper */
   }
 }

@@ -32,20 +32,21 @@
 .ticker__image {
   position: absolute;
   object-fit: cover;
-  object-position: center bottom; /* Anchor to bottom, center horizontally */
+  object-position: center center; /* Center the image */
   width: 101.28%; /* Match Figma desktop: 101.28% width */
-  height: 110.37%; /* Match Figma desktop: 110.37% height */
-  bottom: 0; /* Anchor to bottom of frame */
+  height: 100%; /* Standard height */
+  top: 0; /* Anchor to top */
+  bottom: 0; /* Anchor to bottom */
   left: -0.64%; /* Match Figma desktop: -0.64% left offset */
   max-width: none; /* Allow image to exceed container width */
-  transform-origin: center bottom; /* Transform from bottom center */
-  will-change: transform; /* Optimize for animations */
+  transform-origin: center center; /* Zoom from center */
+  will-change: transform; /* Optimize for zoom animation */
 }
 
 @media (max-width: 768px) {
   .ticker__image {
     width: 353.57%; /* Match Figma mobile: 353.57% width */
-    height: 115.61%; /* Match Figma mobile: 115.61% height */
+    height: 100%; /* Standard height, no parallax needed */
     left: -126.78%; /* Match Figma mobile: -126.78% left offset */
   }
 }

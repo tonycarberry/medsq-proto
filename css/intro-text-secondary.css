@@ -16,7 +16,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--content-space-button-margin);
-  padding: var(--section-space-main) var(--site-margin);
+  padding: var(--section-space-main) 32px;
   align-items: center;
   justify-content: center;
 }
@@ -69,7 +69,7 @@
 /* Mobile Styles */
 @media (max-width: 768px) {
   .intro-text-secondary__content {
-    padding: var(--section-space-small) var(--site-margin);
+    padding: var(--section-space-small) 32px;
   }
 
   .intro-text-secondary__large {
