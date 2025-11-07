@@ -98,7 +98,6 @@
   margin: 0 0 var(--space-7) 0;
   max-width: 1024px;
   width: 100%;
-  text-align: center; /* Center the heading text */
 }
 
 /* Hotel Vibes Section - Using Attraction Component Styles */
@@ -202,7 +201,6 @@ html {
 
 .sticky-left-section .sticky-left-section__visual {
   background-color: #ffffff; /* White background for each image container */
-  aspect-ratio: 4 / 3; /* 4:3 aspect ratio instead of 1:1 */
 }
 
 .sticky-left-section .sticky-left-section__image {

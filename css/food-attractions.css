@@ -1,0 +1,390 @@
+/* Food & Drink Attractions Layout */
+/* Similar to home page attractions but with specific layout for food and drink page */
+
+.food-attractions-section {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  font-size: 0;
+  background-color: #ffffff; /* White background for section container */
+}
+
+.food-attractions-section > * {
+  font-size: initial;
+}
+
+.food-attraction {
+  position: relative;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  height: 880px; /* Default height (Sky Bar) */
+  background-color: #ffffff;
+  overflow: visible;
+}
+
+.food-attraction:nth-child(2),
+.food-attraction:nth-child(3),
+.food-attraction:nth-child(4) {
+  height: 720px;
+}
+
+.food-attraction:nth-child(5) {
+  height: 759px;
+}
+
+.food-attraction__content {
+  position: absolute;
+  width: 440px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: flex-start;
+  justify-content: center;
+  color: var(--theme-text);
+  z-index: 2;
+}
+
+.food-attraction:nth-child(1) .food-attraction__content {
+  left: 59px;
+  top: 165px;
+}
+
+.food-attraction:nth-child(2) .food-attraction__content {
+  right: 59px;
+  top: 199px;
+  align-items: flex-end;
+}
+
+.food-attraction:nth-child(3) .food-attraction__content {
+  left: 59px;
+  top: 209px;
+}
+
+.food-attraction:nth-child(4) .food-attraction__content {
+  right: 59px;
+  top: 160px;
+  align-items: flex-end;
+}
+
+.food-attraction:nth-child(5) .food-attraction__content {
+  left: 59px;
+  top: 105px;
+}
+
+.food-attraction__text {
+  display: flex;
+  flex-direction: column;
+  gap: 32px; /* var(--space/5,32px) */
+  align-items: flex-start;
+  justify-content: center;
+  color: var(--theme-text);
+  max-width: 440px; /* Match Figma: w-[440px] */
+  width: 100%;
+  text-align: left; /* Left-aligned text */
+}
+
+.food-attraction:nth-child(even) .food-attraction__text {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.food-attraction__title {
+  font-family: "Kippax Modern Condensed Medium", "Kippax Modern", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  line-height: 1; /* leading-none */
+  width: 100%;
+  font-size: 64px; /* var(--font-size/h2,64px) */
+  letter-spacing: -0.64px;
+  margin: 0;
+  text-align: left;
+}
+
+.food-attraction__title-word {
+  display: inline-block;
+}
+
+.food-attraction__description {
+  font-family: "Kippax Modern", sans-serif;
+  font-weight: 400;
+  line-height: 1.5; /* leading-[1.5] */
+  width: 100%;
+  font-size: 20px; /* text-[20px] */
+  margin: 0;
+  text-align: left;
+}
+
+.food-attraction:nth-child(even) .food-attraction__description {
+  text-align: right;
+}
+
+.food-attraction__description p {
+  margin-bottom: 12px; /* mb-[12px] */
+}
+
+.food-attraction__description p:last-child {
+  margin-bottom: 0;
+}
+
+.food-attraction__visual {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.food-attraction__images {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+
+/* Sky Bar - First attraction: images container positioning */
+.food-attraction:nth-child(1) .food-attraction__images {
+  width: 818px;
+  height: 962px;
+  left: 605px;
+  top: 18px;
+}
+
+.food-attraction__image-container {
+  position: absolute;
+  overflow: visible;
+  background-color: #f2fa7d; /* Yellow background */
+}
+
+.food-attraction__image {
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
+  object-position: 50% 50%;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  max-width: none; /* Allow images to exceed container for overflow effects */
+  max-height: 100%;
+  display: block;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+}
+
+/* Sky Bar - First attraction: 3 images */
+.food-attraction:nth-child(1) .food-attraction__image-container:nth-child(1) {
+  height: 340px;
+  left: 392px;
+  top: 162px;
+  width: 390px;
+}
+
+.food-attraction:nth-child(1) .food-attraction__image-container:nth-child(1) .food-attraction__image {
+  height: 100%;
+  left: -22.11%;
+  top: 0;
+  width: 155.07%;
+}
+
+.food-attraction:nth-child(1) .food-attraction__image-container:nth-child(2) {
+  height: 314px;
+  left: 60px;
+  top: -20px;
+  width: 404px;
+}
+
+.food-attraction:nth-child(1) .food-attraction__image-container:nth-child(3) {
+  height: 420px;
+  left: 8px;
+  top: 431px;
+  width: 608px;
+}
+
+/* Blend - Second attraction: images container positioning */
+.food-attraction:nth-child(2) .food-attraction__images {
+  width: 833px;
+  height: 721px;
+  left: 58px;
+  top: 34px;
+}
+
+.food-attraction:nth-child(2) .food-attraction__image-container:nth-child(1) {
+  height: 348px;
+  left: 58px;
+  top: 327px;
+  width: 443px;
+}
+
+.food-attraction:nth-child(2) .food-attraction__image-container:nth-child(2) {
+  height: 358px;
+  left: 371px;
+  top: 34px;
+  width: 460px;
+}
+
+/* Hotel Brasserie - Third attraction: images container positioning */
+.food-attraction:nth-child(3) .food-attraction__images {
+  width: 818px;
+  height: 772px;
+  left: 605px;
+  top: -42px;
+}
+
+.food-attraction:nth-child(3) .food-attraction__image-container:nth-child(1) {
+  height: 408px;
+  left: 249px;
+  top: 289px;
+  width: 520px;
+}
+
+.food-attraction:nth-child(3) .food-attraction__image-container:nth-child(2) {
+  height: 314px;
+  left: 5px;
+  top: 86px;
+  width: 404px;
+}
+
+/* Market Hall - Fourth attraction: images container positioning */
+.food-attraction:nth-child(4) .food-attraction__images {
+  width: 1382px;
+  height: 721px;
+  left: 215px;
+  top: 12px;
+}
+
+.food-attraction:nth-child(4) .food-attraction__image-container:nth-child(1) {
+  height: 348px;
+  left: 165px;
+  top: 316px;
+  width: 450px;
+}
+
+.food-attraction:nth-child(4) .food-attraction__image-container:nth-child(1) .food-attraction__image {
+  height: 101.16%;
+  left: -18.93%;
+  top: -1.16%;
+  width: 137.86%;
+}
+
+.food-attraction:nth-child(4) .food-attraction__image-container:nth-child(2) {
+  height: 348px;
+  left: 0;
+  top: 0;
+  width: 542px;
+}
+
+/* Level 0 - Fifth attraction: images container positioning */
+.food-attraction:nth-child(5) .food-attraction__images {
+  width: 772px;
+  height: 759px;
+  left: 610px;
+  top: 62px;
+}
+
+.food-attraction:nth-child(5) .food-attraction__image-container:nth-child(1) {
+  height: 348px;
+  left: 328px;
+  top: 0;
+  width: 444px;
+}
+
+.food-attraction:nth-child(5) .food-attraction__image-container:nth-child(1) .food-attraction__image {
+  height: 116.04%;
+  left: -18.24%;
+  top: -8.02%;
+  width: 136.71%;
+}
+
+.food-attraction:nth-child(5) .food-attraction__image-container:nth-child(2) {
+  height: 314px;
+  left: 0;
+  top: 317px;
+  width: 404px;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .food-attraction {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-width: none;
+    margin: 0;
+    height: auto;
+    padding: 0;
+  }
+
+  .food-attraction__visual {
+    position: static;
+    width: 100%;
+    height: auto;
+    pointer-events: auto;
+  }
+
+  .food-attraction__images {
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    left: 0 !important;
+    top: 0 !important;
+  }
+
+  .food-attraction__image-container {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 0 16px 0;
+  }
+
+  .food-attraction__image-container:last-child {
+    margin-bottom: 0;
+  }
+
+  .food-attraction__image {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .food-attraction__content {
+    position: static;
+    width: 100%;
+    padding: 24px;
+    gap: 28px;
+    align-items: flex-start;
+  }
+
+  .food-attraction__text {
+    gap: 24px;
+    max-width: 100%;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .food-attraction:nth-child(even) .food-attraction__content {
+    align-items: flex-start;
+  }
+
+  .food-attraction:nth-child(even) .food-attraction__text {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .food-attraction__title {
+    font-size: 48px;
+    letter-spacing: -0.48px;
+  }
+
+  .food-attraction__description {
+    font-size: 16px;
+    line-height: 24px;
+    text-align: left;
+  }
+}

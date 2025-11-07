@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Based on Figma variants: Variant2, Variant3, Variant4, Variant5, Variant6, Variant7, Variant8
   const heroZipwireFrames = document.querySelectorAll(".hero__zipwire-frame");
   const heroZipwireBases = document.querySelectorAll(".hero__zipwire-base");
-  
+
   if (heroZipwireFrames.length > 0) {
     let currentFrameIndex = 0;
     let cyclingInterval = null;
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Force reflow to ensure transition is removed before class change
         oldFrame.offsetHeight;
         oldFrame.classList.remove("active");
-        
+
         // Move to next frame (loop back to 0 after last frame)
         currentFrameIndex = (currentFrameIndex + 1) % heroZipwireFrames.length;
 
@@ -152,32 +152,72 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Ticker image zoom animation - zooms from 100% to 110% as user scrolls
+  // Ticker image parallax scroll animation
+  // Image starts aligned to bottom (showing people), then moves up to reveal sky as user scrolls
+  // Image bottom must always align with container bottom at 100% animation (when section bottom reaches viewport top)
   const tickerImage = document.querySelector(".ticker__image");
   const tickerSection = document.querySelector(".ticker-component");
-  
-  if (tickerImage && tickerSection && typeof ScrollTrigger !== "undefined") {
-    // Set initial scale and enable GPU acceleration
-    gsap.set(tickerImage, {
-      scale: 1,
-      transformOrigin: "50% 50%",
-      willChange: "transform",
-      force3D: true, // Force GPU acceleration
-    });
 
-    // Animate scale from 1.0 to 1.1 (100% to 110%) during scroll
-    gsap.to(tickerImage, {
-      scale: 1.1, // Zoom to 110%
-      ease: "none",
-      force3D: true, // Force GPU acceleration for smoother animation
-      scrollTrigger: {
-        trigger: tickerSection,
-        start: "top bottom", // Start when top of section enters bottom of viewport
-        end: "bottom top", // End when bottom of section reaches top of viewport
-        scrub: true, // Smooth scroll-linked animation
-        invalidateOnRefresh: true,
-      },
-    });
+  if (tickerImage && tickerSection && typeof ScrollTrigger !== "undefined") {
+    // Wait for layout to calculate proper movement distance
+    const initParallax = () => {
+      const sectionHeight = tickerSection.offsetHeight;
+      const imageHeight = tickerImage.offsetHeight;
+
+      // Calculate the extra height available for parallax movement
+      // Image is taller than container, so we can move it up to reveal more sky
+      const extraHeight = imageHeight - sectionHeight;
+
+      // Ensure we never reveal background: limit movement to ensure image always covers container
+      // The maximum safe upward movement is when the top of the image reaches the top of the container
+      // This means we can move up by at most (imageHeight - sectionHeight)
+      // But we need to ensure the image bottom stays aligned with container bottom at 100%
+
+      // Start position: Image aligned to bottom (y: 0), showing people at bottom, less sky
+      // Since image is anchored to bottom, y: 0 means bottom of image aligns with bottom of container
+      const startY = 0; // Start with image at bottom - showing people, less sky
+
+      // End position: Image moved up to show more sky, but bottom must align with container bottom
+      // At 100% animation (when section bottom reaches viewport top), image bottom = container bottom
+      // Maximum safe movement: move up by extraHeight, but ensure image top never goes above container top
+      // Negative Y moves image up (reveals sky at top)
+      // We use the full extraHeight to maximize parallax effect while ensuring coverage
+      const endY = -extraHeight; // End with image shifted up - bottom still aligns with container bottom
+
+      // Verify the image will always cover: when moved up by extraHeight,
+      // the image top will be at (imageHeight - extraHeight) = sectionHeight from bottom
+      // This means top of image aligns with top of container, ensuring full coverage
+
+      // Set initial position to start frame (image at bottom, showing people)
+      // Image is anchored to bottom, so y: 0 aligns bottom of image with bottom of container
+      gsap.set(tickerImage, {
+        y: startY, // Start position - image at bottom, showing people
+      });
+
+      // Create parallax effect: as user scrolls, image moves up to reveal more sky
+      // Start: section enters viewport (top of section at bottom of viewport)
+      // End: bottom of section reaches top of viewport (100% - image bottom aligns with container bottom)
+      // As section scrolls up, image moves up within frame (from showing people to showing sky)
+      // At 100%, image bottom is still aligned with container bottom (y = -extraHeight)
+      gsap.to(tickerImage, {
+        y: endY, // End position - image moved up, bottom aligned with container bottom
+        ease: "none",
+        scrollTrigger: {
+          trigger: tickerSection,
+          start: "top bottom", // Start when top of section enters bottom of viewport
+          end: "bottom top", // End when bottom of section reaches top of viewport (100% - image bottom at container bottom)
+          scrub: true, // Smooth scroll-linked animation (no jumps)
+        },
+      });
+    };
+
+    // Initialize after layout is ready
+    if (tickerImage.offsetHeight > 0 && tickerSection.offsetHeight > 0) {
+      initParallax();
+    } else {
+      window.addEventListener("load", initParallax);
+      setTimeout(initParallax, 100); // Fallback
+    }
   }
 
   // Ticker text horizontal scrolling animation
@@ -470,6 +510,165 @@ document.addEventListener("DOMContentLoaded", function () {
     ScrollTrigger.refresh();
   }
 
+  // Food & Drink Attraction image scroll-based mask reveal animation
+  // Images are revealed one-by-one with a mask moving from left to right over yellow background
+  const foodAttractionVisuals = document.querySelectorAll(".food-attraction__visual");
+
+  if (foodAttractionVisuals.length > 0 && typeof ScrollTrigger !== "undefined") {
+    foodAttractionVisuals.forEach((visual) => {
+      // Get the parent attraction section for ScrollTrigger
+      const attractionSection = visual.closest(".food-attraction");
+      const imageContainers = Array.from(visual.querySelectorAll(".food-attraction__image-container"));
+
+      if (attractionSection && imageContainers.length > 0) {
+        // Set initial state for each image: fully masked so yellow container shows first
+        imageContainers.forEach((container) => {
+          const image = container.querySelector(".food-attraction__image");
+          if (image) {
+            gsap.set(image, {
+              clipPath: "inset(0 100% 0 0)", // Hide image entirely (yellow container visible)
+              scale: 1,
+              x: 0,
+              transformOrigin: "center center",
+            });
+          }
+        });
+
+        // Create scroll-triggered animation for mask reveal on each image container
+        // Stagger the animations so images reveal one-by-one as user scrolls
+        imageContainers.forEach((container, index) => {
+          // Calculate stagger delay: each image starts revealing after the previous one
+          // Use a tighter scroll window so the wipe happens faster (matches homepage pacing)
+          const staggerStep = 12; // Scroll percentage offset between stacked images
+          const baseStart = 85; // Start later in viewport so more of image is visible before wipe begins
+          const baseEnd = 55; // Maintain ~30% window while shifting later
+          const startValue = Math.max(baseStart - index * staggerStep, 25);
+          const endValue = Math.max(baseEnd - index * staggerStep, 5);
+          const startPoint = `top ${startValue}%`;
+          const endPoint = `top ${endValue}%`;
+
+          const image = container.querySelector(".food-attraction__image");
+          if (!image) {
+            return;
+          }
+
+          // Create scroll-triggered animation for mask reveal
+          // Mask reveals from left to right, yellow background shows first, then image wipes across
+          gsap.to(image, {
+            clipPath: "inset(0 0% 0 0)", // Fully revealed - 0% from right
+            ease: "none", // Linear easing - no easing
+            scrollTrigger: {
+              trigger: attractionSection,
+              start: startPoint, // Staggered start points for sequential reveal
+              end: endPoint, // Staggered end points
+              scrub: 0.1, // Faster scrub for snappier wipe animation
+              // markers: true, // Uncomment for debugging
+            },
+          });
+
+          // Create scroll-triggered animation for image zoom
+          // Images zoom to 110% as user scrolls
+          gsap.to(image, {
+            scale: 1.1, // Zoom to 110%
+            ease: "none", // Linear easing for smooth scroll-linked movement
+            scrollTrigger: {
+              trigger: attractionSection,
+              start: "top bottom", // Start when section enters viewport
+              end: "bottom top", // End when section leaves viewport
+              scrub: 0.15, // Smooth scroll-linked animation
+            },
+          });
+
+          // Add subtle parallax movement to create depth between stacked images
+          const parallaxAmount = (index % 2 === 0 ? 18 : -15) + index * 4; // Stronger depth per stacked image
+          gsap.to(image, {
+            yPercent: parallaxAmount,
+            ease: "none",
+            force3D: true,
+            scrollTrigger: {
+              trigger: attractionSection,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 0.25,
+            },
+          });
+        });
+      }
+    });
+
+    // Refresh ScrollTrigger to handle sections already in view
+    ScrollTrigger.refresh();
+  }
+
+  // Food & Drink Attraction title and description animations (match homepage style)
+  const foodAttractionTitles = document.querySelectorAll(".food-attraction__title");
+
+  if (foodAttractionTitles.length > 0 && typeof ScrollTrigger !== "undefined") {
+    foodAttractionTitles.forEach((title) => {
+      const text = title.textContent.trim();
+      const words = text.split(/\s+/);
+
+      title.innerHTML = words.map((word) => `<span class="food-attraction__title-word">${word}</span>`).join(" ");
+
+      const wordElements = title.querySelectorAll(".food-attraction__title-word");
+
+      gsap.set(wordElements, {
+        opacity: 0,
+        x: -50,
+      });
+
+      const attractionSection = title.closest(".food-attraction");
+      const description = attractionSection?.querySelector(".food-attraction__description");
+
+      if (description) {
+        gsap.set(description, { opacity: 0 });
+      }
+
+      if (attractionSection) {
+        const isMobile = window.innerWidth <= 768;
+        const startPoint = isMobile ? "top 45%" : "top 65%";
+        const endPoint = isMobile ? "top 25%" : "top 35%";
+
+        const titleTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: attractionSection,
+            start: startPoint,
+            end: endPoint,
+            scrub: 0.15,
+          },
+        });
+
+        wordElements.forEach((word, index) => {
+          titleTimeline.to(
+            word,
+            {
+              opacity: 1,
+              x: 0,
+              duration: 0.2,
+              ease: "power2.out",
+            },
+            index * 0.08
+          );
+        });
+
+        if (description) {
+          const wordCount = wordElements.length;
+          const descriptionStart = wordCount * 0.08 + 0.2;
+
+          titleTimeline.to(
+            description,
+            {
+              opacity: 1,
+              duration: 0.4,
+              ease: "power2.out",
+            },
+            descriptionStart
+          );
+        }
+      }
+    });
+  }
+
   // Attraction title word-by-word animation (matching hero title style)
   // Words fade in and slide in from the right (opacity + x translation)
   const attractionTitles = document.querySelectorAll(".attraction__title");
@@ -567,9 +766,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const stickyLeftTitles = document.querySelectorAll(".sticky-left-section__title");
 
   if (stickyLeftTitles.length > 0 && typeof ScrollTrigger !== "undefined") {
-    // Check if we're on mobile
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-
     stickyLeftTitles.forEach((title) => {
       // Split title text into words and wrap each in a span
       const text = title.textContent.trim();
@@ -581,193 +777,37 @@ document.addEventListener("DOMContentLoaded", function () {
       // Get all word elements
       const wordElements = title.querySelectorAll(".sticky-left-section__title-word");
 
+      // Set initial state: words are invisible and positioned to the right
+      gsap.set(wordElements, {
+        opacity: 0,
+        x: 50,
+      });
+
       // Get the parent sticky-left section for ScrollTrigger
       const stickyLeftSection = title.closest(".sticky-left-section");
 
-      if (isMobile) {
-        // On mobile: make titles visible immediately (no animation)
-        gsap.set(wordElements, {
+      if (stickyLeftSection) {
+        // Create scroll-triggered animation
+        // Words fade in and slide in from the right sequentially
+        gsap.to(wordElements, {
           opacity: 1,
           x: 0,
-        });
-      } else {
-        // On desktop: animate titles on scroll
-        // Set initial state: words are invisible and positioned to the right
-        gsap.set(wordElements, {
-          opacity: 0,
-          x: 50,
-        });
-
-        if (stickyLeftSection) {
-          // Create scroll-triggered animation
-          // Words fade in and slide in from the right sequentially
-          gsap.to(wordElements, {
-            opacity: 1,
-            x: 0,
-            duration: 0.8,
-            stagger: 0.1, // 0.1 second delay between each word
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: stickyLeftSection,
-              start: "top 75%", // Start when top of section enters 75% of viewport
-              end: "top 50%", // End when top reaches middle of viewport
-              scrub: false, // Not scrubbed - plays once when triggered
-              once: true, // Only play once
-              // markers: true, // Uncomment for debugging
-            },
-          });
-        }
-      }
-    });
-  }
-
-  // Sticky Left Section scroll animation
-  // Text stays fixed at top while images scroll, then both align to bottom when images finish
-  // Desktop only - mobile shows simple stack of images
-  const stickyLeftSections = document.querySelectorAll(".sticky-left-section");
-
-  if (stickyLeftSections.length > 0 && typeof ScrollTrigger !== "undefined") {
-    // Function to check if we're on mobile (matches CSS media query breakpoint)
-    const isMobile = () => window.innerWidth <= 768;
-
-    stickyLeftSections.forEach((section) => {
-      const container = section.querySelector(".sticky-left-section__container");
-      const visuals = section.querySelector(".sticky-left-section__visuals");
-      const content = section.querySelector(".sticky-left-section__content");
-
-      if (container && visuals && content) {
-        // Skip sticky behavior on mobile
-        if (isMobile()) {
-          // Kill any existing ScrollTriggers for this section
-          ScrollTrigger.getAll().forEach((trigger) => {
-            if (trigger.trigger === section || trigger.vars?.trigger === section) {
-              trigger.kill();
-            }
-          });
-
-          // Ensure content is not sticky on mobile and reset any transforms
-          gsap.set(content, {
-            position: "static",
-            top: "auto",
-          });
-          gsap.set(visuals, {
-            y: 0,
-          });
-          gsap.set(container, {
-            minHeight: "auto",
-          });
-          return;
-        }
-
-        // Wait for layout to calculate proper dimensions
-        const initStickyScroll = () => {
-          // Calculate heights
-          const visualsHeight = visuals.offsetHeight;
-          const contentHeight = content.offsetHeight;
-          const contentPaddingTop = parseInt(getComputedStyle(content).paddingTop) || 0;
-          const contentPaddingBottom = parseInt(getComputedStyle(content).paddingBottom) || 0;
-
-          // Calculate the difference between visuals and content heights
-          // This is how much we need to scroll to align bottoms
-          const heightDifference = visualsHeight - contentHeight;
-
-          // Pin duration: scroll distance needed to move visuals through while content stays sticky
-          // This ensures images finish scrolling when content bottom aligns with visuals bottom
-          const pinDuration = Math.max(0, heightDifference);
-
-          // Set container height to exactly match visuals height (no extra space)
-          // Container should be exactly the height of the visuals to prevent gaps
-          container.style.minHeight = `${visualsHeight}px`;
-          container.style.height = `${visualsHeight}px`;
-
-          // Pin the section when it reaches the top
-          ScrollTrigger.create({
-            trigger: section,
-            start: "top top",
-            end: `+=${pinDuration}`,
-            pin: true,
-            pinSpacing: false, // Don't add extra spacing between sections
-            anticipatePin: 1,
-            invalidateOnRefresh: true, // Recalculate on refresh to prevent shifts
+          duration: 0.8,
+          stagger: 0.1, // 0.1 second delay between each word
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: stickyLeftSection,
+            start: "top 75%", // Start when top of section enters 75% of viewport
+            end: "top 50%", // End when top reaches middle of viewport
+            scrub: false, // Not scrubbed - plays once when triggered
+            once: true, // Only play once
             // markers: true, // Uncomment for debugging
-          });
-
-          // Content sticky positioning is now handled in CSS for better performance
-          // No need to set it via GSAP
-
-          // Animate visuals to scroll up during the pin duration
-          // This moves the visuals up by the height difference, aligning bottoms when unpinned
-          if (pinDuration > 0) {
-            // Use GPU acceleration and smooth scrubbing for better performance
-            gsap.set(visuals, {
-              willChange: "transform",
-              force3D: true, // Force GPU acceleration
-            });
-
-            gsap.to(visuals, {
-              y: -pinDuration,
-              ease: "none",
-              force3D: true, // Force GPU acceleration for smoother animation
-              scrollTrigger: {
-                trigger: section,
-                start: "top top",
-                end: `+=${pinDuration}`,
-                scrub: true, // No smoothing - instant scroll-linked animation
-                invalidateOnRefresh: true,
-              },
-            });
-          }
-        };
-
-        // Initialize after layout is ready (only on desktop)
-        if (!isMobile()) {
-          if (visuals.offsetHeight > 0) {
-            initStickyScroll();
-          } else {
-            window.addEventListener("load", initStickyScroll);
-            setTimeout(initStickyScroll, 100);
-          }
-        }
+          },
+        });
       }
     });
-
-    // Handle window resize - kill sticky behavior if switching to mobile
-    let resizeTimer;
-    window.addEventListener("resize", () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        if (isMobile()) {
-          stickyLeftSections.forEach((section) => {
-            const container = section.querySelector(".sticky-left-section__container");
-            const visuals = section.querySelector(".sticky-left-section__visuals");
-            const content = section.querySelector(".sticky-left-section__content");
-
-            if (container && visuals && content) {
-              // Kill any ScrollTriggers
-              ScrollTrigger.getAll().forEach((trigger) => {
-                if (trigger.trigger === section || trigger.vars?.trigger === section) {
-                  trigger.kill();
-                }
-              });
-
-              // Reset all transforms and positioning
-              gsap.set(content, {
-                position: "static",
-                top: "auto",
-                willChange: "auto",
-              });
-              gsap.set(visuals, {
-                y: 0,
-                willChange: "auto",
-                force3D: false,
-              });
-              gsap.set(container, {
-                minHeight: "auto",
-              });
-            }
-          });
-        }
-      }, 250);
-    });
   }
+
+  // Sticky Left Section - No parallax scrolling, just static layout
+  // All animations removed - component is now static
 });
