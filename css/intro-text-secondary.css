@@ -46,6 +46,11 @@
   display: inline;
 }
 
+.intro-text-secondary__char {
+  display: inline;
+  transition: color 0.15s ease;
+}
+
 .intro-text-secondary__small {
   font-family: "Kippax Modern", sans-serif; /* Regular weight */
   font-weight: 400;

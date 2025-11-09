@@ -1,0 +1,344 @@
+/* Hero Component - EXPERIMENTS PAGE ONLY */
+/* This file is isolated from the main site. Changes here won't affect other pages. */
+.hero-component {
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Home page hero component keeps padding */
+.hero-component:has(.hero--homepage) {
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+/* Standard Hero (for non-homepage pages) */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 598px; /* Match Figma design: 598px height */
+  overflow: hidden;
+  background-color: var(--theme-background-dark); /* Dark background so images fade in from dark */
+}
+
+.hero__background {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero__bg-color {
+  position: absolute;
+  background-color: var(--theme-background-dark);
+  inset: 0;
+  opacity: 1;
+  /* Transition removed - animation is handled by GSAP in animations-experiments.js */
+}
+
+.hero__image {
+  position: absolute;
+  object-fit: cover;
+  object-position: center center;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  /* Transition removed - animation is handled by GSAP in animations-experiments.js */
+}
+
+.hero__content {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: var(--section-space-small) var(--site-margin) 40px var(--site-margin);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center; /* Center content horizontally */
+}
+
+.hero__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  align-items: center; /* Center items horizontally */
+  width: 100%;
+}
+
+.hero__title {
+  font-family: "Kippax Modern Condensed Bold", "Kippax Modern", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  line-height: var(--line-height-heading);
+  color: #ffffff;
+  font-size: var(--font-size-h1); /* 112px */
+  text-transform: uppercase;
+  letter-spacing: -1.12px;
+  margin: 0;
+  max-width: 834px;
+  text-align: center; /* Center align text */
+}
+
+/* Homepage Hero (special zipwire hero) */
+.hero--homepage {
+  position: relative;
+  width: 100%;
+  min-height: 825px; /* Minimum height, allows for padding */
+  background-color: var(--theme-background);
+  display: flex;
+  align-items: center; /* Vertically center the content */
+  justify-content: center; /* Horizontally center the content */
+  padding-top: var(--section-space-small); /* Top padding */
+  padding-bottom: var(--section-space-small); /* Bottom padding */
+}
+
+.hero__content-wrapper {
+  position: relative;
+  height: 696px;
+  width: 693px;
+}
+
+.hero__zipwire-container {
+  position: absolute;
+  height: 609px;
+  width: 595px;
+  left: 48.5px;
+  top: 43px;
+}
+
+.hero__zipwire-background {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero__zipwire-overflow {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Base images that appear after logo fade-in */
+.hero__zipwire-base {
+  position: absolute;
+  max-width: none;
+  object-fit: cover;
+  object-position: 50% 50%;
+  opacity: 0; /* Hidden initially, shown after 1 second */
+  transform: scale(0.8); /* Start at 80% scale */
+  transform-origin: center center;
+  transition: opacity 0s, transform 0.2s ease-in-out; /* Scale animation when appearing */
+}
+
+.hero__zipwire-base.visible {
+  opacity: 1;
+  transform: scale(1); /* Scale to 100% */
+}
+
+.hero__zipwire-overflow-img {
+  height: 120.84%;
+  left: -14.87%;
+  top: 0;
+  width: 123.66%;
+}
+
+.hero__zipwire-base-img {
+  width: 100%;
+  height: 100%;
+}
+
+/* Variant-specific frames that cycle */
+.hero__zipwire-frame {
+  position: absolute;
+  max-width: none;
+  object-fit: cover;
+  object-position: 50% 50%;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: scale(0.8); /* Start at 80% scale */
+  transform-origin: center center;
+  transition: opacity 0s, transform 0.2s ease-in-out; /* Scale animation when appearing */
+}
+
+.hero__zipwire-frame.active {
+  opacity: 1;
+  transform: scale(1); /* Scale to 100% */
+}
+
+.hero__vector-container {
+  position: absolute;
+  height: 696px;
+  left: 0;
+  top: 0;
+  width: 693px;
+}
+
+.hero__vector-image {
+  display: block;
+  max-width: none;
+  width: 100%;
+  height: 100%;
+  transform: scale(0.5); /* Start at 50% scale */
+  transform-origin: center center;
+  transition: transform 0.2s ease-in-out; /* 0.2 second scale animation */
+}
+
+.hero__vector-image.visible {
+  transform: scale(1); /* Scale to 100% */
+}
+
+/* Typography logo experiment (hero variation) */
+.hero--experiment .hero-logo {
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+  z-index: 2;
+  color: #1f1d1e;
+}
+
+.hero--experiment .hero-logo__word {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  font-family: "Kippax Modern Condensed Bold", "Kippax Modern", sans-serif;
+  font-size: clamp(140px, 34vw, 237px);
+  letter-spacing: clamp(-0.045em, -0.03vw, -0.015em);
+  text-transform: uppercase;
+  line-height: clamp(0.92, 0.98, 1.04);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.hero--experiment .hero-logo__letter {
+  display: inline-block;
+  pointer-events: auto;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.hero--experiment .hero-logo__word--top,
+.hero--experiment .hero-logo__word--bottom {
+  gap: 0.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+}
+
+.hero--experiment .hero-logo__word--top {
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.hero--experiment .hero-logo__word--bottom {
+  bottom: 0;
+  transform: translateX(-50%);
+}
+
+.hero--experiment .hero-logo__word--left {
+  left: 0;
+}
+
+.hero--experiment .hero-logo__word--right {
+  right: 0;
+}
+
+.hero--experiment .hero-logo__word--side {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.02em, 0.24vw, 0.1em);
+  letter-spacing: clamp(-0.05em, -0.03vw, -0.015em);
+  padding: 0;
+  top: 50%;
+  transform-origin: center;
+}
+
+.hero--experiment .hero-logo__word--left.hero-logo__word--side {
+  transform: translate(-50%, -50%) rotate(90deg);
+  left: clamp(16px, 5vw, 72px);
+}
+
+.hero--experiment .hero-logo__word--right.hero-logo__word--side {
+  transform: translate(50%, -50%) rotate(-90deg);
+  right: clamp(16px, 5vw, 72px);
+}
+
+.hero--experiment .hero-logo__word--inverted {
+  transform: rotate(180deg);
+  transform-origin: center;
+}
+
+.hero--experiment .hero-logo__word--bottom.hero-logo__word--inverted {
+  transform: translateX(-50%) rotate(180deg);
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  /* Standard hero mobile */
+  .hero-component {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Home page hero component keeps padding on mobile */
+  .hero-component:has(.hero--homepage) {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .hero {
+    height: 519px; /* Match Figma mobile height */
+    margin-left: -32px; /* Extend background to edge */
+    margin-right: -32px; /* Extend background to edge */
+    width: calc(100% + 64px); /* Compensate for negative margins */
+  }
+
+  .hero__content {
+    padding: var(--section-space-small) 32px 32px 32px; /* Reduced bottom padding on mobile */
+  }
+
+  .hero__title {
+    font-size: 56px; /* Match Figma mobile H1 size */
+  }
+
+  /* Homepage hero mobile */
+  .hero--homepage {
+    min-height: auto;
+    padding-top: var(--section-space-small); /* Top padding */
+    padding-bottom: var(--section-space-small); /* Bottom padding */
+    margin-left: -32px; /* Extend background to edge */
+    margin-right: -32px; /* Extend background to edge */
+    width: calc(100% + 64px); /* Compensate for negative margins */
+  }
+
+  .hero__content-wrapper {
+    position: relative;
+    width: 100%; /* Full width of hero--homepage */
+    max-width: 286px; /* Match Figma mobile: 286px */
+    height: auto;
+    aspect-ratio: 286 / 287; /* Match Figma: 286px width / 287px height */
+  }
+
+  .hero__zipwire-container {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: calc(100% * 246 / 286); /* 246px / 286px = ~86% - images smaller than logo */
+    max-width: 246px;
+    height: auto;
+    aspect-ratio: 246 / 252; /* Match Figma: 246px width / 252px height */
+    margin-left: calc(100% * 20 / 286); /* 20px offset from Figma */
+    margin-top: calc(100% * 18 / 287); /* 18px offset from Figma */
+  }
+
+  .hero__vector-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%; /* Logo takes full width of content-wrapper */
+    height: 100%; /* Logo takes full height of content-wrapper */
+  }
+}
+

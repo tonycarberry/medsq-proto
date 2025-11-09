@@ -331,80 +331,118 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Intro text secondary large scroll-based word-by-word opacity animation
-  // Matches intro-text__body animation style: words fade from 20% to 100% opacity
+  // Intro text secondary large ScrambleText animation with yellow color
+  // Text scrambles/reveals character by character and turns yellow during animation
   // Works on both homepage and attractions page
   const introTextSecondarySections = document.querySelectorAll(".intro-text-secondary-component");
 
   if (introTextSecondarySections.length > 0 && typeof ScrollTrigger !== "undefined") {
+    // Characters used for scrambling
+    const scrambleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+
     introTextSecondarySections.forEach((section) => {
       const introTextSecondaryLarge = section.querySelector(".intro-text-secondary__large");
 
       if (introTextSecondaryLarge) {
-        // Split text into words and wrap each in a span
-        const text = introTextSecondaryLarge.textContent.trim();
-        const words = text.split(/\s+/);
+        const originalText = introTextSecondaryLarge.textContent.trim();
+        const chars = originalText.split("");
 
-        // Clear and rebuild with wrapped words
-        introTextSecondaryLarge.innerHTML = words.map((word) => `<span class="intro-text-secondary__word">${word}</span>`).join(" ");
+        // Store original text
+        introTextSecondaryLarge.dataset.originalText = originalText;
 
-        // Get all word elements
-        const wordElements = introTextSecondaryLarge.querySelectorAll(".intro-text-secondary__word");
+        // Split text into characters and wrap each in a span
+        introTextSecondaryLarge.innerHTML = chars
+          .map((char, index) => {
+            if (char === " ") {
+              return `<span class="intro-text-secondary__char" data-index="${index}">&nbsp;</span>`;
+            }
+            return `<span class="intro-text-secondary__char" data-index="${index}" data-char="${char}">${char}</span>`;
+          })
+          .join("");
 
-        // Set initial state: words start at 20% opacity (faded state) - matching intro-text__body
-        gsap.set(wordElements, {
-          opacity: 0.2, // 20% opacity - faded gray state
+        // Get all character elements
+        const charElements = introTextSecondaryLarge.querySelectorAll(".intro-text-secondary__char[data-char]");
+
+        // Set initial state: all characters show random scramble characters in yellow
+        charElements.forEach((charEl) => {
+          const randomChar = scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+          charEl.textContent = randomChar;
+          gsap.set(charEl, {
+            color: "#f2fa7d", // Yellow color
+            opacity: 1,
+          });
         });
 
-        // Create scroll-triggered timeline that animates words sequentially word-by-word
-        // Each word transitions from 20% to 100% opacity based on scroll progress
-        // Animation completes when section reaches center/just below center of screen
-        const wordTimeline = gsap.timeline({
+        // Create scroll-triggered timeline for scramble reveal
+        const scrambleTimeline = gsap.timeline({
           scrollTrigger: {
             trigger: section,
-            start: "top 75%", // Start animation earlier
-            end: "center center", // Complete when section is at center of viewport
-            scrub: true, // Smooth scroll-linked animation
-            // Markers can be enabled for debugging
-            // markers: true,
+            start: "top 75%",
+            end: "center center",
+            scrub: true,
           },
         });
 
-        // Add each word to the timeline sequentially with a small stagger
-        // This ensures words animate one after another, not line-by-line
-        wordElements.forEach((word, index) => {
-          wordTimeline.to(
-            word,
+        // Reveal each character sequentially with scramble effect
+        charElements.forEach((charEl, index) => {
+          const originalChar = charEl.dataset.char;
+
+          // Create a dummy object to track progress (GSAP can animate object properties)
+          const progressObj = { value: 0 };
+
+          // Create a scramble animation that reveals the correct character
+          scrambleTimeline.to(
+            progressObj,
             {
-              opacity: 1, // 100% opacity - full visibility
-              duration: 0.2, // Quick transition per word
+              value: 1,
+              duration: 0.2,
+              ease: "none",
+              onUpdate: function () {
+                // During scramble, show random characters
+                const progress = progressObj.value;
+                if (progress < 0.9) {
+                  // Show random scramble characters
+                  const randomChar = scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+                  charEl.textContent = randomChar;
+                } else {
+                  // Reveal the correct character
+                  charEl.textContent = originalChar;
+                }
+              },
+            },
+            index * 0.02 // Stagger characters
+          );
+
+          // Change color from yellow to normal during reveal
+          scrambleTimeline.to(
+            charEl,
+            {
+              color: "var(--theme-text)", // Normal text color
+              duration: 0.15,
               ease: "power1.out",
             },
-            index * 0.05 // Small stagger (0.05s per word) to ensure sequential animation
+            index * 0.02 + 0.15 // Slightly delayed color change
           );
         });
 
-        // Fade in the small text paragraph when the word-by-word animation completes
+        // Fade in the small text paragraph when scramble animation completes
         const introTextSecondarySmall = section.querySelector(".intro-text-secondary__small");
         if (introTextSecondarySmall) {
-          // Set initial state: small text starts invisible
           gsap.set(introTextSecondarySmall, {
             opacity: 0,
           });
 
-          // Fade in when the word-by-word animation reaches the end
-          // Add to the same timeline so it triggers after all words have animated
-          const totalWords = wordElements.length;
-          const animationEndTime = totalWords * 0.05; // Time when last word finishes
+          const totalChars = charElements.length;
+          const animationEndTime = totalChars * 0.02 + 0.3;
 
-          wordTimeline.to(
+          scrambleTimeline.to(
             introTextSecondarySmall,
             {
-              opacity: 1, // Fade to full opacity
-              duration: 0.4, // 0.4 second fade-in
+              opacity: 1,
+              duration: 0.4,
               ease: "power1.out",
             },
-            animationEndTime // Start fade-in when word animation completes
+            animationEndTime
           );
         }
       }
@@ -554,10 +592,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
 
+      const isMobile = window.innerWidth <= 768;
+
       imageContainers.forEach((container, index) => {
         const staggerStep = 12;
-        const baseStart = 85;
-        const baseEnd = 55;
+        const baseStart = isMobile ? 95 : 85;
+        const baseEnd = isMobile ? 70 : 55;
         const startValue = Math.max(baseStart - index * staggerStep, 25);
         const endValue = Math.max(baseEnd - index * staggerStep, 5);
         const startPoint = `top ${startValue}%`;
@@ -590,7 +630,9 @@ document.addEventListener("DOMContentLoaded", function () {
           },
         });
 
-        const parallaxAmount = (index % 2 === 0 ? 18 : -15) + index * 4;
+        // All images move up (negative values) at varying speeds for parallax effect
+        // Higher index = more movement (faster parallax)
+        const parallaxAmount = -(30 + index * 12);
         gsap.to(image, {
           yPercent: parallaxAmount,
           ease: "none",
@@ -700,6 +742,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 imagesStart + index * 0.1 // Stagger images
               );
+            });
+          }
+        }
+
+        // Add parallax effect to text content - moves slower than images
+        // Images move at -30% to -54%, text moves at -12% (slower)
+        if (!isMobile) {
+          const content = attractionSection.querySelector(".food-attraction__content");
+          if (content) {
+            gsap.to(content, {
+              yPercent: -12, // Move up slower than images
+              ease: "none",
+              force3D: true,
+              scrollTrigger: {
+                trigger: attractionSection,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 0.25,
+              },
             });
           }
         }
