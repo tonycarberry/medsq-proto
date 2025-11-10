@@ -331,118 +331,80 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Intro text secondary large ScrambleText animation with yellow color
-  // Text scrambles/reveals character by character and turns yellow during animation
-  // Works on both homepage and attractions page
+  // Intro text secondary large scroll-based word-by-word opacity animation
+  // Matches intro-text__body animation style: words fade from 20% to 100% opacity
+  // Works on all pages
   const introTextSecondarySections = document.querySelectorAll(".intro-text-secondary-component");
 
   if (introTextSecondarySections.length > 0 && typeof ScrollTrigger !== "undefined") {
-    // Characters used for scrambling
-    const scrambleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
-
     introTextSecondarySections.forEach((section) => {
       const introTextSecondaryLarge = section.querySelector(".intro-text-secondary__large");
 
       if (introTextSecondaryLarge) {
-        const originalText = introTextSecondaryLarge.textContent.trim();
-        const chars = originalText.split("");
+        // Split text into words and wrap each in a span
+        const text = introTextSecondaryLarge.textContent.trim();
+        const words = text.split(/\s+/);
 
-        // Store original text
-        introTextSecondaryLarge.dataset.originalText = originalText;
+        // Clear and rebuild with wrapped words
+        introTextSecondaryLarge.innerHTML = words.map((word) => `<span class="intro-text-secondary__word">${word}</span>`).join(" ");
 
-        // Split text into characters and wrap each in a span
-        introTextSecondaryLarge.innerHTML = chars
-          .map((char, index) => {
-            if (char === " ") {
-              return `<span class="intro-text-secondary__char" data-index="${index}">&nbsp;</span>`;
-            }
-            return `<span class="intro-text-secondary__char" data-index="${index}" data-char="${char}">${char}</span>`;
-          })
-          .join("");
+        // Get all word elements
+        const wordElements = introTextSecondaryLarge.querySelectorAll(".intro-text-secondary__word");
 
-        // Get all character elements
-        const charElements = introTextSecondaryLarge.querySelectorAll(".intro-text-secondary__char[data-char]");
-
-        // Set initial state: all characters show random scramble characters in yellow
-        charElements.forEach((charEl) => {
-          const randomChar = scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
-          charEl.textContent = randomChar;
-          gsap.set(charEl, {
-            color: "#f2fa7d", // Yellow color
-            opacity: 1,
-          });
+        // Set initial state: words start at 20% opacity (faded state) - matching intro-text__body
+        gsap.set(wordElements, {
+          opacity: 0.2, // 20% opacity - faded gray state
         });
 
-        // Create scroll-triggered timeline for scramble reveal
-        const scrambleTimeline = gsap.timeline({
+        // Create scroll-triggered timeline that animates words sequentially word-by-word
+        // Each word transitions from 20% to 100% opacity based on scroll progress
+        // Animation completes when section reaches center/just below center of screen
+        const wordTimeline = gsap.timeline({
           scrollTrigger: {
             trigger: section,
-            start: "top 75%",
-            end: "center center",
-            scrub: true,
+            start: "top 75%", // Start animation earlier
+            end: "center center", // Complete when section is at center of viewport
+            scrub: true, // Smooth scroll-linked animation
+            // Markers can be enabled for debugging
+            // markers: true,
           },
         });
 
-        // Reveal each character sequentially with scramble effect
-        charElements.forEach((charEl, index) => {
-          const originalChar = charEl.dataset.char;
-
-          // Create a dummy object to track progress (GSAP can animate object properties)
-          const progressObj = { value: 0 };
-
-          // Create a scramble animation that reveals the correct character
-          scrambleTimeline.to(
-            progressObj,
+        // Add each word to the timeline sequentially with a small stagger
+        // This ensures words animate one after another, not line-by-line
+        wordElements.forEach((word, index) => {
+          wordTimeline.to(
+            word,
             {
-              value: 1,
-              duration: 0.2,
-              ease: "none",
-              onUpdate: function () {
-                // During scramble, show random characters
-                const progress = progressObj.value;
-                if (progress < 0.9) {
-                  // Show random scramble characters
-                  const randomChar = scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
-                  charEl.textContent = randomChar;
-                } else {
-                  // Reveal the correct character
-                  charEl.textContent = originalChar;
-                }
-              },
-            },
-            index * 0.02 // Stagger characters
-          );
-
-          // Change color from yellow to normal during reveal
-          scrambleTimeline.to(
-            charEl,
-            {
-              color: "var(--theme-text)", // Normal text color
-              duration: 0.15,
+              opacity: 1, // 100% opacity - full visibility
+              duration: 0.2, // Quick transition per word
               ease: "power1.out",
             },
-            index * 0.02 + 0.15 // Slightly delayed color change
+            index * 0.05 // Small stagger (0.05s per word) to ensure sequential animation
           );
         });
 
-        // Fade in the small text paragraph when scramble animation completes
+        // Fade in the small text paragraph when the word-by-word animation completes
         const introTextSecondarySmall = section.querySelector(".intro-text-secondary__small");
         if (introTextSecondarySmall) {
+          // Set initial state: small text starts invisible
           gsap.set(introTextSecondarySmall, {
             opacity: 0,
           });
 
-          const totalChars = charElements.length;
-          const animationEndTime = totalChars * 0.02 + 0.3;
+          // Fade in when the word-by-word animation reaches the end
+          // Add to the same timeline so it triggers after all words have animated
+          const totalWords = wordElements.length;
+          const animationEndTime = totalWords * 0.05; // Time when last word finishes
 
-          scrambleTimeline.to(
+          wordTimeline.to(
             introTextSecondarySmall,
             {
-              opacity: 1,
-              duration: 0.4,
+              opacity: 1, // Fade to full opacity
+              duration: 0.4, // 0.4 second fade-in
               ease: "power1.out",
             },
-            animationEndTime
+            animationEndTime // Start fade-in when word animation completes
           );
         }
       }

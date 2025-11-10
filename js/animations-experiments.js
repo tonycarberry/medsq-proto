@@ -493,26 +493,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Test scramble on "Stay informed" nav button
-  const stayInformedButton = document.querySelector(".nav__button[data-scramble-word]");
-  if (stayInformedButton) {
-    const [playButtonScramble] = addScrambleAnimation([stayInformedButton], {
-      trigger: stayInformedButton,
-      start: "top 100%",
-      once: false,
-      duration: 1.4,
-      scrambleRatio: 0.3,
-      scrambleInterval: 80,
-      chars: "STAYINFORMEDABCDEFGHIJKLMNOPQRSTUVWXYZ",
-    });
-
-    if (typeof playButtonScramble === "function") {
-      setTimeout(playButtonScramble, 350);
-      stayInformedButton.addEventListener("mouseenter", playButtonScramble);
-      stayInformedButton.addEventListener("focus", playButtonScramble);
-    }
-  }
-
   // Ticker image parallax scroll animation
   // Image starts aligned to bottom (showing people), then moves up to reveal sky as user scrolls
   // Image bottom must always align with container bottom at 100% animation (when section bottom reaches viewport top)
