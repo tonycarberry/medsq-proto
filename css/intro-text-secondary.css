@@ -4,7 +4,7 @@
 }
 
 .intro-text-secondary {
-  background-color: #fafafa; /* Light gray background */
+  background-color: #ffffff; /* White background matching Figma */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,7 +24,7 @@
 .intro-text-secondary__text {
   display: flex;
   flex-direction: column;
-  gap: var(--space-8); /* Match Figma: 64px gap */
+  gap: var(--space-7); /* Match Figma: 48px gap */
   align-items: flex-start; /* Left-align text */
   justify-content: center;
   color: var(--theme-text);
@@ -56,11 +56,28 @@
   font-family: "Montserrat", sans-serif; /* Use Montserrat font */
   font-weight: 400; /* Regular */
   line-height: 1.5; /* Match Figma: line-height 1.5 */
-  max-width: 664px; /* Match Figma max-width */
+  max-width: 718px; /* Match Figma max-width */
   width: 100%;
-  font-size: 24px; /* Match Figma: 24px text-large size */
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5); /* Match Figma: 32px gap */
   text-align: left; /* Left-align to match Figma */
+}
+
+.intro-text-secondary__small p {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.intro-text-secondary__small p:first-child {
+  font-size: 24px; /* Match Figma: 24px text-large size */
+}
+
+.intro-text-secondary__small p:last-child {
+  font-size: 20px; /* Match Figma: 20px text-main size */
 }
 
 /* Attractions Page Intro Text Styling */
