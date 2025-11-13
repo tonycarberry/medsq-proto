@@ -152,72 +152,29 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Ticker image parallax scroll animation
-  // Image starts aligned to bottom (showing people), then moves up to reveal sky as user scrolls
-  // Image bottom must always align with container bottom at 100% animation (when section bottom reaches viewport top)
+  // Ticker image zoom animation - zooms from 100% to 120% as user scrolls
   const tickerImage = document.querySelector(".ticker__image");
   const tickerSection = document.querySelector(".ticker-component");
 
   if (tickerImage && tickerSection && typeof ScrollTrigger !== "undefined") {
-    // Wait for layout to calculate proper movement distance
-    const initParallax = () => {
-      const sectionHeight = tickerSection.offsetHeight;
-      const imageHeight = tickerImage.offsetHeight;
+    // Set initial scale to 100%
+    gsap.set(tickerImage, {
+      scale: 1,
+      transformOrigin: "center center",
+    });
 
-      // Calculate the extra height available for parallax movement
-      // Image is taller than container, so we can move it up to reveal more sky
-      const extraHeight = imageHeight - sectionHeight;
-
-      // Ensure we never reveal background: limit movement to ensure image always covers container
-      // The maximum safe upward movement is when the top of the image reaches the top of the container
-      // This means we can move up by at most (imageHeight - sectionHeight)
-      // But we need to ensure the image bottom stays aligned with container bottom at 100%
-
-      // Start position: Image aligned to bottom (y: 0), showing people at bottom, less sky
-      // Since image is anchored to bottom, y: 0 means bottom of image aligns with bottom of container
-      const startY = 0; // Start with image at bottom - showing people, less sky
-
-      // End position: Image moved up to show more sky, but bottom must align with container bottom
-      // At 100% animation (when section bottom reaches viewport top), image bottom = container bottom
-      // Maximum safe movement: move up by extraHeight, but ensure image top never goes above container top
-      // Negative Y moves image up (reveals sky at top)
-      // We use the full extraHeight to maximize parallax effect while ensuring coverage
-      const endY = -extraHeight; // End with image shifted up - bottom still aligns with container bottom
-
-      // Verify the image will always cover: when moved up by extraHeight,
-      // the image top will be at (imageHeight - extraHeight) = sectionHeight from bottom
-      // This means top of image aligns with top of container, ensuring full coverage
-
-      // Set initial position to start frame (image at bottom, showing people)
-      // Image is anchored to bottom, so y: 0 aligns bottom of image with bottom of container
-      gsap.set(tickerImage, {
-        y: startY, // Start position - image at bottom, showing people
-      });
-
-      // Create parallax effect: as user scrolls, image moves up to reveal more sky
-      // Start: section enters viewport (top of section at bottom of viewport)
-      // End: bottom of section reaches top of viewport (100% - image bottom aligns with container bottom)
-      // As section scrolls up, image moves up within frame (from showing people to showing sky)
-      // At 100%, image bottom is still aligned with container bottom (y = -extraHeight)
-      gsap.to(tickerImage, {
-        y: endY, // End position - image moved up, bottom aligned with container bottom
-        ease: "none",
-        scrollTrigger: {
-          trigger: tickerSection,
-          start: "top bottom", // Start when top of section enters bottom of viewport
-          end: "bottom top", // End when bottom of section reaches top of viewport (100% - image bottom at container bottom)
-          scrub: true, // Smooth scroll-linked animation (no jumps)
-        },
-      });
-    };
-
-    // Initialize after layout is ready
-    if (tickerImage.offsetHeight > 0 && tickerSection.offsetHeight > 0) {
-      initParallax();
-    } else {
-      window.addEventListener("load", initParallax);
-      setTimeout(initParallax, 100); // Fallback
-    }
+    // Create scroll-triggered zoom animation
+    // Image zooms from 100% to 140% as user scrolls through the section
+    gsap.to(tickerImage, {
+      scale: 1.4, // Zoom to 140%
+      ease: "none", // Linear easing for smooth scroll-linked animation
+      scrollTrigger: {
+        trigger: tickerSection,
+        start: "top bottom", // Start when top of section enters bottom of viewport
+        end: "bottom top", // End when bottom of section reaches top of viewport
+        scrub: true, // Smooth scroll-linked animation (no jumps)
+      },
+    });
   }
 
   // Ticker text horizontal scrolling animation

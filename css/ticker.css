@@ -4,50 +4,39 @@
 }
 
 .ticker {
-  height: 598px; /* Match Figma design: 598px height for desktop */
-  overflow: hidden;
+  overflow: visible; /* Allow image to show at full height */
   position: relative;
   width: 100%;
+  max-width: 1440px; /* Constrain to grid max-width */
+  margin: 0 auto; /* Center the container */
+  padding: 0 var(--site-margin); /* Add side padding */
+  box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
   .ticker {
-    height: 519px; /* Match Figma design: 519px height for mobile */
+    padding: 0 var(--space-5); /* Use smaller padding on mobile (32px) */
   }
 }
 
 .ticker__background {
-  position: absolute;
-  inset: 0;
+  position: relative; /* Changed from absolute to allow natural height */
   pointer-events: none;
-  overflow: hidden; /* Clip image within frame */
+  overflow: hidden; /* Clip zoomed image edges */
+  width: 100%;
 }
 
 .ticker__bg-color {
-  position: absolute;
-  background-color: var(--theme-background-dark);
-  inset: 0;
+  display: none; /* Not needed when image determines height */
 }
 
 .ticker__image {
-  position: absolute;
+  display: block;
+  width: 100%; /* Constrain to container width */
+  height: auto; /* Let image maintain aspect ratio */
+  max-width: 100%; /* Constrain to container */
   object-fit: cover;
-  object-position: center bottom; /* Anchor to bottom, center horizontally */
-  width: 101.28%; /* Match Figma desktop: 101.28% width */
-  height: 120%; /* Increased height to ensure full coverage during parallax */
-  bottom: 0; /* Anchor to bottom of frame */
-  left: -0.64%; /* Match Figma desktop: -0.64% left offset */
-  max-width: none; /* Allow image to exceed container width */
-  transform-origin: center bottom; /* Transform from bottom center */
-  will-change: transform; /* Optimize for animations */
-}
-
-@media (max-width: 768px) {
-  .ticker__image {
-    width: 353.57%; /* Match Figma mobile: 353.57% width */
-    height: 125%; /* Increased height to ensure full coverage during parallax */
-    left: -126.78%; /* Match Figma mobile: -126.78% left offset */
-  }
+  object-position: center center;
 }
 
 .ticker__content {
@@ -55,7 +44,8 @@
   left: 0;
   top: 50%; /* Vertically center */
   transform: translateY(-50%); /* Center vertically */
-  width: 100%; /* Full width edge-to-edge */
+  width: 100%;
+  max-width: 1328px; /* Match Figma: 1328px content width (1440px - 112px padding) */
   overflow: hidden;
 }
 

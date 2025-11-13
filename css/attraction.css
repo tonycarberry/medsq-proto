@@ -108,17 +108,14 @@
   font-weight: 400;
   line-height: 32px; /* leading-[32px] */
   width: 100%;
+  max-width: 530px; /* Match the wider second paragraph width */
   font-size: 20px; /* text-[20px] */
   margin: 0;
   text-align: center; /* Center-aligned text */
 }
 
 .attraction__description p {
-  margin-bottom: 12px; /* mb-[12px] */
-}
-
-.attraction__description p:last-child {
-  margin-bottom: 0; /* No bottom margin on last paragraph */
+  margin-bottom: 0; /* No spacing between paragraphs - single text area */
 }
 
 .attraction__button-group {

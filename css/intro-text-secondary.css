@@ -16,30 +16,31 @@
   display: flex;
   flex-direction: column;
   gap: var(--content-space-button-margin);
-  padding: var(--section-space-main) 32px;
-  align-items: center;
+  padding: var(--space-8) 96px; /* Match Figma: 64px vertical, 96px horizontal */
+  align-items: flex-start; /* Left-align content */
   justify-content: center;
 }
 
 .intro-text-secondary__text {
   display: flex;
   flex-direction: column;
-  gap: var(--space-7);
-  align-items: center;
+  gap: var(--space-8); /* Match Figma: 64px gap */
+  align-items: flex-start; /* Left-align text */
   justify-content: center;
   color: var(--theme-text);
   width: 100%;
 }
 
 .intro-text-secondary__large {
-  font-family: var(--primary-family);
-  font-weight: 400;
-  line-height: var(--line-height-text);
-  max-width: 950px;
+  font-family: "Montserrat", sans-serif; /* Use Montserrat font */
+  font-weight: 700; /* Bold */
+  line-height: 1; /* Match Figma: line-height 1 */
+  max-width: 1024px; /* Match Figma max-width */
   width: 100%;
-  font-size: 22px;
+  font-size: 64px; /* Match Figma: 64px H1 size */
+  letter-spacing: -2.56px; /* Match Figma: -2.56px tracking */
   margin: 0;
-  text-align: center;
+  text-align: left; /* Left-align to match Figma */
 }
 
 .intro-text-secondary__word {
@@ -52,37 +53,43 @@
 }
 
 .intro-text-secondary__small {
-  font-family: "Kippax Modern", sans-serif; /* Regular weight */
-  font-weight: 400;
-  line-height: var(--line-height-text); /* Line height 1.5 */
-  max-width: 644px; /* Match Figma max-width */
+  font-family: "Montserrat", sans-serif; /* Use Montserrat font */
+  font-weight: 400; /* Regular */
+  line-height: 1.5; /* Match Figma: line-height 1.5 */
+  max-width: 664px; /* Match Figma max-width */
   width: 100%;
-  font-size: var(--font-size-text-main); /* 20px */
+  font-size: 24px; /* Match Figma: 24px text-large size */
   margin: 0;
-  text-align: center; /* Center align to match Figma */
+  text-align: left; /* Left-align to match Figma */
 }
 
-.intro-text-secondary__small p {
-  margin-bottom: 12px;
-  text-align: center; /* Center align paragraphs */
+/* Attractions Page Intro Text Styling */
+.page-attractions .intro-text-secondary {
+  background-color: var(--theme-background); /* White background matching Figma */
 }
 
-.intro-text-secondary__small p:last-child {
-  margin-bottom: 0;
+.page-attractions .intro-text-secondary__large {
+  color: var(--theme-text); /* Dark text on white background */
+}
+
+.page-attractions .intro-text-secondary__small {
+  color: var(--theme-text); /* Dark text on white background */
 }
 
 /* Mobile Styles */
 @media (max-width: 768px) {
   .intro-text-secondary__content {
-    padding: var(--section-space-small) 32px;
+    padding: var(--section-space-small) 24px; /* Match Figma mobile padding */
   }
 
   .intro-text-secondary__large {
-    font-size: 22px;
+    font-size: 48px; /* Smaller H1 on mobile */
+    letter-spacing: -1.92px; /* Proportional letter spacing */
     max-width: 100%;
   }
 
   .intro-text-secondary__small {
-    font-size: var(--font-size-text-small);
+    font-size: 18px; /* Smaller text on mobile */
+    max-width: 100%;
   }
 }

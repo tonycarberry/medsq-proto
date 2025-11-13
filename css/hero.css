@@ -39,7 +39,10 @@
   object-fit: cover;
   object-position: center center;
   width: 100%;
-  height: 100%;
+  height: 125.97%; /* Match Figma: 125.97% height */
+  top: -2.26%; /* Match Figma: top offset */
+  left: 0;
+  max-width: none; /* Allow image to exceed container */
   opacity: 0;
   /* Transition removed - animation is handled by GSAP in animations.js */
 }
@@ -49,7 +52,7 @@
   left: 0;
   bottom: 0;
   width: 100%;
-  padding: var(--section-space-small) var(--site-margin) 40px var(--site-margin);
+  padding: var(--section-space-small) var(--site-margin) var(--section-space-small) var(--site-margin);
   display: flex;
   align-items: flex-end;
   justify-content: center; /* Center content horizontally */
@@ -75,6 +78,8 @@
   margin: 0;
   max-width: 834px;
   text-align: center; /* Center align text */
+  /* Text shadow for accessibility - ensures contrast over images */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 /* Homepage Hero (special zipwire hero) */
@@ -252,4 +257,13 @@
     width: 100%; /* Logo takes full width of content-wrapper */
     height: 100%; /* Logo takes full height of content-wrapper */
   }
+}
+
+/* Attractions Page Hero Styling */
+.page-attractions .hero {
+  background-color: #1f1d1e; /* Dark background matching Figma */
+}
+
+.page-attractions .hero__bg-color {
+  background-color: #1f1d1e; /* Dark background matching Figma */
 }
