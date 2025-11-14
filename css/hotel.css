@@ -82,24 +82,24 @@
   background-color: #7a352f;
 }
 
-/* Intro Text Secondary White Background Override */
+/* Intro Text Secondary Hotel Background Override - Beige background matching Figma */
 .intro-text-secondary-component--white .intro-text-secondary {
-  background-color: #ffffff;
+  background-color: #f9f4ee; /* Beige background matching Figma */
 }
 
-/* Intro Text Secondary Heading */
+/* Intro Text Secondary Heading - Hotel page uses Instrument Serif */
 .intro-text-secondary__heading {
   font-family: "Instrument Serif", serif;
-  font-weight: 400;
-  font-size: 80px;
-  line-height: 1.1;
-  letter-spacing: -0.8px;
+  font-weight: 400; /* Regular */
+  font-size: 64px; /* Match Figma: 64px */
+  line-height: 1.1; /* Match Figma: line-height 1.1 */
+  letter-spacing: -0.64px; /* Match Figma: -0.64px tracking */
   color: var(--dark-900, #1f1d1e);
-  margin: 0 auto var(--space-7) auto;
-  max-width: 1024px;
+  margin: 0; /* No margin - gap on parent container handles spacing */
+  max-width: 1024px; /* Match Figma max-width */
   width: 100%;
-  text-align: center;
-  align-self: center;
+  text-align: left; /* Left-align to match Figma */
+  align-self: flex-start; /* Left-align instead of center */
 }
 
 /* Hotel Vibes Section - Using Attraction Component Styles */
@@ -114,6 +114,15 @@
 
 .attraction--peach .attraction__text {
   color: #ffffff; /* White text on dark background */
+  text-align: left; /* Left-align text */
+}
+
+.attraction--peach .attraction__title {
+  text-align: left; /* Left-align title */
+}
+
+.attraction--peach .attraction__description {
+  text-align: left; /* Left-align description */
 }
 
 .attraction--dark {
@@ -126,6 +135,15 @@
 
 .attraction--dark .attraction__text {
   color: var(--theme-text); /* Dark text on peach background */
+  text-align: left; /* Left-align text */
+}
+
+.attraction--dark .attraction__title {
+  text-align: left; /* Left-align title */
+}
+
+.attraction--dark .attraction__description {
+  text-align: left; /* Left-align description */
 }
 
 .attraction--yellow {
@@ -138,6 +156,15 @@
 
 .attraction--yellow .attraction__text {
   color: var(--theme-text); /* Dark text on light yellow-green background */
+  text-align: left; /* Left-align text */
+}
+
+.attraction--yellow .attraction__title {
+  text-align: left; /* Left-align title */
+}
+
+.attraction--yellow .attraction__description {
+  text-align: left; /* Left-align description */
 }
 
 /* Remove top and bottom padding from hotel page attraction sections */
@@ -182,17 +209,17 @@ html {
 }
 
 .sticky-left-section {
-  background-color: #ffffff; /* White background for entire section */
+  background-color: #f9f4ee; /* Beige background matching Figma */
   overflow: hidden; /* Clip zoomed images */
   position: relative; /* Ensure proper stacking */
 }
 
 .sticky-left-section--alt-bg {
-  background-color: #ffffff; /* White background for alt variant too */
+  background-color: #f9f4ee; /* Beige background matching Figma */
 }
 
 .sticky-left-section .sticky-left-section__container {
-  background-color: #ffffff; /* White background for container */
+  background-color: #f9f4ee; /* Beige background matching Figma */
 }
 
 .sticky-left-section .sticky-left-section__visuals {
@@ -210,13 +237,18 @@ html {
 }
 
 .sticky-left-section .sticky-left-section__content {
-  background-color: #ffffff; /* White background for text column */
+  background-color: #f9f4ee; /* Beige background matching Figma */
 }
 
 /* Add extra spacing above first sticky-left-section to account for sticky booking form */
 .sticky-left-section:first-of-type {
   margin-top: 80px;
   padding-top: 80px;
+}
+
+/* Remove gap between images in standard room section */
+.sticky-left-section:first-of-type .sticky-left-section__visuals {
+  gap: 0;
 }
 
 /* Add extra padding to the content area of the first sticky section to create more gap */

@@ -331,6 +331,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (heroLetters.length > 0) {
       const rootStyles = getComputedStyle(document.documentElement);
+      // MSQ color palette
+      const msqColors = [
+        "#75D8FF", // Blue
+        "#64D187", // Green
+        "#F2FA7D", // Yellow
+        "#9D78FE", // Purple
+        "#FEA5E5", // Pink
+        "#FE8F00", // Orange
+      ];
+      const getRandomMSQColor = () => msqColors[Math.floor(Math.random() * msqColors.length)];
       const highlightColor = (rootStyles.getPropertyValue("--theme-highlight") || "#f2fa7d").trim() || "#f2fa7d";
       const baseColor = (rootStyles.getPropertyValue("--theme-text-dark") || "#1f1d1e").trim() || "#1f1d1e";
 
@@ -344,7 +354,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       const scrambleLettersToTarget = (targetGetter, options = {}) => {
-        const { duration = 0.5, scrambleRatio = 0.3, scrambleInterval = 60, stagger = 0.2, activeColor = highlightColor, inactiveColor = baseColor, ease = linearEase } = options;
+        const { duration = 0.5, scrambleRatio = 0.3, scrambleInterval = 60, stagger = 0.2, activeColor = null, inactiveColor = baseColor, ease = linearEase } = options;
 
         heroLetters.forEach((letter, index) => {
           const targetValue = targetGetter(letter, index);
@@ -358,7 +368,7 @@ document.addEventListener("DOMContentLoaded", function () {
               target: targetValue,
               ease,
               onStart: () => {
-                letter.style.color = activeColor;
+                letter.style.color = activeColor || getRandomMSQColor();
               },
               onComplete: () => {
                 if (letter.dataset.hovering === "true") {
@@ -441,7 +451,7 @@ document.addEventListener("DOMContentLoaded", function () {
           once: false,
           target: getRandomChar(heroCharSet),
           onStart: () => {
-            letter.style.color = highlightColor;
+            letter.style.color = getRandomMSQColor();
           },
           onComplete: () => {
             if (letter.dataset.hovering === "true") {
@@ -469,7 +479,7 @@ document.addEventListener("DOMContentLoaded", function () {
             once: false,
             target: getRandomChar(heroCharSet),
             onStart: () => {
-              letter.style.color = highlightColor;
+              letter.style.color = getRandomMSQColor();
             },
             onComplete: () => {
               scrambleElement(letter, {
@@ -480,7 +490,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 once: false,
                 target: letter.dataset.scrambleWord,
                 onStart: () => {
-                  letter.style.color = highlightColor;
+                  letter.style.color = getRandomMSQColor();
                 },
                 onComplete: () => {
                   letter.style.color = baseColor;
@@ -571,7 +581,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const initTickerAnimation = () => {
       // Calculate the width of one text element
       const textWidth = tickerText.offsetWidth;
-      const contentWidth = tickerContent.offsetWidth;
+      // Use viewport width for full-width scrolling
+      const contentWidth = window.innerWidth || document.documentElement.clientWidth;
 
       // Ensure we have enough text copies to cover viewport + buffer
       // Calculate how many copies we need (viewport width + 2x text width for safety)
@@ -580,11 +591,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Add more copies if needed to ensure seamless coverage
       if (currentCopies < neededCopies) {
-        const textContent = tickerText.textContent;
         for (let i = currentCopies; i < neededCopies; i++) {
-          const newText = document.createElement("p");
-          newText.className = "ticker__text ticker__text--duplicate";
-          newText.textContent = textContent;
+          const newText = tickerText.cloneNode(true);
+          newText.classList.add("ticker__text--duplicate");
           tickerTextWrapper.appendChild(newText);
         }
       }

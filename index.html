@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/variables.css?v=4" />
     <link rel="stylesheet" href="css/nav.css?v=2" />
     <link rel="stylesheet" href="css/hero.css?v=2" />
+    <link rel="stylesheet" href="css/hero-experiments.css?v=1" />
     <link rel="stylesheet" href="css/intro-text.css?v=2" />
     <link rel="stylesheet" href="css/ticker.css?v=2" />
     <link rel="stylesheet" href="css/intro-text-secondary.css?v=1" />
@@ -21,6 +22,7 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
     <script src="js/nav.js" defer></script>
     <script src="js/animations.js" defer></script>
+    <script src="js/animations-experiments.js" defer></script>
   </head>
   <body>
     <!-- Nav Component -->
@@ -99,39 +101,77 @@
       </div>
     </nav>
 
-    <!-- Hero Component -->
+    <!-- Hero Component (Experiment Variation) -->
     <section class="hero-component">
-      <div class="hero hero--homepage" data-name="Property 1=Variant8" data-node-id="4520:2277">
-        <div class="hero__content-wrapper" data-name="Content" data-node-id="4520:2278">
-          <div class="hero__zipwire-container" data-name="zipwire-edit 1" data-node-id="4520:2279">
+      <div class="hero hero--homepage hero--experiment" data-name="Experiment Variant" data-node-id="4520:3000">
+        <div class="hero__content-wrapper" data-name="Content" data-node-id="4520:3001">
+          <div class="hero__zipwire-container" data-name="zipwire-edit experiment" data-node-id="4520:3002">
             <div class="hero__zipwire-background" aria-hidden="true">
-              <!-- Hero images that cycle -->
-              <img alt="" class="hero__zipwire-frame" data-frame="hero-01" src="assets/hero-img-01.png" />
-              <img alt="" class="hero__zipwire-frame" data-frame="hero-02" src="assets/hero-img-02.png" />
-              <img alt="" class="hero__zipwire-frame" data-frame="hero-03" src="assets/hero-img-03.png" />
-              <img alt="" class="hero__zipwire-frame" data-frame="hero-04" src="assets/hero-img-04.png" />
-              <img alt="" class="hero__zipwire-frame" data-frame="hero-05" src="assets/hero-img-05.png" />
-              <img alt="" class="hero__zipwire-frame" data-frame="hero-06" src="assets/hero-img-06.png" />
-              <img alt="" class="hero__zipwire-frame" data-frame="hero-07" src="assets/hero-img-07.png" />
-              <img alt="" class="hero__zipwire-frame" data-frame="hero-08" src="assets/hero-img-08.png" />
-              <img alt="" class="hero__zipwire-frame" data-frame="hero-09" src="assets/hero-img-09.png" />
-              <img alt="" class="hero__zipwire-frame" data-frame="hero-10" src="assets/hero-img-10.png" />
+              <!-- Base images that appear in all frames -->
+              <div class="hero__zipwire-overflow">
+                <img alt="" class="hero__zipwire-base hero__zipwire-overflow-img" src="assets/hero-img-02.png" />
+              </div>
+              <img alt="" class="hero__zipwire-base hero__zipwire-base-img" src="assets/hero-img-01.png" />
+
+              <!-- Figma-selected hero frames -->
+              <img alt="" class="hero__zipwire-frame" data-frame="frame-01" src="assets/hero-img-03.png" />
+              <img alt="" class="hero__zipwire-frame" data-frame="frame-02" src="assets/hero-img-04.png" />
+              <img alt="" class="hero__zipwire-frame" data-frame="frame-03" src="assets/hero-img-05.png" />
+              <img alt="" class="hero__zipwire-frame" data-frame="frame-04" src="assets/hero-img-06.png" />
+              <img alt="" class="hero__zipwire-frame" data-frame="frame-05" src="assets/hero-img-07.png" />
+              <img alt="" class="hero__zipwire-frame" data-frame="frame-06" src="assets/hero-img-08.png" />
+              <img alt="" class="hero__zipwire-frame" data-frame="frame-07" src="assets/hero-img-09.png" />
+              <img alt="" class="hero__zipwire-frame" data-frame="frame-08" src="assets/hero-img-10.png" />
+              <img alt="" class="hero__zipwire-frame" data-frame="frame-09" src="assets/hero-img-05.png" />
+              <img alt="" class="hero__zipwire-frame" data-frame="frame-10" src="assets/hero-img-06.png" />
+              <img alt="" class="hero__zipwire-frame" data-frame="frame-11" src="assets/hero-img-07.png" />
+              <img alt="" class="hero__zipwire-frame" data-frame="frame-12" src="assets/hero-img-08.png" />
+              <img alt="" class="hero__zipwire-frame" data-frame="frame-13" src="assets/hero-img-09.png" />
             </div>
           </div>
-          <div class="hero__vector-container" data-name="Vector" data-node-id="4520:2280">
-            <img alt="" class="hero__vector-image" src="assets/hero-logo.svg" />
+          <div class="hero__vector-container" data-name="Vector" data-node-id="4520:3003">
+            <div class="hero-logo hero-logo--typographic" aria-hidden="true">
+              <div class="hero-logo__word hero-logo__word--top" data-word="MEDLOCK">
+                <span class="hero-logo__letter">M</span>
+                <span class="hero-logo__letter">E</span>
+                <span class="hero-logo__letter">D</span>
+                <span class="hero-logo__letter">L</span>
+                <span class="hero-logo__letter">O</span>
+                <span class="hero-logo__letter">C</span>
+                <span class="hero-logo__letter">K</span>
+              </div>
+              <div class="hero-logo__word hero-logo__word--side hero-logo__word--right" data-word="SQ">
+                <span class="hero-logo__letter">S</span>
+                <span class="hero-logo__letter">Q</span>
+              </div>
+              <div class="hero-logo__word hero-logo__word--bottom hero-logo__word--inverted" data-word="MEDLOCK">
+                <span class="hero-logo__letter">M</span>
+                <span class="hero-logo__letter">E</span>
+                <span class="hero-logo__letter">D</span>
+                <span class="hero-logo__letter">L</span>
+                <span class="hero-logo__letter">O</span>
+                <span class="hero-logo__letter">C</span>
+                <span class="hero-logo__letter">K</span>
+              </div>
+              <div class="hero-logo__word hero-logo__word--side hero-logo__word--left" data-word="SQ">
+                <span class="hero-logo__letter">S</span>
+                <span class="hero-logo__letter">Q</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Intro Text Component -->
-    <section class="intro-text-component">
-      <div class="intro-text">
-        <div class="intro-text__content">
-          <div class="intro-text__text">
-            <!-- <h2 class="intro-text__heading">A destination completely unlike any other.</h2> -->
-            <p class="intro-text__body">Medlock Square is a destination completely unlike any other. Nestled between the iconic Etihad Stadium and the state-of-the-art Co-op Live arena, this is a place where mouthwatering cuisine and world class entertainment converge.</p>
+    <!-- Intro Text Secondary Component -->
+    <section class="intro-text-secondary-component">
+      <div class="intro-text-secondary intro-text-secondary--center">
+        <div class="intro-text-secondary__content">
+          <div class="intro-text-secondary__text">
+            <h1 class="intro-text-secondary__large">Medlock Square is a destination completely unlike any other.</h1>
+            <div class="intro-text-secondary__small">
+              <p>Nestled between the iconic Etihad Stadium and the state-of-the-art Co-op Live arena, this is a place where mouthwatering cuisine and world class entertainment and attractions converge.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -146,8 +186,46 @@
         </div>
         <div class="ticker__content">
           <div class="ticker__text-wrapper">
-            <p class="ticker__text">Music / Dining / Experiences / Education / Events / Arts / Culture / Sports / Family</p>
-            <p class="ticker__text ticker__text--duplicate">Music / Dining / Experiences / Education / Events / Arts / Culture / Sports / Family</p>
+            <p class="ticker__text">
+              <span class="ticker__word ticker__word--pink">music</span>
+              <span class="ticker__separator"> </span>
+              <span class="ticker__word ticker__word--yellow">dining</span>
+              <span class="ticker__separator"> </span>
+              <span class="ticker__word ticker__word--blue">experiences</span>
+              <span class="ticker__separator"> </span>
+              <span class="ticker__word ticker__word--green">education</span>
+              <span class="ticker__separator"> </span>
+              <span class="ticker__word ticker__word--purple">events</span>
+              <span class="ticker__separator"> </span>
+              <span class="ticker__word ticker__word--orange">arts</span>
+              <span class="ticker__separator"> </span>
+              <span class="ticker__word ticker__word--green">culture</span>
+              <span class="ticker__separator"> </span>
+              <span class="ticker__word ticker__word--pink">sports</span>
+              <span class="ticker__separator"> </span>
+              <span class="ticker__word ticker__word--yellow">family</span>
+              <span class="ticker__separator"> / </span>
+            </p>
+            <p class="ticker__text ticker__text--duplicate">
+              <span class="ticker__word ticker__word--pink">music</span>
+              <span class="ticker__separator"> </span>
+              <span class="ticker__word ticker__word--yellow">dining</span>
+              <span class="ticker__separator"> </span>
+              <span class="ticker__word ticker__word--blue">experiences</span>
+              <span class="ticker__separator"> </span>
+              <span class="ticker__word ticker__word--green">education</span>
+              <span class="ticker__separator"> </span>
+              <span class="ticker__word ticker__word--purple">events</span>
+              <span class="ticker__separator"> </span>
+              <span class="ticker__word ticker__word--orange">arts</span>
+              <span class="ticker__separator"> </span>
+              <span class="ticker__word ticker__word--green">culture</span>
+              <span class="ticker__separator"> </span>
+              <span class="ticker__word ticker__word--pink">sports</span>
+              <span class="ticker__separator"> </span>
+              <span class="ticker__word ticker__word--yellow">family</span>
+              <span class="ticker__separator"> / </span>
+            </p>
           </div>
         </div>
       </div>
@@ -155,13 +233,13 @@
 
     <!-- Intro Text Secondary Component -->
     <section class="intro-text-secondary-component">
-      <div class="intro-text-secondary">
+      <div class="intro-text-secondary intro-text-secondary--center intro-text-secondary--reverse">
         <div class="intro-text-secondary__content">
           <div class="intro-text-secondary__text">
-            <p class="intro-text-secondary__large">Every visit is an inspiring day out - filled with passion, innovation, and moments you'll never forget.</p>
             <div class="intro-text-secondary__small">
-              <p>From the roar of world-class concerts at Co-op Live to the electric atmosphere of match days and stadium tours at the Etihad Stadium, this is where sport, music, and entertainment come alive.</p>
+              <p>Whether you're here to watch some of the biggest names from the world of music and sports, immerse yourself in unforgettable experiences, or simply relax and enjoy what's on offer with friends and family, you've come to the right place.</p>
             </div>
+            <p class="intro-text-secondary__large intro-text-secondary__large--h2">Just don't come here looking for ordinary.</p>
           </div>
         </div>
       </div>
@@ -175,7 +253,8 @@
           <div class="attraction__text">
             <h2 class="attraction__title">Medlock Hotel</h2>
             <div class="attraction__description">
-              <p>More than just a place to stay. A perfect blend of comfort, style, and excitement. Situated in the heart of the Entertainment District, it's a vibrant hub where guests can immerse themselves in the electrifying atmosphere of their favourite events.</p>
+              <p>More than just a place to stay. A perfect blend of comfort, style, and excitement.</p>
+              <p>Situated in the heart of the Entertainment District, it's a vibrant hub where guests can immerse themselves in the electrifying atmosphere of their favourite events.</p>
             </div>
             <div class="attraction__button-group">
               <button class="attraction__button">More</button>

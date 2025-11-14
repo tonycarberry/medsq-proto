@@ -19,7 +19,7 @@
 .sticky-left-section__container {
   display: grid;
   grid-template-columns: 1fr var(--space-8) 1fr; /* Image column, 64px gap, text column */
-  align-items: flex-start;
+  align-items: start; /* Align all grid items to the start (top) */
   width: 100%;
   box-sizing: border-box; /* Ensure consistent width calculation */
   /* Height will be set by JavaScript to match visuals exactly */
@@ -30,20 +30,14 @@
   display: flex;
   flex-direction: column;
   gap: var(--content-space-button-margin); /* Match attractions-teasers: 40px */
-  justify-content: center;
+  justify-content: flex-start; /* Align to top instead of center */
   align-items: flex-start; /* Left-align content */
   padding: var(--section-space-main) 0; /* Vertical padding only */
   position: sticky; /* Sticky positioning in CSS */
   top: 0;
-  align-self: flex-start; /* Align to top of container */
+  align-self: start; /* Align to top of grid cell */
   z-index: 2;
   box-sizing: border-box; /* Ensure padding is included in width calculation */
-}
-
-@media (min-width: 769px) {
-  .page-attractions .sticky-left-section__content {
-    justify-content: flex-start;
-  }
 }
 
 .sticky-left-section__text {
@@ -55,6 +49,18 @@
   color: inherit;
   max-width: 440px; /* Match attractions-teasers: w-[440px] */
   width: 100%;
+}
+
+.sticky-left-section__shoulder {
+  font-family: "Kippax Modern", sans-serif;
+  font-weight: 400; /* Regular */
+  font-style: normal;
+  line-height: 1.5; /* Match Figma: line-height 1.5 */
+  font-size: 16px; /* Match Figma: var(--font-size/text-small,16px) */
+  text-transform: uppercase; /* Match Figma: uppercase */
+  color: var(--theme-text, #1f1d1e);
+  margin: 0 0 var(--space-5) 0; /* Add spacing below shoulder text */
+  text-align: left; /* Left-aligned text */
 }
 
 .sticky-left-section__title {
@@ -143,6 +149,43 @@
   padding: var(--section-space-main) 0; /* Vertical padding only, no horizontal */
 }
 
+/* Reversed layout: text on left, images on right */
+.sticky-left-section--reversed .sticky-left-section__content {
+  grid-column: 1; /* First column (text on left) */
+}
+
+.sticky-left-section--reversed .sticky-left-section__visuals {
+  grid-column: 3; /* Third column (images on right) */
+}
+
+/* Ensure reversed layout works on desktop */
+@media (min-width: 769px) {
+  .sticky-left-section__container {
+    display: grid;
+    grid-template-columns: 1fr var(--space-8) 1fr;
+    align-items: start; /* Ensure items align to top */
+  }
+
+  .sticky-left-section--reversed .sticky-left-section__content {
+    grid-column: 1;
+    align-self: start; /* Align to top of grid cell */
+  }
+
+  .sticky-left-section--reversed .sticky-left-section__visuals {
+    grid-column: 3;
+    align-self: start; /* Align to top of grid cell */
+  }
+
+  /* Ensure non-reversed content also aligns to top */
+  .sticky-left-section__content {
+    align-self: start; /* Align to top of grid cell */
+  }
+
+  .sticky-left-section__visuals {
+    align-self: start; /* Align to top of grid cell */
+  }
+}
+
 .sticky-left-section__visual {
   width: 100%;
   aspect-ratio: 1 / 1; /* Square images */
@@ -175,12 +218,14 @@
   }
 
   .sticky-left-section__container {
+    display: flex; /* Use flexbox on mobile instead of grid */
     flex-direction: column; /* Stack vertically on mobile */
     min-height: auto !important; /* Remove min-height constraint - override JS */
     gap: 0; /* No gap - handled by padding */
   }
 
   .sticky-left-section__content {
+    grid-column: auto; /* Reset grid-column on mobile */
     flex: none;
     width: 100%;
     order: 1; /* Content appears first on mobile */
@@ -191,6 +236,10 @@
     justify-content: flex-start; /* Align to top */
     align-self: auto; /* Reset align-self on mobile */
     will-change: auto; /* Remove will-change on mobile */
+  }
+
+  .sticky-left-section__visuals {
+    grid-column: auto; /* Reset grid-column on mobile */
   }
 
   .sticky-left-section__text {

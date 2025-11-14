@@ -1,29 +1,24 @@
 /* Ticker Component */
 .ticker-component {
   width: 100%;
+  position: relative;
 }
 
 .ticker {
-  overflow: visible; /* Allow image to show at full height */
   position: relative;
   width: 100%;
-  max-width: 1440px; /* Constrain to grid max-width */
-  margin: 0 auto; /* Center the container */
-  padding: 0 var(--site-margin); /* Add side padding */
-  box-sizing: border-box;
-}
-
-@media (max-width: 768px) {
-  .ticker {
-    padding: 0 var(--space-5); /* Use smaller padding on mobile (32px) */
-  }
+  overflow: visible; /* Allow image to show at full height */
 }
 
 .ticker__background {
-  position: relative; /* Changed from absolute to allow natural height */
+  position: relative;
   pointer-events: none;
   overflow: hidden; /* Clip zoomed image edges */
   width: 100%;
+  max-width: 1440px; /* Constrain image to max-width */
+  margin: 0 auto; /* Center the image container */
+  padding: 0 var(--site-margin); /* Add side padding */
+  box-sizing: border-box;
 }
 
 .ticker__bg-color {
@@ -44,9 +39,19 @@
   left: 0;
   top: 50%; /* Vertically center */
   transform: translateY(-50%); /* Center vertically */
-  width: 100%;
-  max-width: 1328px; /* Match Figma: 1328px content width (1440px - 112px padding) */
+  width: 100vw; /* Full viewport width for edge-to-edge scrolling */
   overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .ticker__background {
+    padding: 0 var(--space-5); /* Use smaller padding on mobile (32px) */
+  }
+
+  .ticker__text {
+    font-size: 60px; /* Smaller font size on mobile */
+    letter-spacing: -0.6px; /* Proportional letter spacing */
+  }
 }
 
 .ticker__text-wrapper {
@@ -56,18 +61,51 @@
 }
 
 .ticker__text {
-  font-family: "Kippax Modern Condensed Medium", "Kippax Modern", sans-serif;
-  font-weight: 500;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700; /* Bold */
   font-style: normal;
-  line-height: var(--line-height-heading);
-  color: var(--button-primary-background); /* Brand yellow to match nav button */
-  font-size: var(--font-size-h2); /* Match Figma: 64px H2 size */
-  text-transform: none; /* Match Figma: title case, not uppercase */
+  line-height: 1; /* Match Figma: line-height 1 */
+  font-size: 100px; /* Match Figma: 100px Display size */
+  text-transform: uppercase; /* Match Figma: uppercase */
   white-space: nowrap;
-  letter-spacing: -0.64px; /* Match Figma: -0.64px tracking */
+  letter-spacing: -1px; /* Match Figma: -1px tracking */
   margin: 0;
   padding: 0;
   flex-shrink: 0;
+}
+
+.ticker__word {
+  display: inline-block;
+}
+
+.ticker__separator {
+  display: inline-block;
+  white-space: pre; /* Preserve spacing */
+  color: #f2fa7d; /* Yellow separator color */
+}
+
+.ticker__word--pink {
+  color: #fea5e5; /* Pink */
+}
+
+.ticker__word--yellow {
+  color: #f2fa7d; /* Yellow */
+}
+
+.ticker__word--blue {
+  color: #75d8ff; /* Blue */
+}
+
+.ticker__word--green {
+  color: #64d187; /* Green */
+}
+
+.ticker__word--purple {
+  color: #9d78fe; /* Purple */
+}
+
+.ticker__word--orange {
+  color: #fe8f00; /* Orange */
 }
 
 .ticker__text--duplicate {

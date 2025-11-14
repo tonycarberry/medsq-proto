@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const initTickerAnimation = () => {
       // Calculate the width of one text element
       const textWidth = tickerText.offsetWidth;
-      const contentWidth = tickerContent.offsetWidth;
+      const contentWidth = window.innerWidth || document.documentElement.clientWidth;
 
       // Ensure we have enough text copies to cover viewport + buffer
       // Calculate how many copies we need (viewport width + 2x text width for safety)
@@ -196,11 +196,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Add more copies if needed to ensure seamless coverage
       if (currentCopies < neededCopies) {
-        const textContent = tickerText.textContent;
         for (let i = currentCopies; i < neededCopies; i++) {
-          const newText = document.createElement("p");
-          newText.className = "ticker__text ticker__text--duplicate";
-          newText.textContent = textContent;
+          const newText = tickerText.cloneNode(true);
+          newText.classList.add("ticker__text--duplicate");
           tickerTextWrapper.appendChild(newText);
         }
       }

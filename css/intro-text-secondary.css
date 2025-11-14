@@ -38,7 +38,7 @@
   max-width: 1024px; /* Match Figma max-width */
   width: 100%;
   font-size: 64px; /* Match Figma: 64px H1 size */
-  letter-spacing: -2.56px; /* Match Figma: -2.56px tracking */
+  letter-spacing: -3.2px; /* Match Figma: -3.2px tracking */
   margin: 0;
   text-align: left; /* Left-align to match Figma */
 }
@@ -80,6 +80,39 @@
   font-size: 20px; /* Match Figma: 20px text-main size */
 }
 
+/* Centered Variant */
+.intro-text-secondary--center .intro-text-secondary__content {
+  align-items: center; /* Center-align content */
+}
+
+.intro-text-secondary--center .intro-text-secondary__text {
+  align-items: center; /* Center-align text container */
+  padding: 0 96px; /* Match Figma: 96px horizontal padding */
+}
+
+.intro-text-secondary--center .intro-text-secondary__large {
+  text-align: center; /* Center-align heading */
+}
+
+.intro-text-secondary--center .intro-text-secondary__small {
+  text-align: center; /* Center-align small text */
+}
+
+.intro-text-secondary--center .intro-text-secondary__small p {
+  text-align: center; /* Center-align paragraphs */
+}
+
+/* Reverse Variant (small text first, then large heading) */
+.intro-text-secondary--reverse .intro-text-secondary__large--h2 {
+  font-size: 48px; /* H2 size instead of H1 */
+  letter-spacing: -1.92px; /* Match Figma: -1.92px tracking for H2 */
+  max-width: 792px; /* Match Figma: 792px max-width */
+}
+
+.intro-text-secondary--reverse .intro-text-secondary__small {
+  max-width: 792px; /* Match Figma: 792px max-width */
+}
+
 /* Attractions Page Intro Text Styling */
 .page-attractions .intro-text-secondary {
   background-color: var(--theme-background); /* White background matching Figma */
@@ -108,5 +141,9 @@
   .intro-text-secondary__small {
     font-size: 18px; /* Smaller text on mobile */
     max-width: 100%;
+  }
+
+  .intro-text-secondary--center .intro-text-secondary__text {
+    padding: 0 24px; /* Match mobile padding */
   }
 }
