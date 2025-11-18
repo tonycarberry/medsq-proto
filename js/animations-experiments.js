@@ -1377,10 +1377,18 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Teasers title word-by-word animation (matching attraction title style)
+  // Skip titles that have already been processed by scramble animation in animations.js
   const teaserTitles = document.querySelectorAll(".teasers-title");
 
   if (teaserTitles.length > 0 && typeof ScrollTrigger !== "undefined") {
     teaserTitles.forEach((title) => {
+      // Check if this title has already been processed by scramble animation
+      // (animations.js wraps letters in .teasers-title-letter spans)
+      if (title.querySelector(".teasers-title-letter")) {
+        // Already processed by scramble animation, skip this one
+        return;
+      }
+
       // Split title text into words and wrap each in a span
       const text = title.textContent.trim();
       const words = text.split(/\s+/);
@@ -1440,7 +1448,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (teaserDescription) {
           // Handle both cases: description as <p> tag or as <div> container with <p> tags inside
           let descriptionParagraphs = teaserDescription.querySelectorAll("p");
-          
+
           // If no <p> tags found, treat the description itself as a paragraph
           if (descriptionParagraphs.length === 0) {
             descriptionParagraphs = [teaserDescription];
@@ -1566,7 +1574,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (description && !title) {
         // Handle both cases: description as <p> tag or as <div> container with <p> tags inside
         let descriptionParagraphs = description.querySelectorAll("p");
-        
+
         // If no <p> tags found, treat the description itself as a paragraph
         if (descriptionParagraphs.length === 0) {
           descriptionParagraphs = [description];

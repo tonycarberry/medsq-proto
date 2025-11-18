@@ -215,9 +215,10 @@
   margin-bottom: 0;
 }
 
-/* Title words for animation */
-.teasers-title-word {
+/* Title letters for scramble animation */
+.teasers-title-letter {
   display: inline-block;
+  transition: color 0.2s ease;
 }
 
 /* Description words for animation */
@@ -280,7 +281,7 @@
 }
 
 .teasers-image-bg {
-  background-color: #e6e6f0;
+  background-color: transparent;
   display: flex;
   flex-direction: column;
   gap: 10px;

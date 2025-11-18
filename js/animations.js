@@ -755,18 +755,18 @@ document.addEventListener("DOMContentLoaded", function () {
         if (attractionDescription) {
           // Split description text into words and wrap each in a span
           const descriptionParagraphs = attractionDescription.querySelectorAll("p");
-          
+
           descriptionParagraphs.forEach((paragraph) => {
             const text = paragraph.textContent.trim();
             const words = text.split(/\s+/);
-            
+
             // Clear and rebuild with wrapped words
             paragraph.innerHTML = words.map((word) => `<span class="attraction__description-word">${word}</span>`).join(" ");
           });
-          
+
           // Get all word elements from all paragraphs
           const descriptionWordElements = attractionDescription.querySelectorAll(".attraction__description-word");
-          
+
           // Set initial state: words are invisible and positioned to the left (same as titles)
           gsap.set(descriptionWordElements, {
             opacity: 0,
@@ -799,39 +799,39 @@ document.addEventListener("DOMContentLoaded", function () {
   // Attraction description animation for sections without titles (e.g., Co-op Live)
   // Apply same slide-in animation as titles
   const attractionsWithoutTitles = document.querySelectorAll(".attraction");
-  
+
   if (attractionsWithoutTitles.length > 0 && typeof ScrollTrigger !== "undefined") {
     attractionsWithoutTitles.forEach((attractionSection) => {
       const title = attractionSection.querySelector(".attraction__title");
       const description = attractionSection.querySelector(".attraction__description");
-      
+
       // Only animate if there's a description but no title
       if (description && !title) {
         // Split description text into words and wrap each in a span
         const descriptionParagraphs = description.querySelectorAll("p");
-        
+
         descriptionParagraphs.forEach((paragraph) => {
           const text = paragraph.textContent.trim();
           const words = text.split(/\s+/);
-          
+
           // Clear and rebuild with wrapped words
           paragraph.innerHTML = words.map((word) => `<span class="attraction__description-word">${word}</span>`).join(" ");
         });
-        
+
         // Get all word elements from all paragraphs
         const descriptionWordElements = description.querySelectorAll(".attraction__description-word");
-        
+
         // Set initial state: words are invisible and positioned to the left (same as titles)
         gsap.set(descriptionWordElements, {
           opacity: 0,
           x: -50, // Start from left (negative = left side)
         });
-        
+
         // Detect if we're on mobile (matches CSS breakpoint)
         const isMobile = window.innerWidth <= 768;
         const startPoint = isMobile ? "top 30%" : "top 60%";
         const endPoint = isMobile ? "top 10%" : "top 30%";
-        
+
         // Create a scrubbed timeline for description animation
         const descriptionTimeline = gsap.timeline({
           scrollTrigger: {
@@ -841,7 +841,7 @@ document.addEventListener("DOMContentLoaded", function () {
             scrub: 0.15, // Smooth scroll-linked animation that reverses
           },
         });
-        
+
         // Add description word-by-word animation to timeline
         // Same animation style as title: slide from left to right
         descriptionWordElements.forEach((word, index) => {
@@ -1014,10 +1014,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (teaserImageContainers.length > 0 && typeof ScrollTrigger !== "undefined") {
     teaserImageContainers.forEach((container) => {
-      const teaserRow = container.closest(".teasers-row");
       const teaserImage = container.querySelector(".teasers-image");
 
-      if (teaserRow && teaserImage) {
+      if (teaserImage) {
         // Set initial state: fully masked (clip-path inset right at 100%)
         gsap.set(container, {
           clipPath: "inset(0 100% 0 0)", // Fully masked - 100% from right
@@ -1032,13 +1031,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Create scroll-triggered animation for mask reveal
         // Mask reveals from left to right
+        // Each image animates separately when its top enters the bottom of the viewport
         gsap.to(container, {
           clipPath: "inset(0 0% 0 0)", // Fully revealed - 0% from right
           ease: "none", // Linear easing - no easing
           scrollTrigger: {
-            trigger: teaserRow,
-            start: "top 100%", // Start when the top of the row enters the viewport from the bottom
-            end: "top 40%", // End when the top of the row is 40% down from the top of the viewport
+            trigger: container, // Trigger on the individual image container
+            start: "top bottom", // Start when the top of the image enters the bottom of the viewport
+            end: "top 40%", // End when the top of the image is 40% down from the top of the viewport
             scrub: 0.15, // Slower, smoother scroll-linked animation
             // markers: true, // Uncomment for debugging
           },
@@ -1050,9 +1050,9 @@ document.addEventListener("DOMContentLoaded", function () {
           scale: 1.1, // Zoom to 110%
           ease: "none", // Linear easing for smooth scroll-linked movement
           scrollTrigger: {
-            trigger: teaserRow,
-            start: "top bottom", // Start when row enters viewport
-            end: "bottom top", // End when row leaves viewport
+            trigger: container, // Trigger on the individual image container
+            start: "top bottom", // Start when image enters viewport
+            end: "bottom top", // End when image leaves viewport
             scrub: 0.15, // Smooth scroll-linked animation (matches mask reveal timing)
             // markers: true, // Uncomment for debugging
           },
@@ -1064,25 +1064,152 @@ document.addEventListener("DOMContentLoaded", function () {
     ScrollTrigger.refresh();
   }
 
-  // Teasers title word-by-word animation (matching attraction title style)
+  // Teasers title scramble text animation (matching hero logo style)
   const teaserTitles = document.querySelectorAll(".teasers-title");
+  const teaserCharSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+  // Scramble text function (same as hero logo)
+  const scrambleElement = (element, config = {}) => {
+    const { duration = 3, scrambleRatio = 0.65, chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", once = true, scrambleInterval = 50, target, onStart, onUpdate, onComplete, ease = (t) => t } = config;
+
+    const originalText = element.dataset.scrambleWord || element.dataset.word || element.textContent.trim();
+    if (!originalText) {
+      return;
+    }
+    if (!element.dataset.scrambleWord || element.dataset.scrambleWord.length === 0) {
+      element.dataset.scrambleWord = originalText;
+    }
+
+    const targetText = typeof target === "string" && target.length > 0 ? target : element.dataset.scrambleWord;
+    if (!targetText) {
+      return;
+    }
+
+    if (once && element.dataset.scrambleCompleted === "true") {
+      return;
+    }
+
+    const totalDuration = duration * 1000;
+    const scrambleDuration = Math.max(0, totalDuration * Math.min(Math.max(scrambleRatio, 0), 1));
+    const revealDuration = Math.max(0, totalDuration - scrambleDuration);
+    const letters = targetText.split("");
+    const availableChars = chars.split("");
+    const pickRandomChar = () => availableChars[Math.floor(Math.random() * availableChars.length)] || " ";
+    const revealCountForTime = (elapsed) => {
+      if (revealDuration === 0) {
+        return letters.length;
+      }
+      const revealElapsed = Math.max(0, elapsed - scrambleDuration);
+      const linearProgress = Math.min(1, revealElapsed / revealDuration);
+      const easedProgress = ease ? ease(linearProgress) : linearProgress;
+      return Math.floor(easedProgress * letters.length);
+    };
+
+    const runId = `teaser-${Date.now()}-${Math.random()}`;
+    element.dataset.scrambleId = runId;
+    element.dataset.scrambleActive = "running";
+    if (typeof onStart === "function") {
+      onStart();
+    }
+    const startTime = performance.now();
+
+    let lastScrambleUpdate = startTime;
+
+    const update = (now) => {
+      if (element.dataset.scrambleId !== runId) {
+        return;
+      }
+
+      const elapsed = now - startTime;
+      if (elapsed >= totalDuration) {
+        element.textContent = targetText;
+        element.dataset.scrambleActive = once ? "done" : "";
+        if (once) {
+          element.dataset.scrambleCompleted = "true";
+        } else {
+          element.dataset.scrambleCompleted = "";
+        }
+        if (typeof onComplete === "function") {
+          onComplete();
+        }
+        return;
+      }
+
+      const revealCount = revealCountForTime(elapsed);
+      let display = "";
+
+      const allowScrambleUpdate = now - lastScrambleUpdate >= scrambleInterval;
+      if (allowScrambleUpdate) {
+        lastScrambleUpdate = now;
+      }
+
+      letters.forEach((char, index) => {
+        if (char === " ") {
+          display += " ";
+        } else if (elapsed < scrambleDuration) {
+          display += allowScrambleUpdate ? pickRandomChar() : element.textContent[index] || pickRandomChar();
+        } else if (index < revealCount) {
+          display += char;
+        } else if (allowScrambleUpdate) {
+          display += pickRandomChar();
+        } else {
+          display += element.textContent[index] || pickRandomChar();
+        }
+      });
+
+      element.textContent = display;
+      if (typeof onUpdate === "function") {
+        onUpdate(display);
+      }
+      requestAnimationFrame(update);
+    };
+
+    requestAnimationFrame(update);
+  };
 
   if (teaserTitles.length > 0 && typeof ScrollTrigger !== "undefined") {
+    const rootStyles = getComputedStyle(document.documentElement);
+    // MSQ color palette (same as hero logo)
+    const msqColors = [
+      "#75D8FF", // Blue
+      "#64D187", // Green
+      "#F2FA7D", // Yellow
+      "#9D78FE", // Purple
+      "#FEA5E5", // Pink
+      "#FE8F00", // Orange
+    ];
+    const getRandomMSQColor = () => msqColors[Math.floor(Math.random() * msqColors.length)];
+    const getRandomChar = (charset) => charset[Math.floor(Math.random() * charset.length)] || "A";
+    const baseColor = (rootStyles.getPropertyValue("--theme-text-dark") || "#1f1d1e").trim() || "#1f1d1e";
+
     teaserTitles.forEach((title) => {
-      // Split title text into words and wrap each in a span
+      // Split title text into letters and wrap each in a span (like hero logo)
       const text = title.textContent.trim();
-      const words = text.split(/\s+/);
+      const letters = text.split("");
 
-      // Clear and rebuild with wrapped words
-      title.innerHTML = words.map((word) => `<span class="teasers-title-word">${word}</span>`).join(" ");
+      // Clear and rebuild with wrapped letters
+      title.innerHTML = letters.map((letter) => `<span class="teasers-title-letter">${letter === " " ? "&nbsp;" : letter}</span>`).join("");
 
-      // Get all word elements
-      const wordElements = title.querySelectorAll(".teasers-title-word");
+      // Get all letter elements
+      const letterElements = Array.from(title.querySelectorAll(".teasers-title-letter"));
 
-      // Set initial state: words are invisible and positioned to the left
-      gsap.set(wordElements, {
+      // Initialize each letter with base color and store original text
+      letterElements.forEach((letter) => {
+        const original = letter.textContent.trim() || letter.innerHTML.trim();
+        if (original.length > 0 && original !== "&nbsp;") {
+          letter.dataset.scrambleWord = original;
+        } else if (original === "&nbsp;") {
+          letter.dataset.scrambleWord = " ";
+        }
+        // Set initial scrambled text (random character) - don't show actual letters yet
+        const isSpace = letter.dataset.scrambleWord === " ";
+        letter.textContent = isSpace ? " " : getRandomChar(teaserCharSet);
+        letter.style.color = baseColor;
+      });
+
+      // Set initial state: letters are invisible
+      gsap.set(letterElements, {
         opacity: 0,
-        x: -50, // Start from left (negative = left side)
       });
 
       // Get the parent teaser row for ScrollTrigger
@@ -1090,45 +1217,108 @@ document.addEventListener("DOMContentLoaded", function () {
       const teaserDescription = teaserRow?.querySelector(".teasers-description");
 
       if (teaserRow) {
+        const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+        let hasScrambled = false;
+
+        // Scramble letters into place function
+        const scrambleIntoPlace = () => {
+          // Prevent multiple calls
+          if (hasScrambled) {
+            return;
+          }
+          hasScrambled = true;
+
+          letterElements.forEach((letter, index) => {
+            const targetValue = letter.dataset.scrambleWord;
+            // Fade in the letter as it starts scrambling
+            gsap.to(letter, {
+              opacity: 1,
+              duration: 0.1,
+              delay: index * 0.06,
+              ease: "none",
+            });
+            
+            setTimeout(() => {
+              scrambleElement(letter, {
+                duration: 1.05,
+                scrambleRatio: 0.35,
+                scrambleInterval: 65,
+                chars: teaserCharSet,
+                once: true,
+                target: targetValue,
+                ease: easeOutCubic,
+                onStart: () => {
+                  letter.style.color = getRandomMSQColor();
+                },
+                onComplete: () => {
+                  letter.style.color = baseColor;
+                },
+              });
+            }, index * 60); // Stagger delay between letters (60ms)
+          });
+        };
+
         // Detect if we're on mobile (matches CSS breakpoint)
         const isMobile = window.innerWidth <= 768;
 
         // On mobile, titles are below images, so trigger animation later
         // On desktop, start later so transition is visible when scrolling down
-        const startPoint = isMobile ? "top 30%" : "top 60%"; // Later trigger so transition is visible
-        const endPoint = isMobile ? "top 10%" : "top 30%"; // Complete when section is more centered
+        const startPoint = isMobile ? "top 30%" : "top 60%";
 
-        // Create a scrubbed timeline for title animation that reverses on scroll
+        // Create ScrollTrigger for scramble animation
+        const st = ScrollTrigger.create({
+          trigger: teaserRow,
+          start: startPoint,
+          once: true,
+          onEnter: scrambleIntoPlace,
+          onEnterBack: scrambleIntoPlace,
+        });
+
+        // Check if element is already past the trigger point and trigger immediately if so
+        // This handles cases where the element is already in view when page loads
+        const checkAndTrigger = () => {
+          // Refresh ScrollTrigger to ensure it's initialized
+          ScrollTrigger.refresh();
+          
+          // Use ScrollTrigger's progress to check if we're already past the start point
+          if (st && st.progress > 0) {
+            // Already past trigger point, run animation immediately
+            scrambleIntoPlace();
+          } else {
+            // Check manually if element is in viewport and past trigger point
+            const rect = teaserRow.getBoundingClientRect();
+            const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+            const triggerPercent = isMobile ? 0.3 : 0.6;
+            const triggerPoint = viewportHeight * triggerPercent;
+            
+            // If top of element is above the trigger point, it should have already triggered
+            if (rect.top < triggerPoint && rect.bottom > 0) {
+              scrambleIntoPlace();
+            }
+          }
+        };
+
+        // Check after ScrollTrigger is initialized and on page load
+        setTimeout(checkAndTrigger, 200);
+        window.addEventListener("load", () => {
+          setTimeout(checkAndTrigger, 150);
+        }, { once: true });
+
+        // Create a timeline for description animation (after title completes)
         const titleTimeline = gsap.timeline({
           scrollTrigger: {
             trigger: teaserRow,
-            start: startPoint, // Start when row enters viewport (later on mobile)
-            end: endPoint, // End when row reaches middle/upper viewport
-            scrub: 0.15, // Smooth scroll-linked animation that reverses
-            // markers: true, // Uncomment for debugging
+            start: startPoint,
+            end: isMobile ? "top 10%" : "top 30%",
+            scrub: 0.15,
           },
-        });
-
-        // Add title word-by-word animation to timeline
-        // Coming in (scroll down): words slide from left to right (x: -50 to x: 0)
-        wordElements.forEach((word, index) => {
-          titleTimeline.to(
-            word,
-            {
-              opacity: 1,
-              x: 0, // End at aligned position (x: 0)
-              duration: 0.2, // Duration per word
-              ease: "power2.out",
-            },
-            index * 0.08 // Stagger delay between words
-          );
         });
 
         // Animate description text with same slide-in effect as title, after title completes
         if (teaserDescription) {
           // Handle both cases: description as <p> tag or as <div> container with <p> tags inside
           let descriptionParagraphs = teaserDescription.querySelectorAll("p");
-          
+
           // If no <p> tags found, treat the description itself as a paragraph
           if (descriptionParagraphs.length === 0) {
             descriptionParagraphs = [teaserDescription];
@@ -1151,9 +1341,11 @@ document.addEventListener("DOMContentLoaded", function () {
             x: -50, // Start from left (negative = left side)
           });
 
-          // Calculate when description should start animating (after all title words have animated)
-          const wordCount = wordElements.length;
-          const descriptionStartTime = wordCount * 0.08 + 0.2; // After all words + their duration
+          // Calculate when description should start animating (after all title letters have scrambled)
+          const letterCount = letterElements.length;
+          const scrambleDuration = 1.05; // Duration of scramble animation
+          const staggerDelay = 0.06; // Stagger delay between letters (60ms)
+          const descriptionStartTime = scrambleDuration + (letterCount * staggerDelay); // After scramble completes
 
           // Add description word-by-word animation to timeline after title completes
           // Same animation style as title: slide from left to right
@@ -1205,8 +1397,10 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         } else {
           // If no description, fade in button and opening after title completes
-          const titleWordCount = wordElements.length;
-          const titleEndTime = titleWordCount * 0.08 + 0.2; // After all title words + their duration
+          const letterCount = letterElements.length;
+          const scrambleDuration = 1.05; // Duration of scramble animation
+          const staggerDelay = 0.06; // Stagger delay between letters (60ms)
+          const titleEndTime = scrambleDuration + (letterCount * staggerDelay); // After scramble completes
 
           const teaserButton = teaserRow.querySelector(".teasers-button");
           const teaserOpening = teaserRow.querySelector(".teasers-opening");
@@ -1254,7 +1448,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (description && !title) {
         // Handle both cases: description as <p> tag or as <div> container with <p> tags inside
         let descriptionParagraphs = description.querySelectorAll("p");
-        
+
         // If no <p> tags found, treat the description itself as a paragraph
         if (descriptionParagraphs.length === 0) {
           descriptionParagraphs = [description];
@@ -1342,5 +1536,67 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
     });
+  }
+
+  // City Store video scroll-triggered playback
+  const cityStoreVideo = document.getElementById("city-store-video");
+  if (cityStoreVideo && typeof ScrollTrigger !== "undefined") {
+    const cityStoreRow = cityStoreVideo.closest(".teasers-row");
+    
+    if (cityStoreRow) {
+      ScrollTrigger.create({
+        trigger: cityStoreRow,
+        start: "top 80%",
+        end: "bottom 20%",
+        onEnter: () => {
+          cityStoreVideo.play().catch((e) => {
+            // Handle autoplay restrictions
+            console.log("Video play prevented:", e);
+          });
+        },
+        onEnterBack: () => {
+          cityStoreVideo.play().catch((e) => {
+            console.log("Video play prevented:", e);
+          });
+        },
+        onLeave: () => {
+          cityStoreVideo.pause();
+        },
+        onLeaveBack: () => {
+          cityStoreVideo.pause();
+        },
+      });
+    }
+  }
+
+  // Co-op Live video scroll-triggered playback
+  const coopLiveVideo = document.getElementById("coop-live-video");
+  if (coopLiveVideo && typeof ScrollTrigger !== "undefined") {
+    const coopLiveRow = coopLiveVideo.closest(".teasers-row");
+    
+    if (coopLiveRow) {
+      ScrollTrigger.create({
+        trigger: coopLiveRow,
+        start: "top 80%",
+        end: "bottom 20%",
+        onEnter: () => {
+          coopLiveVideo.play().catch((e) => {
+            // Handle autoplay restrictions
+            console.log("Video play prevented:", e);
+          });
+        },
+        onEnterBack: () => {
+          coopLiveVideo.play().catch((e) => {
+            console.log("Video play prevented:", e);
+          });
+        },
+        onLeave: () => {
+          coopLiveVideo.pause();
+        },
+        onLeaveBack: () => {
+          coopLiveVideo.pause();
+        },
+      });
+    }
   }
 });
