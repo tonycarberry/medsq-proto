@@ -112,3 +112,58 @@
   /* Duplicate text for seamless looping - no gap between instances */
   margin-left: 0;
 }
+
+/* Mini ticker variant (non-home pages) */
+.ticker-component--mini {
+  background-color: #f2fa7d;
+  border-top: 1px solid rgba(31, 29, 30, 0.12);
+  border-bottom: 1px solid rgba(31, 29, 30, 0.12);
+}
+
+.ticker-component--mini .ticker {
+  padding: 36px 0;
+}
+
+.ticker-component--mini .ticker__background {
+  display: none;
+}
+
+.ticker-component--mini .ticker__content {
+  position: relative;
+  left: auto;
+  top: auto;
+  transform: none;
+  width: 100%;
+  padding: 0 var(--site-margin);
+}
+
+.ticker-component--mini .ticker__text-wrapper {
+  gap: 48px;
+}
+
+.ticker-component--mini .ticker__text {
+  font-size: 56px;
+  letter-spacing: -1.4px;
+  color: var(--theme-text);
+  text-transform: uppercase;
+}
+
+.ticker-component--mini .ticker__word,
+.ticker-component--mini .ticker__separator {
+  color: inherit;
+}
+
+@media (max-width: 768px) {
+  .ticker-component--mini .ticker {
+    padding: 24px 0;
+  }
+
+  .ticker-component--mini .ticker__content {
+    padding: 0 24px;
+  }
+
+  .ticker-component--mini .ticker__text {
+    font-size: 34px;
+    letter-spacing: -0.8px;
+  }
+}

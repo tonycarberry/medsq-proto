@@ -82,24 +82,21 @@
 
 /* Centered Variant */
 .intro-text-secondary--center .intro-text-secondary__content {
-  align-items: center; /* Center-align content */
+  align-items: center; /* Center text block within section */
 }
 
 .intro-text-secondary--center .intro-text-secondary__text {
-  align-items: center; /* Center-align text container */
+  align-items: flex-start; /* Keep text left-aligned */
   padding: 0 96px; /* Match Figma: 96px horizontal padding */
+  max-width: 1024px; /* Match hero logo width to keep similar thickness */
+  width: 100%;
+  margin: 0 auto; /* Center text container */
 }
 
-.intro-text-secondary--center .intro-text-secondary__large {
-  text-align: center; /* Center-align heading */
-}
-
-.intro-text-secondary--center .intro-text-secondary__small {
-  text-align: center; /* Center-align small text */
-}
-
+.intro-text-secondary--center .intro-text-secondary__large,
+.intro-text-secondary--center .intro-text-secondary__small,
 .intro-text-secondary--center .intro-text-secondary__small p {
-  text-align: center; /* Center-align paragraphs */
+  text-align: left; /* Left-align text within centered container */
 }
 
 /* Reverse Variant (small text first, then large heading) */

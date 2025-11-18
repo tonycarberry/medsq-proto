@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="css/ticker.css?v=2" />
     <link rel="stylesheet" href="css/intro-text-secondary.css?v=1" />
     <link rel="stylesheet" href="css/attraction.css?v=7" />
+    <link rel="stylesheet" href="css/attractions-experiments.css?v=1" />
     <link rel="stylesheet" href="css/footer.css?v=2" />
     <link rel="stylesheet" href="css/styles.css?v=2" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
@@ -210,52 +211,44 @@
     </section>
 
     <!-- Ticker Component -->
-    <section class="ticker-component">
+    <section class="ticker-component ticker-component--mini">
       <div class="ticker">
-        <div class="ticker__background" aria-hidden="true">
-          <div class="ticker__bg-color"></div>
-          <img src="assets/ticker-background.png" alt="" class="ticker__image" />
-        </div>
         <div class="ticker__content">
           <div class="ticker__text-wrapper">
             <p class="ticker__text">
-              <span class="ticker__word ticker__word--pink">music</span>
+              <span class="ticker__word">FOOTBALL</span>
               <span class="ticker__separator"> </span>
-              <span class="ticker__word ticker__word--yellow">dining</span>
+              <span class="ticker__word">CONCERTS</span>
               <span class="ticker__separator"> </span>
-              <span class="ticker__word ticker__word--blue">experiences</span>
+              <span class="ticker__word">EVENTS</span>
               <span class="ticker__separator"> </span>
-              <span class="ticker__word ticker__word--green">education</span>
+              <span class="ticker__word">TOURS</span>
               <span class="ticker__separator"> </span>
-              <span class="ticker__word ticker__word--purple">events</span>
+              <span class="ticker__word">ADVENTURE</span>
               <span class="ticker__separator"> </span>
-              <span class="ticker__word ticker__word--orange">arts</span>
+              <span class="ticker__word">ENTERTAINMENT</span>
               <span class="ticker__separator"> </span>
-              <span class="ticker__word ticker__word--green">culture</span>
+              <span class="ticker__word">CULTURE</span>
               <span class="ticker__separator"> </span>
-              <span class="ticker__word ticker__word--pink">sports</span>
-              <span class="ticker__separator"> </span>
-              <span class="ticker__word ticker__word--yellow">family</span>
+              <span class="ticker__word">SPORTS</span>
               <span class="ticker__separator"> / </span>
             </p>
             <p class="ticker__text ticker__text--duplicate">
-              <span class="ticker__word ticker__word--pink">music</span>
+              <span class="ticker__word">FOOTBALL</span>
               <span class="ticker__separator"> </span>
-              <span class="ticker__word ticker__word--yellow">dining</span>
+              <span class="ticker__word">CONCERTS</span>
               <span class="ticker__separator"> </span>
-              <span class="ticker__word ticker__word--blue">experiences</span>
+              <span class="ticker__word">EVENTS</span>
               <span class="ticker__separator"> </span>
-              <span class="ticker__word ticker__word--green">education</span>
+              <span class="ticker__word">TOURS</span>
               <span class="ticker__separator"> </span>
-              <span class="ticker__word ticker__word--purple">events</span>
+              <span class="ticker__word">ADVENTURE</span>
               <span class="ticker__separator"> </span>
-              <span class="ticker__word ticker__word--orange">arts</span>
+              <span class="ticker__word">ENTERTAINMENT</span>
               <span class="ticker__separator"> </span>
-              <span class="ticker__word ticker__word--green">culture</span>
+              <span class="ticker__word">CULTURE</span>
               <span class="ticker__separator"> </span>
-              <span class="ticker__word ticker__word--pink">sports</span>
-              <span class="ticker__separator"> </span>
-              <span class="ticker__word ticker__word--yellow">family</span>
+              <span class="ticker__word">SPORTS</span>
               <span class="ticker__separator"> / </span>
             </p>
           </div>
@@ -277,97 +270,140 @@
       </div>
     </section>
 
-    <!-- Attractions Section -->
-    <section class="attractions-section">
-      <!-- Medlock Hotel (1st - Dark background, image left, content right) -->
-      <div class="attraction attraction--dark">
-        <div class="attraction__content">
-          <div class="attraction__text">
-            <h2 class="attraction__title">Medlock Hotel</h2>
-            <div class="attraction__description">
-              <p>More than just a place to stay. A perfect blend of comfort, style, and excitement.</p>
-              <p>Situated in the heart of the Entertainment District, it's a vibrant hub where guests can immerse themselves in the electrifying atmosphere of their favourite events.</p>
+    <!-- Attractions Teasers Section - Experiments Page -->
+    <section class="teasers-section" data-name="Teasers" data-node-id="4879:7976">
+      <!-- Medlock Hotel Row -->
+      <div class="teasers-row" data-name="Row" data-node-id="4879:7996">
+        <div class="teasers-col teasers-col--text teasers-col--text-right" data-name="Col Text L" data-node-id="4879:7998">
+          <div class="teasers-copy" data-name="Copy" data-node-id="4879:7999">
+            <div class="teasers-title-group" data-name="Title" data-node-id="4902:4806">
+              <div class="teasers-opening" data-name="opening" data-node-id="4868:5899">
+                <div class="teasers-opening-indicator-wrapper" data-name="indicator-box" data-node-id="4854:4952">
+                  <img src="http://localhost:3845/assets/cc15582a3f6525426e1d402a41bad234518840d0.svg" alt="" class="teasers-opening-indicator" />
+                </div>
+                <div class="teasers-opening-text">Opening 05/2026</div>
+              </div>
+              <h2 class="teasers-title teasers-title--right" data-node-id="4879:8002">Medlock Hotel</h2>
             </div>
-            <div class="attraction__button-group">
-              <button class="attraction__button">More</button>
-            </div>
+            <p class="teasers-description teasers-description--right" data-node-id="4879:8004">More than just a place to stay. <span class="teasers-description-bold">The Medlock Hotel</span> is a perfect blend of comfort, style, and excitement.</p>
+            <button class="teasers-button" data-name="button_default" data-node-id="4879:8009">More</button>
           </div>
         </div>
-        <div class="attraction__visual">
-          <img src="assets/attraction-hotel.png" alt="" class="attraction__image" />
+        <div class="teasers-col teasers-col--image" data-name="Col Img R" data-node-id="4879:8010">
+          <div class="teasers-image-container" data-name="image 18" data-node-id="4879:8011">
+            <img src="http://localhost:3845/assets/ff23c7e90675612971846f8207980c361c2d23f9.png" alt="" class="teasers-image" />
+          </div>
         </div>
       </div>
 
-      <!-- Food and Drink (2nd - Yellow background) -->
-      <div class="attraction attraction--yellow">
-        <div class="attraction__content">
-          <div class="attraction__text">
-            <h2 class="attraction__title">Food & Drink</h2>
-            <div class="attraction__description">
-              <p>From craft beers and cocktail to sizzling street food stalls.</p>
-              <p>Rooftop dining with skyline views to intimate restaurants serving up bold, global flavours - this is where your taste buds come to play.</p>
+      <!-- Line Separator -->
+      <div class="teasers-line" data-name="Line" data-node-id="4846:5576"></div>
+
+      <!-- Altitude Row -->
+      <div class="teasers-row teasers-row--reverse" data-name="Row" data-node-id="4879:8013">
+        <div class="teasers-col teasers-col--text teasers-col--text-left teasers-col--sticky" data-name="Col Text L" data-node-id="4879:8018">
+          <div class="teasers-copy" data-name="Copy" data-node-id="4879:8019">
+            <div class="teasers-title-group" data-name="Title" data-node-id="4902:4822">
+              <div class="teasers-opening" data-name="opening" data-node-id="4868:5899">
+                <div class="teasers-opening-indicator-wrapper" data-name="indicator-box" data-node-id="4854:4952">
+                  <img src="http://localhost:3845/assets/cc15582a3f6525426e1d402a41bad234518840d0.svg" alt="" class="teasers-opening-indicator" />
+                </div>
+                <div class="teasers-opening-text">Opening 05/2026</div>
+              </div>
+              <h2 class="teasers-title" data-node-id="4879:8020">Altitude</h2>
             </div>
-            <div class="attraction__button-group">
-              <button class="attraction__button">More</button>
+            <p class="teasers-description" data-node-id="4879:8021">Experience <span class="teasers-description-bold">Altitude Sky Walk</span> - the Etihad Stadium's thrilling new roofwalk experience that takes you higher than ever before.</p>
+          </div>
+        </div>
+        <div class="teasers-col teasers-col--image teasers-col--image-left" data-name="Col Img L" data-node-id="4902:4868">
+          <div class="teasers-image-bg" data-name="Img" data-node-id="4902:4869">
+            <div class="teasers-image-container teasers-image-container--large" data-name="image - 4:3" data-node-id="4902:4871">
+              <img src="http://localhost:3845/assets/e7a1eacd93cc6944b65ad6903ba660357d0a80e7.png" alt="" class="teasers-image" />
             </div>
           </div>
         </div>
-        <div class="attraction__visual">
-          <img src="assets/d0ca265ab0bdb81466bb91be67028797db80fba2.png" alt="" class="attraction__image" />
-          <img src="assets/attraction-food-drink-2.png" alt="" class="attraction__image" />
-        </div>
       </div>
 
-      <!-- Altitude (3rd - Dark background, image left, content right) -->
-      <div class="attraction attraction--dark">
-        <div class="attraction__content">
-          <div class="attraction__text">
-            <h2 class="attraction__title">Altitude</h2>
-            <div class="attraction__description">
-              <p>Adrenaline rooftop adventures at the Etihad Stadium</p>
+      <!-- Food & Drink Row -->
+      <div class="teasers-row" data-name="Row" data-node-id="4879:8031">
+        <div class="teasers-col teasers-col--text teasers-col--text-right" data-name="Col Text L" data-node-id="4879:8033">
+          <div class="teasers-copy teasers-copy--food-drink" data-name="Copy" data-node-id="4879:8034">
+            <div class="teasers-title-group" data-name="Title" data-node-id="4902:4836">
+              <div class="teasers-opening" data-name="opening" data-node-id="4868:5899">
+                <div class="teasers-opening-indicator-wrapper" data-name="indicator-box" data-node-id="4854:4952">
+                  <img src="http://localhost:3845/assets/cc15582a3f6525426e1d402a41bad234518840d0.svg" alt="" class="teasers-opening-indicator" />
+                </div>
+                <div class="teasers-opening-text">Opening 05/2026</div>
+              </div>
+              <h2 class="teasers-title teasers-title--right" data-node-id="4902:4838">Food & Drink</h2>
+            </div>
+            <p class="teasers-description teasers-description--right" data-node-id="4879:8038">Whether you're looking for a laid-back cappuccino and croissant or bustling street food from around the word, the <span class="teasers-description-underline">bars, cafes and restaurants</span> at Medlock Square have someone for everyone.</p>
+            <button class="teasers-button" data-name="button_default" data-node-id="4879:8040">More</button>
+          </div>
+        </div>
+        <div class="teasers-col teasers-col--image" data-name="Col R" data-node-id="4879:8044">
+          <div class="teasers-logo-grid" data-name="Image" data-node-id="4879:8045">
+            <div class="teasers-logo-grid-container" data-name="Logos" data-node-id="4879:8046">
+              <div class="teasers-logo-item teasers-logo-item--166" data-name="Market Hall 1" data-node-id="4879:8047">
+                <img src="http://localhost:3845/assets/ab9ab22630db1bc8b9ecfceaac6de6a8aae2c4b8.png" alt="" class="teasers-logo-image" />
+              </div>
+              <div class="teasers-logo-item teasers-logo-item--166" data-name="Hotel Brasserie 1" data-node-id="4879:8048">
+                <img src="http://localhost:3845/assets/3bcca4b1a276bcf37246be6d55a29f146b7d3368.png" alt="" class="teasers-logo-image" />
+              </div>
+              <div class="teasers-logo-item teasers-logo-item--166" data-name="Small Plates 1" data-node-id="4879:8049">
+                <img src="http://localhost:3845/assets/52fa6461f36b51b8d894b8926b2770ca90dbb0af.png" alt="" class="teasers-logo-image" />
+              </div>
+              <div class="teasers-logo-item teasers-logo-item--199" data-name="Canal Side 1" data-node-id="4879:8050">
+                <img src="http://localhost:3845/assets/0a301f06ba983a70b0f28a1cbc2cd19dec186b0d.png" alt="" class="teasers-logo-image" />
+              </div>
+              <div class="teasers-logo-item teasers-logo-item--199" data-name="Zadies 2" data-node-id="4879:8051">
+                <img src="http://localhost:3845/assets/7c5a18d0a4ef03d1d8904703ce90df7aefd899bd.png" alt="" class="teasers-logo-image" />
+              </div>
             </div>
           </div>
         </div>
-        <div class="attraction__visual">
-          <img src="assets/attraction-altitude.png" alt="" class="attraction__image" />
-        </div>
       </div>
 
-      <!-- Co-op Live (4th - Yellow background) -->
-      <div class="attraction attraction--yellow">
-        <div class="attraction__content">
-          <div class="attraction__text">
-            <h2 class="attraction__title">Co-op Live</h2>
-            <div class="attraction__description">
-              <p>Cutting edge visual technology, exceptional acoustics and innovative sound bowl design. Delivering the best show possible whether standing or seated, in a space designed to welcome the biggest and most exciting global artists.</p>
+      <!-- Etihad Stadium Row -->
+      <div class="teasers-row teasers-row--reverse" data-name="Row" data-node-id="4879:8053">
+        <div class="teasers-col teasers-col--text teasers-col--text-left teasers-col--etihad" data-name="Col Text L" data-node-id="4879:8058">
+          <div class="teasers-copy" data-name="Copy" data-node-id="4879:8059">
+            <div class="teasers-title-group" data-name="Title" data-node-id="4902:4823">
+              <h2 class="teasers-title" data-node-id="4902:4825">Etihad Stadium</h2>
             </div>
-            <div class="attraction__button-group">
-              <button class="attraction__button">More</button>
-            </div>
-          </div>
-        </div>
-        <div class="attraction__visual">
-          <img src="assets/attraction-coop-live.png" alt="" class="attraction__image" />
-        </div>
-      </div>
-
-      <!-- Etihad Stadium (5th - Dark background, image left, content right) -->
-      <div class="attraction attraction--dark">
-        <div class="attraction__content">
-          <div class="attraction__text">
-            <h2 class="attraction__title">Etihad Stadium</h2>
-            <div class="attraction__description">
+            <div class="teasers-description" data-node-id="4879:8064">
               <p>Not just a football ground - it's a world-class sporting and entertainment destination.</p>
-              <p>Home to Manchester City FC, the Etihad offers visitors the chance to step inside the world of top-tier football.</p>
-            </div>
-            <div class="attraction__button-group">
-              <button class="attraction__button">More</button>
+              <p>Home to <span class="teasers-description-bold">Manchester City FC</span>, the Etihad offers visitors the chance to step inside the world of top-tier football.</p>
             </div>
           </div>
         </div>
-        <div class="attraction__visual">
-          <img src="assets/attraction-etihad-stadium.png" alt="" class="attraction__image" />
+        <div class="teasers-col teasers-col--image teasers-col--image-left" data-name="Col Img R" data-node-id="4879:8055">
+          <div class="teasers-image-container teasers-image-container--small" data-name="image 18" data-node-id="4879:8057">
+            <img src="http://localhost:3845/assets/9a74b7bf676016c321dbf156dd8949652bcd9c54.png" alt="" class="teasers-image" />
+          </div>
         </div>
+      </div>
+
+      <!-- Co-op Live Row -->
+      <div class="teasers-row" data-name="Row" data-node-id="4879:8086">
+        <div class="teasers-col teasers-col--text teasers-col--text-right" data-name="Col Text L" data-node-id="4879:8088">
+          <div class="teasers-copy" data-name="Copy" data-node-id="4879:8089">
+            <div class="teasers-title-group" data-name="Title" data-node-id="4902:4851">
+              <h2 class="teasers-title teasers-title--right" data-node-id="4902:4853">Co-op Live</h2>
+            </div>
+            <p class="teasers-description teasers-description--right" data-node-id="4879:8094">The UK's largest entertainment area, offering the ultimate live music experience, attracting some of the world's biggest acts, from Drake, Lady Gaga and Billie Eilish, to name but a few.</p>
+          </div>
+        </div>
+        <div class="teasers-col teasers-col--image" data-name="Col Img R" data-node-id="4879:8115">
+          <div class="teasers-image-container teasers-image-container--small" data-name="image 18" data-node-id="4879:8117">
+            <img src="http://localhost:3845/assets/795fe01d0d456b20539bcfd95b60de36aab6bd1d.png" alt="" class="teasers-image" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Button Group -->
+      <div class="teasers-button-group" data-name="Button Group" data-node-id="4879:8119">
+        <button class="teasers-button" data-name="button_default" data-node-id="4879:8121">View all things to do</button>
       </div>
     </section>
 

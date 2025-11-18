@@ -7,6 +7,7 @@
   flex-direction: column;
   gap: 0; /* No gap between sections so corners meet */
   font-size: 0; /* Prevent whitespace between inline/inline-block elements from creating gaps */
+  background-color: #ffffff; /* White background */
 }
 
 .attractions-section > * {
@@ -20,7 +21,7 @@
   overflow: hidden;
   width: 100%;
   gap: 0; /* No gap between content and visual */
-  height: 544px; /* Fixed height matching Figma design */
+  height: 531px; /* Fixed height matching Figma design */
   margin: 0; /* Remove any default margins */
   padding: 0; /* Remove any default padding */
   border: none; /* Remove any borders */
@@ -28,39 +29,18 @@
   line-height: normal; /* Reset line-height after section */
 }
 
-/* Alternate layout: odd attractions have image on left, text on right */
-.attraction:nth-child(odd) {
-  flex-direction: row-reverse;
+/* Last attraction has slightly different height */
+.attraction--last {
+  height: 524px; /* Match Figma: 524px for last section */
 }
 
-/* Background colors - each attraction gets a unique color */
-.attraction:nth-child(1) {
-  background-color: #f2fa7d; /* Yellow - Medlock Hotel */
-}
-
-.attraction:nth-child(2) {
-  background-color: #f2fa7d; /* Yellow - Food & Drink */
-}
-
-.attraction:nth-child(3) {
-  background-color: #f2fa7d; /* Yellow - Altitude */
-}
-
-.attraction:nth-child(4) {
-  background-color: #f2fa7d; /* Yellow - Co-op Live */
-}
-
-.attraction:nth-child(5) {
-  background-color: #f2fa7d; /* Yellow - Etihad Stadium */
-}
-
-/* Keep old classes for backwards compatibility but they won't override nth-child */
-.attraction--dark {
-  /* Overridden by nth-child selectors */
-}
-
-.attraction--yellow {
-  /* Overridden by nth-child selectors */
+/* Alternating layout pattern:
+   - Odd rows (1, 3, 5): text left, image right (content first, image second in HTML)
+   - Even rows (2, 4): image left, text right (image first, content second in HTML)
+   All use flex-direction: row - HTML order determines visual position
+*/
+.attraction {
+  flex-direction: row;
 }
 
 .attraction__content {
@@ -68,35 +48,83 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 0 32px;
-  align-items: center; /* Center content */
-  justify-content: center;
+  padding: 0 120px 112px 120px; /* Match Figma: left 120px, bottom 112px */
+  align-items: flex-start; /* Left-align content */
+  justify-content: flex-end; /* Align to bottom */
   background-color: #ffffff; /* White background for content area */
   height: 100%;
+  box-sizing: border-box;
 }
 
 .attraction__text {
   display: flex;
   flex-direction: column;
-  gap: 24px; /* var(--spacing/8,24px) */
+  gap: 48px; /* Match Figma: var(--spacing/11,48px) */
   align-items: flex-start; /* Start alignment for text content */
-  justify-content: center;
-  color: var(--theme-text);
-  max-width: 530px; /* Match Figma: w-[530px] */
+  justify-content: flex-start;
+  color: var(--theme-text, #1f1d1e);
+  max-width: 400px; /* Match Figma: w-[400px] */
   width: 100%;
-  text-align: center; /* Center text alignment */
+  text-align: left; /* Left-align text */
+}
+
+/* Logo container for Co-op Live and Altitude */
+.attraction__logo {
+  width: 100%;
+  margin-bottom: 0; /* Gap handled by parent gap */
+}
+
+/* Hide empty logo containers */
+.attraction__logo:empty {
+  display: none;
+}
+
+.attraction__logo-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Co-op Live logo specific sizing */
+.attraction:nth-child(2) .attraction__logo-image {
+  width: 100px;
+  height: 104px;
+  object-fit: contain;
+}
+
+/* Altitude logo specific sizing */
+.attraction:nth-child(4) .attraction__logo-image {
+  width: 226px;
+  height: 77px;
+  object-fit: contain;
+}
+
+/* When logo is present, adjust gap between logo and description */
+.attraction__text .attraction__logo:not(:empty) + .attraction__description {
+  margin-top: 0;
+}
+
+/* Co-op Live: gap between logo and description is 40px when logo present, otherwise 48px */
+.attraction:nth-child(2) .attraction__text {
+  gap: 48px; /* Default gap - will be overridden by logo spacing if logo is added */
+}
+
+/* Altitude: gap between logo and description is 48px */
+.attraction:nth-child(4) .attraction__text {
+  gap: 48px; /* Match Figma: var(--spacing/11,48px) */
 }
 
 .attraction__title {
-  font-family: "Kippax Modern Condensed Medium", "Kippax Modern", sans-serif;
-  font-weight: 500;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700; /* Bold */
   font-style: normal;
-  line-height: 1; /* leading-none */
+  line-height: 1.1; /* Match Figma: line-height 1.1 */
   width: 100%;
-  font-size: 64px; /* var(--font-size/h2,64px) */
-  letter-spacing: -0.64px;
+  font-size: 40px; /* Match Figma: var(--font-size/h3,40px) */
+  letter-spacing: -1.2px; /* Match Figma: tracking -1.2px */
   margin: 0;
-  text-align: center; /* Center-aligned text */
+  text-align: left; /* Left-aligned text */
 }
 
 .attraction__title-word {
@@ -104,60 +132,120 @@
 }
 
 .attraction__description {
-  font-family: "Manrope", sans-serif;
-  font-weight: 400;
-  line-height: 32px; /* leading-[32px] */
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400; /* Regular */
+  line-height: 1.5; /* Match Figma: line-height 1.5 */
   width: 100%;
-  max-width: 530px; /* Match the wider second paragraph width */
-  font-size: 20px; /* text-[20px] */
+  max-width: 567px; /* Match Figma max-width */
+  font-size: 20px; /* Match Figma: text-[20px] */
   margin: 0;
-  text-align: center; /* Center-aligned text */
+  text-align: left; /* Left-aligned text */
+}
+
+.attraction__description-highlight {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700; /* Bold */
+  text-decoration: underline; /* Match Figma: underline */
+  text-decoration-skip-ink: none;
+  text-underline-position: from-font;
 }
 
 .attraction__description p {
-  margin-bottom: 0; /* No spacing between paragraphs - single text area */
+  margin-bottom: 12px; /* Match Figma: mb-[12px] */
 }
 
-.attraction__button-group {
+.attraction__description p:last-child {
+  margin-bottom: 0; /* No margin on last paragraph */
+}
+
+/* Description words for animation */
+.attraction__description-word {
+  display: inline-block;
+}
+
+/* Button group at bottom of attractions section */
+.attractions-section__button-group {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--content-space-button-group-gap);
+  gap: 16px; /* Match Figma: var(--space/3,16px) */
   align-items: center;
-  justify-content: center; /* Center buttons below text */
+  justify-content: flex-end; /* Right-align button */
+  padding: 40px 120px; /* Match Figma: py-[var(--space/6,40px)] px-[120px] */
   width: 100%;
-  max-width: 530px; /* Match text container width from Figma */
+  box-sizing: border-box;
 }
 
-.attraction__button {
-  background-color: rgba(255, 255, 255, 0); /* Transparent background - secondary button style */
-  border: var(--border-width-main) solid rgba(31, 29, 30, 0.2); /* Dark border with 20% opacity */
+.attractions-section__button {
+  background-color: #f2fa7d; /* Match Figma: var(--button/primary/background,#f2fa7d) */
+  border: 1.5px solid #f2fa7d; /* Match Figma: var(--border-width/main,1.5px) var(--button/primary/border,#f2fa7d) */
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--size-0-75) var(--size-1-5); /* 12px vertical, 24px horizontal */
-  border-radius: var(--radius-round);
-  font-family: var(--primary-family);
+  padding: 16px 24px; /* Match Figma: py-[var(--space/3,16px)] px-[var(--size/1\,5,24px)] */
+  border-radius: 4px; /* Match Figma: var(--border-radius/small,4px) */
+  font-family: var(--primary-family, "Montserrat", sans-serif);
   font-weight: 400;
-  line-height: var(--line-height-text);
-  color: var(--theme-text); /* Dark text color */
-  font-size: var(--font-size-text-main);
+  line-height: 1.5; /* Match Figma: var(--line-height-text,1.5) */
+  color: #1f1d1e; /* Match Figma: var(--button/primary/text,#1f1d1e) */
+  font-size: 16px; /* Match Figma: var(--font-size/text-main,16px) */
   white-space: pre;
   cursor: pointer;
   transition: background-color 0.2s ease, border-color 0.2s ease;
+  height: 56px; /* Match Figma: h-[56px] */
 }
 
-.attraction__button:hover {
-  background-color: rgba(31, 29, 30, 0.05); /* Slight background on hover */
+.attractions-section__button:hover {
+  background-color: #e8f06a; /* Slightly darker yellow on hover */
+  border-color: #e8f06a;
 }
 
 .attraction__visual {
-  flex: 0 0 50%; /* Exactly 50% width (720px) */
+  flex: 0 0 50%; /* Exactly 50% width (810px at 1440px viewport) */
   width: 50%;
-  height: 544px; /* Match container height */
+  height: 100%; /* Match container height */
   position: relative;
   overflow: hidden;
   min-width: 0;
   box-sizing: border-box;
+}
+
+/* Altitude visual overlay container for multiple images (if needed in future) */
+.attraction__visual-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Dark background for Altitude section (if needed in future) */
+.attraction__visual-bg {
+  position: absolute;
+  inset: 0;
+  background-color: #010101;
+  z-index: 0;
+}
+
+.attraction__visual-overlay .attraction__image {
+  position: absolute;
+  inset: 0;
+  max-width: none;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Altitude: overlay image (contain) */
+.attraction__image--overlay {
+  object-fit: contain;
+  object-position: 50% 50%;
+  z-index: 2;
+}
+
+/* Altitude: background image (cover) */
+.attraction__image--background {
+  object-fit: cover;
+  object-position: 50% 50%;
+  z-index: 1;
 }
 
 .attraction__image {
@@ -174,6 +262,15 @@
   border: none;
   outline: none;
   box-sizing: border-box;
+}
+
+/* Etihad Stadium image specific positioning */
+.attraction--last .attraction__image {
+  object-position: -8.27% -1.34%; /* Match Figma positioning */
+  width: 116.54%;
+  height: 101.34%;
+  left: -8.27%;
+  top: -1.34%;
 }
 
 /* Mobile Styles */
