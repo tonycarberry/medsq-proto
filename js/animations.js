@@ -1,3 +1,5 @@
+const NBSP = "\u00A0";
+
 // Hero animations
 document.addEventListener("DOMContentLoaded", function () {
   // Register GSAP plugins
@@ -1095,6 +1097,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const letters = targetText.split("");
     const availableChars = chars.split("");
     const pickRandomChar = () => availableChars[Math.floor(Math.random() * availableChars.length)] || " ";
+    const toDisplayChar = (char) => (char === " " ? NBSP : char);
     const revealCountForTime = (elapsed) => {
       if (revealDuration === 0) {
         return letters.length;
@@ -1122,7 +1125,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const elapsed = now - startTime;
       if (elapsed >= totalDuration) {
-        element.textContent = targetText;
+        element.textContent = toDisplayChar(targetText);
         element.dataset.scrambleActive = once ? "done" : "";
         if (once) {
           element.dataset.scrambleCompleted = "true";
@@ -1145,7 +1148,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       letters.forEach((char, index) => {
         if (char === " ") {
-          display += " ";
+          display += NBSP;
         } else if (elapsed < scrambleDuration) {
           display += allowScrambleUpdate ? pickRandomChar() : element.textContent[index] || pickRandomChar();
         } else if (index < revealCount) {
@@ -1219,14 +1222,18 @@ document.addEventListener("DOMContentLoaded", function () {
       if (teaserRow) {
         const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
         let hasScrambled = false;
+        
+        // Track whether scrambling has started (persists across function calls)
+        const scrambleStateAttr = "scrambleStarted";
 
         // Scramble letters into place function
         const scrambleIntoPlace = () => {
-          // Prevent multiple calls
-          if (hasScrambled) {
+          // Prevent multiple calls - check both local flag and data attribute
+          if (hasScrambled || title.dataset[scrambleStateAttr] === "true") {
             return;
           }
           hasScrambled = true;
+          title.dataset[scrambleStateAttr] = "true";
 
           letterElements.forEach((letter, index) => {
             const targetValue = letter.dataset.scrambleWord;
@@ -1237,7 +1244,7 @@ document.addEventListener("DOMContentLoaded", function () {
               delay: index * 0.06,
               ease: "none",
             });
-            
+
             setTimeout(() => {
               scrambleElement(letter, {
                 duration: 1.05,
@@ -1274,42 +1281,24 @@ document.addEventListener("DOMContentLoaded", function () {
           onEnterBack: scrambleIntoPlace,
         });
 
-        // Check if element is already past the trigger point and trigger immediately if so
-        // This handles cases where the element is already in view when page loads
-        const checkAndTrigger = () => {
-          // Check manually if element is in viewport and past trigger point
-          const rect = teaserRow.getBoundingClientRect();
-          const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-          const triggerPercent = isMobile ? 0.3 : 0.6;
-          const triggerPoint = viewportHeight * triggerPercent;
-          
-          // If top of element is above the trigger point, it should have already triggered
-          if (rect.top < triggerPoint && rect.bottom > 0) {
-            scrambleIntoPlace();
-            return;
-          }
-
-          // Also check ScrollTrigger progress if available
-          if (st && st.progress > 0) {
-            scrambleIntoPlace();
-          }
-        };
-
-        // Check immediately and after delays to catch all cases
-        // Check right away for elements already in view
-        checkAndTrigger();
-        
-        // Check after ScrollTrigger is initialized
-        setTimeout(() => {
-          ScrollTrigger.refresh();
-          checkAndTrigger();
-        }, 100);
-        
-        // Check on page load
-        window.addEventListener("load", () => {
-          ScrollTrigger.refresh();
-          setTimeout(checkAndTrigger, 100);
-        }, { once: true });
+        // IntersectionObserver fallback to ensure titles animate when entering viewport
+        if ("IntersectionObserver" in window) {
+          const observer = new IntersectionObserver(
+            (entries, obs) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  obs.disconnect();
+                  scrambleIntoPlace();
+                }
+              });
+            },
+            {
+              root: null,
+              threshold: 0.25,
+            }
+          );
+          observer.observe(teaserRow);
+        }
 
         // Create a timeline for description animation (after title completes)
         const titleTimeline = gsap.timeline({
@@ -1352,7 +1341,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const letterCount = letterElements.length;
           const scrambleDuration = 1.05; // Duration of scramble animation
           const staggerDelay = 0.06; // Stagger delay between letters (60ms)
-          const descriptionStartTime = scrambleDuration + (letterCount * staggerDelay); // After scramble completes
+          const descriptionStartTime = scrambleDuration + letterCount * staggerDelay; // After scramble completes
 
           // Add description word-by-word animation to timeline after title completes
           // Same animation style as title: slide from left to right
@@ -1377,6 +1366,9 @@ document.addEventListener("DOMContentLoaded", function () {
           const teaserButton = teaserRow.querySelector(".teasers-button");
           const teaserOpening = teaserRow.querySelector(".teasers-opening");
 
+          const buttonStartTime = descriptionEndTime;
+          const openingStartTime = buttonStartTime + 0.2; // Badge follows CTA
+
           if (teaserButton) {
             gsap.set(teaserButton, { opacity: 0 });
             titleTimeline.to(
@@ -1386,7 +1378,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 duration: 0.3, // 300ms fade-in
                 ease: "power2.out",
               },
-              descriptionEndTime
+              buttonStartTime
             );
           }
 
@@ -1399,7 +1391,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 duration: 0.3, // 300ms fade-in
                 ease: "power2.out",
               },
-              descriptionEndTime
+              openingStartTime
             );
           }
         } else {
@@ -1407,10 +1399,12 @@ document.addEventListener("DOMContentLoaded", function () {
           const letterCount = letterElements.length;
           const scrambleDuration = 1.05; // Duration of scramble animation
           const staggerDelay = 0.06; // Stagger delay between letters (60ms)
-          const titleEndTime = scrambleDuration + (letterCount * staggerDelay); // After scramble completes
+          const titleEndTime = scrambleDuration + letterCount * staggerDelay; // After scramble completes
 
           const teaserButton = teaserRow.querySelector(".teasers-button");
           const teaserOpening = teaserRow.querySelector(".teasers-opening");
+          const buttonStartTime = titleEndTime;
+          const openingStartTime = buttonStartTime + 0.2;
 
           if (teaserButton) {
             gsap.set(teaserButton, { opacity: 0 });
@@ -1421,7 +1415,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 duration: 0.3, // 300ms fade-in
                 ease: "power2.out",
               },
-              titleEndTime
+              buttonStartTime
             );
           }
 
@@ -1434,7 +1428,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 duration: 0.3, // 300ms fade-in
                 ease: "power2.out",
               },
-              titleEndTime
+              openingStartTime
             );
           }
         }
@@ -1516,6 +1510,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const teaserButton = teaserRow.querySelector(".teasers-button");
         const teaserOpening = teaserRow.querySelector(".teasers-opening");
 
+        const buttonStartTime = descriptionEndTime;
+        const openingStartTime = buttonStartTime + 0.2;
+
         if (teaserButton) {
           gsap.set(teaserButton, { opacity: 0 });
           descriptionTimeline.to(
@@ -1525,7 +1522,7 @@ document.addEventListener("DOMContentLoaded", function () {
               duration: 0.3, // 300ms fade-in
               ease: "power2.out",
             },
-            descriptionEndTime
+            buttonStartTime
           );
         }
 
@@ -1538,7 +1535,7 @@ document.addEventListener("DOMContentLoaded", function () {
               duration: 0.3, // 300ms fade-in
               ease: "power2.out",
             },
-            descriptionEndTime
+            openingStartTime
           );
         }
       }
@@ -1549,7 +1546,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const cityStoreVideo = document.getElementById("city-store-video");
   if (cityStoreVideo && typeof ScrollTrigger !== "undefined") {
     const cityStoreRow = cityStoreVideo.closest(".teasers-row");
-    
+
     if (cityStoreRow) {
       ScrollTrigger.create({
         trigger: cityStoreRow,
@@ -1580,7 +1577,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const coopLiveVideo = document.getElementById("coop-live-video");
   if (coopLiveVideo && typeof ScrollTrigger !== "undefined") {
     const coopLiveRow = coopLiveVideo.closest(".teasers-row");
-    
+
     if (coopLiveRow) {
       ScrollTrigger.create({
         trigger: coopLiveRow,

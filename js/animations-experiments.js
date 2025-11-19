@@ -1377,7 +1377,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Teasers title word-by-word animation (matching attraction title style)
-  const teaserTitles = document.querySelectorAll(".teasers-title");
+  // Only run on pages that explicitly opt in (e.g., attractions page)
+  const shouldAnimateTeaserTitles = document.body.classList.contains("page-attractions");
+  const teaserTitles = shouldAnimateTeaserTitles ? document.querySelectorAll(".teasers-title") : [];
 
   if (teaserTitles.length > 0 && typeof ScrollTrigger !== "undefined") {
     teaserTitles.forEach((title) => {
