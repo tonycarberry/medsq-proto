@@ -244,37 +244,8 @@
   padding-top: var(--space-5);
 }
 
-/* Dark Mode Nav for Attractions Page */
-.page-attractions .nav {
-  background-color: #1f1d1e; /* Dark background matching Figma */
-}
-
-.page-attractions .nav__link {
-  color: #ffffff; /* White text on dark background */
-}
-
-.page-attractions .nav__link--active {
-  box-shadow: inset 0px -2px 0px 0px #ffffff; /* White underline for active link */
-}
-
-.page-attractions .nav__logo svg path {
-  fill: #ffffff !important; /* White logo on dark background - override inline fill */
-}
-
-.page-attractions .nav__mobile-menu-toggle::before {
-  background-color: #ffffff; /* White burger icon */
-  box-shadow: 0 6px 0 0 #ffffff, 0 12px 0 0 #ffffff;
-}
-
-.page-attractions .nav__icon {
-  filter: brightness(0) invert(1); /* White icon on dark background */
-}
-
-.page-attractions .nav__button {
-  background-color: var(--button-primary-background); /* Keep yellow button */
-  border-color: var(--button-primary-border);
-  color: var(--button-primary-text); /* Dark text on yellow button */
-}
+/* Attractions page nav now uses default light theme (white background, dark text) */
+/* Removed dark mode styles to match other pages */
 
 /* Mobile Styles */
 @media (max-width: 1024px) {

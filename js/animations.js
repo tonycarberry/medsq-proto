@@ -1277,31 +1277,38 @@ document.addEventListener("DOMContentLoaded", function () {
         // Check if element is already past the trigger point and trigger immediately if so
         // This handles cases where the element is already in view when page loads
         const checkAndTrigger = () => {
-          // Refresh ScrollTrigger to ensure it's initialized
-          ScrollTrigger.refresh();
+          // Check manually if element is in viewport and past trigger point
+          const rect = teaserRow.getBoundingClientRect();
+          const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+          const triggerPercent = isMobile ? 0.3 : 0.6;
+          const triggerPoint = viewportHeight * triggerPercent;
           
-          // Use ScrollTrigger's progress to check if we're already past the start point
-          if (st && st.progress > 0) {
-            // Already past trigger point, run animation immediately
+          // If top of element is above the trigger point, it should have already triggered
+          if (rect.top < triggerPoint && rect.bottom > 0) {
             scrambleIntoPlace();
-          } else {
-            // Check manually if element is in viewport and past trigger point
-            const rect = teaserRow.getBoundingClientRect();
-            const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-            const triggerPercent = isMobile ? 0.3 : 0.6;
-            const triggerPoint = viewportHeight * triggerPercent;
-            
-            // If top of element is above the trigger point, it should have already triggered
-            if (rect.top < triggerPoint && rect.bottom > 0) {
-              scrambleIntoPlace();
-            }
+            return;
+          }
+
+          // Also check ScrollTrigger progress if available
+          if (st && st.progress > 0) {
+            scrambleIntoPlace();
           }
         };
 
-        // Check after ScrollTrigger is initialized and on page load
-        setTimeout(checkAndTrigger, 200);
+        // Check immediately and after delays to catch all cases
+        // Check right away for elements already in view
+        checkAndTrigger();
+        
+        // Check after ScrollTrigger is initialized
+        setTimeout(() => {
+          ScrollTrigger.refresh();
+          checkAndTrigger();
+        }, 100);
+        
+        // Check on page load
         window.addEventListener("load", () => {
-          setTimeout(checkAndTrigger, 150);
+          ScrollTrigger.refresh();
+          setTimeout(checkAndTrigger, 100);
         }, { once: true });
 
         // Create a timeline for description animation (after title completes)
