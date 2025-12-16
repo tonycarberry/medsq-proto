@@ -2,12 +2,14 @@
 .ticker-component {
   width: 100%;
   position: relative;
+  margin-bottom: var(--space-8, 64px); /* tighter gap below ticker to match Figma */
 }
 
 .ticker {
   position: relative;
   width: 100%;
   overflow: visible; /* Allow image to show at full height */
+  /* Create positioning context for absolute children */
 }
 
 .ticker__background {
@@ -15,37 +17,44 @@
   pointer-events: none;
   overflow: hidden; /* Clip zoomed image edges */
   width: 100%;
-  max-width: 1440px; /* Constrain image to max-width */
   margin: 0 auto; /* Center the image container */
-  padding: 0 var(--site-margin); /* Add side padding */
+  padding: 0 var(--site-margin); /* Equal padding on left and right */
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .ticker__bg-color {
   display: none; /* Not needed when image determines height */
 }
 
-.ticker__image {
+.ticker__video {
   display: block;
-  width: 100%; /* Constrain to container width */
-  height: auto; /* Let image maintain aspect ratio */
-  max-width: 100%; /* Constrain to container */
+  width: 100%; /* Responsive width */
+  height: 563px; /* Fixed height - maintains y dimension */
   object-fit: cover;
   object-position: center center;
+  max-width: 100%;
 }
 
 .ticker__content {
   position: absolute;
-  left: 0;
+  left: 50vw; /* Position from viewport center */
   top: 50%; /* Vertically center */
-  transform: translateY(-50%); /* Center vertically */
-  width: 100vw; /* Full viewport width for edge-to-edge scrolling */
+  transform: translate(-50%, -50%); /* Center both horizontally and vertically */
+  width: 100vw; /* Full viewport width for edge-to-edge text */
   overflow: hidden;
+  z-index: 2; /* Ensure text appears above video */
 }
 
 @media (max-width: 768px) {
   .ticker__background {
     padding: 0 var(--space-5); /* Use smaller padding on mobile (32px) */
+  }
+
+  .ticker__video {
+    height: 563px; /* Maintain same height on mobile */
   }
 
   .ticker__text {
@@ -65,7 +74,7 @@
   font-weight: 700; /* Bold */
   font-style: normal;
   line-height: 1; /* Match Figma: line-height 1 */
-  font-size: 100px; /* Match Figma: 100px Display size */
+  font-size: 40px; /* Match Figma: 100px Display size */
   text-transform: uppercase; /* Match Figma: uppercase */
   white-space: nowrap;
   letter-spacing: -1px; /* Match Figma: -1px tracking */
@@ -76,12 +85,14 @@
 
 .ticker__word {
   display: inline-block;
+  margin-right: 1.5em; /* Add more space after each word */
 }
 
 .ticker__separator {
   display: inline-block;
   white-space: pre; /* Preserve spacing */
   color: #f2fa7d; /* Yellow separator color */
+  margin: 0 0.75em; /* Increase space between groups */
 }
 
 .ticker__word--pink {

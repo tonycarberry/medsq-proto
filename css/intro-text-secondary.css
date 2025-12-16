@@ -130,13 +130,15 @@
 /* Mobile Styles */
 @media (max-width: 768px) {
   .intro-text-secondary__content {
-    padding: var(--section-space-small) 24px; /* Match Figma mobile padding */
+    padding: 40px 20px 48px; /* Softer spacing on mobile */
   }
 
   .intro-text-secondary__large {
-    font-size: 48px; /* Smaller H1 on mobile */
-    letter-spacing: -1.92px; /* Proportional letter spacing */
+    font-size: 40px; /* Prevent overflow on narrow screens */
+    letter-spacing: -1.2px; /* Proportional letter spacing */
     max-width: 100%;
+    width: 100%;
+    line-height: 1.05;
   }
 
   .intro-text-secondary__small {
@@ -145,6 +147,11 @@
   }
 
   .intro-text-secondary--center .intro-text-secondary__text {
-    padding: 0 24px; /* Match mobile padding */
+    padding: 0 12px; /* Reduced horizontal padding */
+  }
+
+  .intro-text-secondary--center .intro-text-secondary__large {
+    width: 100%; /* Avoid fixed 900px width on mobile */
+    max-width: 100%;
   }
 }

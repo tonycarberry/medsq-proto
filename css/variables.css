@@ -104,3 +104,12 @@ p,
   orphans: 2;
   widows: 2;
 }
+
+/* Mobile-friendly spacing and margins */
+@media (max-width: 768px) {
+  :root {
+    --site-margin: 24px;
+    --section-space-small: 48px;
+    --section-space-main: 72px;
+  }
+}

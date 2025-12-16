@@ -1247,7 +1247,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             setTimeout(() => {
               scrambleElement(letter, {
-                duration: 1.05,
+                duration: 0.75,
                 scrambleRatio: 0.35,
                 scrambleInterval: 65,
                 chars: teaserCharSet,
@@ -1339,7 +1339,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           // Calculate when description should start animating (after all title letters have scrambled)
           const letterCount = letterElements.length;
-          const scrambleDuration = 1.05; // Duration of scramble animation
+          const scrambleDuration = 0.75; // Duration of scramble animation
           const staggerDelay = 0.06; // Stagger delay between letters (60ms)
           const descriptionStartTime = scrambleDuration + letterCount * staggerDelay; // After scramble completes
 
@@ -1397,7 +1397,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           // If no description, fade in button and opening after title completes
           const letterCount = letterElements.length;
-          const scrambleDuration = 1.05; // Duration of scramble animation
+          const scrambleDuration = 0.75; // Duration of scramble animation
           const staggerDelay = 0.06; // Stagger delay between letters (60ms)
           const titleEndTime = scrambleDuration + letterCount * staggerDelay; // After scramble completes
 
