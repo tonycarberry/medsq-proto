@@ -8,7 +8,7 @@
 .ticker {
   position: relative;
   width: 100%;
-  overflow: visible; /* Allow image to show at full height */
+  overflow: hidden; /* Prevent horizontal overflow on mobile while keeping visuals contained */
   /* Create positioning context for absolute children */
 }
 
@@ -40,10 +40,10 @@
 
 .ticker__content {
   position: absolute;
-  left: 50%; /* Position from container center to avoid viewport overflow */
+  left: 50%; /* Position from viewport center */
   top: 50%; /* Vertically center */
   transform: translate(-50%, -50%); /* Center both horizontally and vertically */
-  width: 100%; /* Use container width to prevent horizontal scroll */
+  width: 100vw; /* Full viewport width for edge-to-edge text */
   overflow: hidden;
   z-index: 2; /* Ensure text appears above video */
 }
