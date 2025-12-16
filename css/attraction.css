@@ -5,7 +5,7 @@
   margin: 0; /* Remove all margins */
   display: flex;
   flex-direction: column;
-  gap: 0; /* No gap between sections so corners meet */
+  gap: var(--section-space-small, 80px); /* Consistent spacing between attractions */
   font-size: 0; /* Prevent whitespace between inline/inline-block elements from creating gaps */
   background-color: #ffffff; /* White background */
 }
