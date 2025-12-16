@@ -9,6 +9,7 @@ body {
   font-family: var(--primary-family);
   background-color: var(--theme-background);
   color: var(--theme-text);
+  overflow-x: hidden; /* Prevent accidental horizontal scroll on mobile */
 }
 
 /* Reset */
