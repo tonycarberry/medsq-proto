@@ -144,6 +144,12 @@
   .intro-text-secondary__small {
     font-size: 18px; /* Smaller text on mobile */
     max-width: 100%;
+    width: 100%;
+    text-align: center;
+  }
+
+  .intro-text-secondary__small p {
+    text-align: center;
   }
 
   .intro-text-secondary--center .intro-text-secondary__text {

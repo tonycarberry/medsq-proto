@@ -495,22 +495,22 @@
     order: 1;
     padding: var(--space-5, 24px) 0;
     min-height: auto;
-    align-items: flex-start !important;
+    align-items: center !important;
   }
 
   .teasers-col--text-left,
   .teasers-col--text-right {
     padding-left: 0;
     padding-right: 0;
-    align-items: flex-start !important;
+    align-items: center !important;
   }
 
   .teasers-col--text-right .teasers-copy {
-    align-items: flex-start !important;
+    align-items: center !important;
   }
 
   .teasers-col--text-right .teasers-title-group {
-    align-items: flex-start !important;
+    align-items: center !important;
   }
 
   .teasers-col--image {
@@ -528,12 +528,21 @@
 
   .teasers-copy {
     gap: var(--space-5, 24px);
-    align-items: flex-start !important;
+    align-items: center !important;
+    max-width: 100%;
+    width: 100%;
   }
 
   .teasers-title-group {
     gap: var(--space-4, 16px);
-    align-items: flex-start !important;
+    align-items: center !important;
+    width: 100%;
+  }
+
+  .teasers-opening {
+    align-self: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .teasers-title {
@@ -542,22 +551,22 @@
     letter-spacing: -0.44px;
     width: 100%;
     white-space: normal;
-    text-align: left !important;
+    text-align: center !important;
   }
 
   .teasers-title--right {
-    text-align: left !important;
+    text-align: center !important;
   }
 
   .teasers-description {
     font-size: 16px;
     width: 100%;
     max-width: 100%;
-    text-align: left !important;
+    text-align: center !important;
   }
 
   .teasers-description--right {
-    text-align: left !important;
+    text-align: center !important;
   }
 
   .teasers-image-container {
@@ -604,6 +613,9 @@
 
   .teasers-button {
     padding: var(--space-3, 12px) var(--size-1-5, 24px);
+    align-self: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .teasers-button-group {

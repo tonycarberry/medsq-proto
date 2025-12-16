@@ -116,10 +116,14 @@
   .video-text__text {
     padding: 0;
     max-width: 100%;
+    width: 100%;
+    align-items: center;
   }
 
   .video-text__body {
     font-size: 18px;
+    text-align: center;
+    width: 100%;
   }
 }
 
