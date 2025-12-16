@@ -470,7 +470,7 @@
 /* Mobile Styles */
 @media (max-width: 768px) {
   .teasers-section {
-    gap: 0;
+    gap: var(--section-space-small, 80px);
     padding: 0;
     max-width: 100%;
   }
