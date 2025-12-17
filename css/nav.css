@@ -4,10 +4,16 @@
 }
 
 .nav {
-  background-color: var(--theme-background);
+  /* Figma: dark nav bar */
+  background-color: var(--theme-background-dark, #1e1e28);
+  color: #ffffff;
+  /* Used by `assets/hero/hero-logo.svg` (it uses CSS variables for fill) */
+  --fill-0: #ffffff;
   display: flex;
   align-items: center;
-  padding: var(--space-2) 32px;
+  height: 72px;
+  /* Figma is 1440w with 120px gutters, but clamp for smaller screens */
+  padding: 0 clamp(32px, 8vw, 120px);
   width: 100%;
   position: relative;
 }
@@ -31,6 +37,8 @@
   width: 56px;
   height: 56px;
   flex-shrink: 0;
+  /* External SVGs loaded via <img> don't inherit CSS variables reliably */
+  filter: brightness(0) invert(1);
 }
 
 .nav__menu {
@@ -42,6 +50,7 @@
 }
 
 .nav__menu-links {
+  /* Center menu links in the full nav (matches Figma) */
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -57,17 +66,20 @@
   height: 100%;
   align-items: center;
   padding: 0 var(--space-3);
-  font-family: var(--primary-family);
-  font-weight: 400;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
   line-height: var(--line-height-text);
-  color: var(--theme-text);
-  font-size: var(--font-size-text-small);
+  color: #ffffff;
+  font-size: 14px;
   white-space: nowrap;
   position: relative;
+  text-transform: uppercase;
+  text-decoration: none;
+  background-color: transparent;
 }
 
 .nav__link--active {
-  box-shadow: inset 0px -2px 0px 0px var(--theme-text);
+  box-shadow: inset 0px -2px 0px 0px currentColor;
 }
 
 .nav__actions {
@@ -77,6 +89,7 @@
   align-items: center;
   flex-shrink: 0;
   margin-left: auto;
+  z-index: 1;
 }
 
 .nav__action-group {
@@ -86,7 +99,7 @@
 }
 
 .nav__icon-link {
-  display: flex;
+  display: none;
   gap: var(--space-2);
   height: 100%;
   align-items: center;
@@ -105,16 +118,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-3) var(--size-1-5);
-  border-radius: 0;
-  font-family: var(--primary-family);
-  font-weight: 400;
+  padding: 16px 24px;
+  border-radius: 4px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
   line-height: var(--line-height-text);
-  color: var(--button-primary-text);
-  font-size: var(--font-size-text-main);
+  color: var(--theme-text, #1f1d1e);
+  font-size: 14px;
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
+  text-transform: uppercase;
 }
 
 /* Mobile Menu Toggle Button */
@@ -145,8 +159,8 @@
   display: block;
   width: 28px;
   height: 2px;
-  background-color: var(--theme-text);
-  box-shadow: 0 6px 0 0 var(--theme-text), 0 12px 0 0 var(--theme-text);
+  background-color: #ffffff;
+  box-shadow: 0 6px 0 0 #ffffff, 0 12px 0 0 #ffffff;
   flex-shrink: 0;
   position: relative;
   z-index: 1;
@@ -269,8 +283,7 @@
   }
 
   .nav {
-    padding: 8px 32px; /* Mobile padding: 8px vertical, 32px horizontal */
-    height: auto; /* Allow height to adjust with padding */
-    min-height: 72px; /* Minimum height to match Figma */
+    padding: 0 32px;
+    height: 72px;
   }
 }

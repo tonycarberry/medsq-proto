@@ -1327,7 +1327,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (teaserImageContainers.length > 0 && typeof ScrollTrigger !== "undefined") {
     teaserImageContainers.forEach((container) => {
       const teaserRow = container.closest(".teasers-row");
-      const teaserImage = container.querySelector(".teasers-image");
+      const teaserImage = container.querySelector(".teasers-image") || container.querySelector(".teasers-video");
 
       if (teaserRow && teaserImage) {
         // Set initial state: fully masked (clip-path inset right at 100%)
@@ -1506,13 +1506,15 @@ document.addEventListener("DOMContentLoaded", function () {
           }
 
           if (teaserOpening) {
-            gsap.set(teaserOpening, { opacity: 0 });
-            titleTimeline.to(
+            // Don't hide by default; only apply "from" values when the timeline plays
+            titleTimeline.fromTo(
               teaserOpening,
+              { opacity: 0 },
               {
                 opacity: 1,
                 duration: 0.3, // 300ms fade-in
                 ease: "power2.out",
+                immediateRender: false,
               },
               descriptionEndTime
             );
@@ -1539,13 +1541,15 @@ document.addEventListener("DOMContentLoaded", function () {
           }
 
           if (teaserOpening) {
-            gsap.set(teaserOpening, { opacity: 0 });
-            titleTimeline.to(
+            // Don't hide by default; only apply "from" values when the timeline plays
+            titleTimeline.fromTo(
               teaserOpening,
+              { opacity: 0 },
               {
                 opacity: 1,
                 duration: 0.3, // 300ms fade-in
                 ease: "power2.out",
+                immediateRender: false,
               },
               titleEndTime
             );
@@ -1643,13 +1647,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (teaserOpening) {
-          gsap.set(teaserOpening, { opacity: 0 });
-          descriptionTimeline.to(
+          // Don't hide by default; only apply "from" values when the timeline plays
+          descriptionTimeline.fromTo(
             teaserOpening,
+            { opacity: 0 },
             {
               opacity: 1,
               duration: 0.3, // 300ms fade-in
               ease: "power2.out",
+              immediateRender: false,
             },
             descriptionEndTime
           );

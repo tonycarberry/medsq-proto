@@ -187,6 +187,22 @@ document.addEventListener("DOMContentLoaded", function () {
   if (tickerTextWrapper && tickerText && tickerContent) {
     // Wait for layout to be ready before calculating dimensions
     const initTickerAnimation = () => {
+      // Intro mask reveal from center outward, triggered on enter (not on load)
+      if (typeof ScrollTrigger !== "undefined") {
+        gsap.set(tickerContent, { clipPath: "inset(0 50% 0 50%)" });
+        gsap.to(tickerContent, {
+          clipPath: "inset(0 0% 0 0%)",
+          duration: 1.2,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: tickerSection || tickerContent,
+            start: "top 85%",
+            end: "top 60%",
+            once: true,
+          },
+        });
+      }
+
       // Calculate the width of one text element
       const textWidth = tickerText.offsetWidth;
       const contentWidth = window.innerWidth || document.documentElement.clientWidth;
@@ -1016,7 +1032,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (teaserImageContainers.length > 0 && typeof ScrollTrigger !== "undefined") {
     teaserImageContainers.forEach((container) => {
-      const teaserImage = container.querySelector(".teasers-image");
+      const teaserImage = container.querySelector(".teasers-image") || container.querySelector(".teasers-video");
 
       if (teaserImage) {
         // Set initial state: fully masked (clip-path inset right at 100%)
@@ -1196,7 +1212,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Get all letter elements
       const letterElements = Array.from(title.querySelectorAll(".teasers-title-letter"));
 
-      // Initialize each letter with base color and store original text
+      // Initialize each letter with base color and store original text (no scrambling)
       letterElements.forEach((letter) => {
         const original = letter.textContent.trim() || letter.innerHTML.trim();
         if (original.length > 0 && original !== "&nbsp;") {
@@ -1204,9 +1220,8 @@ document.addEventListener("DOMContentLoaded", function () {
         } else if (original === "&nbsp;") {
           letter.dataset.scrambleWord = " ";
         }
-        // Set initial scrambled text (random character) - don't show actual letters yet
         const isSpace = letter.dataset.scrambleWord === " ";
-        letter.textContent = isSpace ? " " : getRandomChar(teaserCharSet);
+        letter.textContent = isSpace ? " " : letter.dataset.scrambleWord;
         letter.style.color = baseColor;
       });
 
@@ -1221,74 +1236,75 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (teaserRow) {
         const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
-        let hasScrambled = false;
         
-        // Track whether scrambling has started (persists across function calls)
-        const scrambleStateAttr = "scrambleStarted";
+        // Reset function to prepare for replay
+        const resetScramble = () => {
+          // Reset letters to original text and base color
+          letterElements.forEach((letter) => {
+            const isSpace = letter.dataset.scrambleWord === " ";
+            letter.textContent = isSpace ? " " : letter.dataset.scrambleWord;
+            letter.style.color = baseColor;
+            letter.style.opacity = "0";
+          });
+        };
 
-        // Scramble letters into place function
+        // Color-only pop (no character scrambling)
         const scrambleIntoPlace = () => {
-          // Prevent multiple calls - check both local flag and data attribute
-          if (hasScrambled || title.dataset[scrambleStateAttr] === "true") {
-            return;
-          }
-          hasScrambled = true;
-          title.dataset[scrambleStateAttr] = "true";
-
           letterElements.forEach((letter, index) => {
-            const targetValue = letter.dataset.scrambleWord;
-            // Fade in the letter as it starts scrambling
+            const targetColor = getRandomMSQColor();
             gsap.to(letter, {
               opacity: 1,
               duration: 0.1,
-              delay: index * 0.06,
+              delay: index * 0.045,
               ease: "none",
             });
-
-            setTimeout(() => {
-              scrambleElement(letter, {
-                duration: 0.75,
-                scrambleRatio: 0.35,
-                scrambleInterval: 65,
-                chars: teaserCharSet,
-                once: true,
-                target: targetValue,
-                ease: easeOutCubic,
-                onStart: () => {
-                  letter.style.color = getRandomMSQColor();
-                },
-                onComplete: () => {
-                  letter.style.color = baseColor;
-                },
-              });
-            }, index * 60); // Stagger delay between letters (60ms)
+            gsap.to(letter, {
+              color: targetColor,
+              duration: 0.6,
+              delay: index * 0.045,
+              ease: easeOutCubic,
+              yoyo: true,
+              repeat: 1,
+              onComplete: () => {
+                letter.style.color = baseColor;
+              },
+            });
           });
         };
 
         // Detect if we're on mobile (matches CSS breakpoint)
         const isMobile = window.innerWidth <= 768;
 
-        // On mobile, titles are below images, so trigger animation later
-        // On desktop, start later so transition is visible when scrolling down
-        const startPoint = isMobile ? "top 30%" : "top 60%";
+        // Trigger only when the row is well inside the viewport; end when it actually leaves
+        const startPoint = isMobile ? "top 85%" : "top 90%";
+        const endPoint = "bottom top";
 
-        // Create ScrollTrigger for scramble animation
+        // Create ScrollTrigger for scramble animation - replay every time it enters
         const st = ScrollTrigger.create({
           trigger: teaserRow,
           start: startPoint,
-          once: true,
+          end: endPoint,
+          once: false, // Allow replay
           onEnter: scrambleIntoPlace,
           onEnterBack: scrambleIntoPlace,
+          onLeave: resetScramble,
+          onLeaveBack: resetScramble,
         });
 
         // IntersectionObserver fallback to ensure titles animate when entering viewport
+        // Note: This is kept for compatibility but ScrollTrigger handles the replay logic
         if ("IntersectionObserver" in window) {
           const observer = new IntersectionObserver(
-            (entries, obs) => {
+            (entries) => {
               entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                  obs.disconnect();
-                  scrambleIntoPlace();
+                  // Only trigger if ScrollTrigger hasn't already handled it
+                  if (!title.dataset.scrambleStarted) {
+                    scrambleIntoPlace();
+                  }
+                } else {
+                  // Reset when leaving viewport
+                  resetScramble();
                 }
               });
             },
@@ -1305,7 +1321,7 @@ document.addEventListener("DOMContentLoaded", function () {
           scrollTrigger: {
             trigger: teaserRow,
             start: startPoint,
-            end: isMobile ? "top 10%" : "top 30%",
+            end: endPoint,
             scrub: 0.15,
           },
         });
@@ -1320,54 +1336,61 @@ document.addEventListener("DOMContentLoaded", function () {
             descriptionParagraphs = [teaserDescription];
           }
 
+          // Wrap each paragraph as a single line block (line-by-line animation)
           descriptionParagraphs.forEach((paragraph) => {
             const text = paragraph.textContent.trim();
-            const words = text.split(/\s+/);
-
-            // Clear and rebuild with wrapped words
-            paragraph.innerHTML = words.map((word) => `<span class="teasers-description-word">${word}</span>`).join(" ");
+            paragraph.innerHTML = `<span class="teasers-description-line">${text}</span>`;
           });
 
-          // Get all word elements from all paragraphs
-          const descriptionWordElements = teaserDescription.querySelectorAll(".teasers-description-word");
+          // Get all line elements
+          const descriptionLineElements = teaserDescription.querySelectorAll(".teasers-description-line");
 
-          // Set initial state: words are invisible and positioned to the left (same as titles)
-          gsap.set(descriptionWordElements, {
+          // Set initial state: lines are invisible and positioned to the left (same as titles)
+          gsap.set(descriptionLineElements, {
             opacity: 0,
-            x: -50, // Start from left (negative = left side)
+            x: -80,
           });
 
-          // Calculate when description should start animating (after all title letters have scrambled)
+          // Calculate key timings
           const letterCount = letterElements.length;
-          const scrambleDuration = 0.75; // Duration of scramble animation
-          const staggerDelay = 0.06; // Stagger delay between letters (60ms)
-          const descriptionStartTime = scrambleDuration + letterCount * staggerDelay; // After scramble completes
+          const scrambleDuration = 0.6; // Faster scramble animation
+          const staggerDelay = 0.045; // Faster stagger between letters
+          const titleEndTime = scrambleDuration + letterCount * staggerDelay; // When title finishes
 
-          // Add description word-by-word animation to timeline after title completes
-          // Same animation style as title: slide from left to right
-          descriptionWordElements.forEach((word, index) => {
-            titleTimeline.to(
-              word,
+          // Separate scroll-triggered description timeline (visible animation)
+          const descriptionTimeline = gsap.timeline({
+            scrollTrigger: {
+              trigger: teaserRow,
+              start: "top 95%",
+              end: "bottom 80%",
+              scrub: false,
+            },
+          });
+
+          descriptionLineElements.forEach((line, index) => {
+            descriptionTimeline.to(
+              line,
               {
                 opacity: 1,
-                x: 0, // End at aligned position (x: 0)
-                duration: 0.2, // Duration per word (same as title)
+                x: 0,
+                duration: 0.2,
                 ease: "power2.out",
               },
-              descriptionStartTime + index * 0.08 // Stagger delay between words (same as title)
+              index * 0.1
             );
           });
 
           // Calculate when description animation completes
-          const descriptionWordCount = descriptionWordElements.length;
-          const descriptionEndTime = descriptionStartTime + descriptionWordCount * 0.08 + 0.2; // After all description words + their duration
+          const descriptionLineCount = descriptionLineElements.length;
+          const descriptionEndTime = descriptionLineCount * 0.1 + 0.2; // After all description lines + their duration
 
           // Fade in button and opening elements after description completes
           const teaserButton = teaserRow.querySelector(".teasers-button");
           const teaserOpening = teaserRow.querySelector(".teasers-opening");
 
           const buttonStartTime = descriptionEndTime;
-          const openingStartTime = buttonStartTime + 0.2; // Badge follows CTA
+          // Badge follows title completion (not delayed by description)
+          const openingStartTime = titleEndTime;
 
           if (teaserButton) {
             gsap.set(teaserButton, { opacity: 0 });
@@ -1383,13 +1406,16 @@ document.addEventListener("DOMContentLoaded", function () {
           }
 
           if (teaserOpening) {
-            gsap.set(teaserOpening, { opacity: 0 });
-            titleTimeline.to(
+            // Don't hide by default; only apply "from" values when the timeline plays
+            titleTimeline.fromTo(
               teaserOpening,
+              { opacity: 0, scale: 0.8 },
               {
                 opacity: 1,
-                duration: 0.3, // 300ms fade-in
+                scale: 1,
+                duration: 0.2, // 200ms pop-in
                 ease: "power2.out",
+                immediateRender: false,
               },
               openingStartTime
             );
@@ -1404,7 +1430,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const teaserButton = teaserRow.querySelector(".teasers-button");
           const teaserOpening = teaserRow.querySelector(".teasers-opening");
           const buttonStartTime = titleEndTime;
-          const openingStartTime = buttonStartTime + 0.2;
+          const openingStartTime = titleEndTime;
 
           if (teaserButton) {
             gsap.set(teaserButton, { opacity: 0 });
@@ -1420,13 +1446,15 @@ document.addEventListener("DOMContentLoaded", function () {
           }
 
           if (teaserOpening) {
-            gsap.set(teaserOpening, { opacity: 0 });
-            titleTimeline.to(
+            // Don't hide by default; only apply "from" values when the timeline plays
+            titleTimeline.fromTo(
               teaserOpening,
+              { opacity: 0 },
               {
                 opacity: 1,
-                duration: 0.3, // 300ms fade-in
+                duration: 0.2, // 200ms pop-in
                 ease: "power2.out",
+                immediateRender: false,
               },
               openingStartTime
             );
@@ -1527,13 +1555,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (teaserOpening) {
-          gsap.set(teaserOpening, { opacity: 0 });
-          descriptionTimeline.to(
+          // Don't hide by default; only apply "from" values when the timeline plays
+          descriptionTimeline.fromTo(
             teaserOpening,
+            { opacity: 0 },
             {
               opacity: 1,
               duration: 0.3, // 300ms fade-in
               ease: "power2.out",
+              immediateRender: false,
             },
             openingStartTime
           );
