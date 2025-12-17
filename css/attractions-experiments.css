@@ -441,7 +441,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url("assets/d1e8d77f2523fbde216edeaa1a52c2020e57a97c.svg");
+  /* Path is relative to this CSS file */
+  background-image: url("../assets/d1e8d77f2523fbde216edeaa1a52c2020e57a97c.svg");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
