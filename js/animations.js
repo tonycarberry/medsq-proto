@@ -1221,7 +1221,12 @@ document.addEventListener("DOMContentLoaded", function () {
           letter.dataset.scrambleWord = " ";
         }
         const isSpace = letter.dataset.scrambleWord === " ";
-        letter.textContent = isSpace ? " " : letter.dataset.scrambleWord;
+        // Preserve visible word spacing when each character is wrapped
+        if (isSpace) {
+          letter.innerHTML = "&nbsp;";
+        } else {
+          letter.textContent = letter.dataset.scrambleWord;
+        }
         letter.style.color = baseColor;
       });
 
@@ -1242,7 +1247,11 @@ document.addEventListener("DOMContentLoaded", function () {
           // Reset letters to original text and base color
           letterElements.forEach((letter) => {
             const isSpace = letter.dataset.scrambleWord === " ";
-            letter.textContent = isSpace ? " " : letter.dataset.scrambleWord;
+            if (isSpace) {
+              letter.innerHTML = "&nbsp;";
+            } else {
+              letter.textContent = letter.dataset.scrambleWord;
+            }
             letter.style.color = baseColor;
             letter.style.opacity = "0";
           });

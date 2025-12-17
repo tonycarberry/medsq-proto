@@ -292,6 +292,8 @@
   height: 80%;
   object-fit: contain;
   display: block;
+  /* Tint black SVG logo to MSQ yellow for video overlay */
+  filter: brightness(0) saturate(100%) invert(92%) sepia(40%) saturate(650%) hue-rotate(8deg) brightness(105%) contrast(100%);
 }
 
 .teasers-image-container--small {
