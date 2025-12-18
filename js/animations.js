@@ -154,29 +154,58 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Ticker image zoom animation - zooms from 100% to 120% as user scrolls
-  const tickerImage = document.querySelector(".ticker__image");
+  // Ticker frame scroll animation:
+  // - Frame enters as a square (width = height)
+  // - Scroll expands width until it's full width
+  // - Optional subtle video zoom on scroll
   const tickerSection = document.querySelector(".ticker-component");
+  const tickerFrame = document.querySelector(".ticker__frame");
+  const tickerVideo = document.querySelector(".ticker__video");
 
-  if (tickerImage && tickerSection && typeof ScrollTrigger !== "undefined") {
-    // Set initial scale to 100%
-    gsap.set(tickerImage, {
-      scale: 1,
-      transformOrigin: "center center",
-    });
+  if (tickerSection && tickerFrame && typeof ScrollTrigger !== "undefined") {
+    // Guard against double-init (index loads animations.js + animations-experiments.js)
+    if (!tickerFrame.dataset.scrollWidthInit) {
+      tickerFrame.dataset.scrollWidthInit = "true";
 
-    // Create scroll-triggered zoom animation
-    // Image zooms from 100% to 140% as user scrolls through the section
-    gsap.to(tickerImage, {
-      scale: 1.4, // Zoom to 140%
-      ease: "none", // Linear easing for smooth scroll-linked animation
-      scrollTrigger: {
-        trigger: tickerSection,
-        start: "top bottom", // Start when top of section enters bottom of viewport
-        end: "bottom top", // End when bottom of section reaches top of viewport
-        scrub: true, // Smooth scroll-linked animation (no jumps)
-      },
-    });
+      const getAvailableWidth = () => tickerFrame.parentElement?.clientWidth || tickerSection.clientWidth || window.innerWidth;
+      const getFrameHeight = () => tickerFrame.getBoundingClientRect().height || 563;
+
+      const frameTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: tickerSection,
+          start: "top bottom", // when ticker enters viewport
+          end: "bottom top", // until it leaves
+          scrub: true,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      frameTimeline.fromTo(
+        tickerFrame,
+        {
+          width: () => `${Math.min(getFrameHeight(), getAvailableWidth())}px`,
+        },
+        {
+          width: () => `${getAvailableWidth()}px`,
+          ease: "none",
+        }
+      );
+
+      if (tickerVideo) {
+        gsap.set(tickerVideo, { scale: 1, transformOrigin: "center center" });
+        gsap.to(tickerVideo, {
+          scale: 1.2,
+          ease: "none",
+          scrollTrigger: {
+            trigger: tickerSection,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        });
+      }
+    }
   }
 
   // Ticker text horizontal scrolling animation
@@ -185,6 +214,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const tickerContent = document.querySelector(".ticker__content");
 
   if (tickerTextWrapper && tickerText && tickerContent) {
+    // Guard against double-init (index loads animations.js + animations-experiments.js)
+    if (tickerContent.dataset.tickerTextInit) return;
+    tickerContent.dataset.tickerTextInit = "true";
+
     // Wait for layout to be ready before calculating dimensions
     const initTickerAnimation = () => {
       // Intro mask reveal from center outward, triggered on enter (not on load)
@@ -1035,10 +1068,22 @@ document.addEventListener("DOMContentLoaded", function () {
       const teaserImage = container.querySelector(".teasers-image") || container.querySelector(".teasers-video");
 
       if (teaserImage) {
-        // Set initial state: fully masked (clip-path inset right at 100%)
-        gsap.set(container, {
-          clipPath: "inset(0 100% 0 0)", // Fully masked - 100% from right
-        });
+        // Check if this is a reverse row (image on the left)
+        const teaserRow = container.closest(".teasers-row");
+        const isReverseRow = teaserRow && teaserRow.classList.contains("teasers-row--reverse");
+        
+        // Set initial state based on row direction
+        if (isReverseRow) {
+          // For reverse rows (image on left): mask from left, reveal right to left
+          gsap.set(container, {
+            clipPath: "inset(0 0 0 100%)", // Fully masked - 100% from left
+          });
+        } else {
+          // For normal rows (image on right): mask from right, reveal left to right
+          gsap.set(container, {
+            clipPath: "inset(0 100% 0 0)", // Fully masked - 100% from right
+          });
+        }
 
         // Set initial state for image: normal scale and position
         gsap.set(teaserImage, {
@@ -1048,19 +1093,33 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         // Create scroll-triggered animation for mask reveal
-        // Mask reveals from left to right
-        // Each image animates separately when its top enters the bottom of the viewport
-        gsap.to(container, {
-          clipPath: "inset(0 0% 0 0)", // Fully revealed - 0% from right
-          ease: "none", // Linear easing - no easing
-          scrollTrigger: {
-            trigger: container, // Trigger on the individual image container
-            start: "top bottom", // Start when the top of the image enters the bottom of the viewport
-            end: "top 40%", // End when the top of the image is 40% down from the top of the viewport
-            scrub: 0.15, // Slower, smoother scroll-linked animation
-            // markers: true, // Uncomment for debugging
-          },
-        });
+        if (isReverseRow) {
+          // Mask reveals from right to left (for images on the left)
+          gsap.to(container, {
+            clipPath: "inset(0 0 0 0%)", // Fully revealed - 0% from left
+            ease: "none", // Linear easing - no easing
+            scrollTrigger: {
+              trigger: container, // Trigger on the individual image container
+              start: "top bottom", // Start when the top of the image enters the bottom of the viewport
+              end: "top 40%", // End when the top of the image is 40% down from the top of the viewport
+              scrub: 0.15, // Slower, smoother scroll-linked animation
+              // markers: true, // Uncomment for debugging
+            },
+          });
+        } else {
+          // Mask reveals from left to right (for images on the right)
+          gsap.to(container, {
+            clipPath: "inset(0 0% 0 0)", // Fully revealed - 0% from right
+            ease: "none", // Linear easing - no easing
+            scrollTrigger: {
+              trigger: container, // Trigger on the individual image container
+              start: "top bottom", // Start when the top of the image enters the bottom of the viewport
+              end: "top 40%", // End when the top of the image is 40% down from the top of the viewport
+              scrub: 0.15, // Slower, smoother scroll-linked animation
+              // markers: true, // Uncomment for debugging
+            },
+          });
+        }
 
         // Create scroll-triggered animation for image zoom
         // Images zoom to 110% as user scrolls
@@ -1200,6 +1259,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const getRandomMSQColor = () => msqColors[Math.floor(Math.random() * msqColors.length)];
     const getRandomChar = (charset) => charset[Math.floor(Math.random() * charset.length)] || "A";
     const baseColor = (rootStyles.getPropertyValue("--theme-text-dark") || "#1f1d1e").trim() || "#1f1d1e";
+    const toDisplayChar = (char) => (char === " " ? NBSP : char);
 
     teaserTitles.forEach((title) => {
       // Split title text into letters and wrap each in a span (like hero logo)
@@ -1221,12 +1281,7 @@ document.addEventListener("DOMContentLoaded", function () {
           letter.dataset.scrambleWord = " ";
         }
         const isSpace = letter.dataset.scrambleWord === " ";
-        // Preserve visible word spacing when each character is wrapped
-        if (isSpace) {
-          letter.innerHTML = "&nbsp;";
-        } else {
-          letter.textContent = letter.dataset.scrambleWord;
-        }
+        letter.textContent = isSpace ? NBSP : letter.dataset.scrambleWord;
         letter.style.color = baseColor;
       });
 
@@ -1237,7 +1292,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Get the parent teaser row for ScrollTrigger
       const teaserRow = title.closest(".teasers-row");
-      const teaserDescription = teaserRow?.querySelector(".teasers-description");
 
       if (teaserRow) {
         const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
@@ -1247,11 +1301,7 @@ document.addEventListener("DOMContentLoaded", function () {
           // Reset letters to original text and base color
           letterElements.forEach((letter) => {
             const isSpace = letter.dataset.scrambleWord === " ";
-            if (isSpace) {
-              letter.innerHTML = "&nbsp;";
-            } else {
-              letter.textContent = letter.dataset.scrambleWord;
-            }
+            letter.textContent = isSpace ? NBSP : letter.dataset.scrambleWord;
             letter.style.color = baseColor;
             letter.style.opacity = "0";
           });
@@ -1324,322 +1374,115 @@ document.addEventListener("DOMContentLoaded", function () {
           );
           observer.observe(teaserRow);
         }
-
-        // Create a timeline for description animation (after title completes)
-        const titleTimeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: teaserRow,
-            start: startPoint,
-            end: endPoint,
-            scrub: 0.15,
-          },
-        });
-
-        // Animate description text with same slide-in effect as title, after title completes
-        if (teaserDescription) {
-          // Handle both cases: description as <p> tag or as <div> container with <p> tags inside
-          let descriptionParagraphs = teaserDescription.querySelectorAll("p");
-
-          // If no <p> tags found, treat the description itself as a paragraph
-          if (descriptionParagraphs.length === 0) {
-            descriptionParagraphs = [teaserDescription];
-          }
-
-          // Wrap each paragraph as a single line block (line-by-line animation)
-          descriptionParagraphs.forEach((paragraph) => {
-            const text = paragraph.textContent.trim();
-            paragraph.innerHTML = `<span class="teasers-description-line">${text}</span>`;
-          });
-
-          // Get all line elements
-          const descriptionLineElements = teaserDescription.querySelectorAll(".teasers-description-line");
-
-          // Set initial state: lines are invisible and positioned to the left (same as titles)
-          gsap.set(descriptionLineElements, {
-            opacity: 0,
-            x: -80,
-          });
-
-          // Calculate key timings
-          const letterCount = letterElements.length;
-          const scrambleDuration = 0.6; // Faster scramble animation
-          const staggerDelay = 0.045; // Faster stagger between letters
-          const titleEndTime = scrambleDuration + letterCount * staggerDelay; // When title finishes
-
-          // Separate scroll-triggered description timeline (visible animation)
-          const descriptionTimeline = gsap.timeline({
-            scrollTrigger: {
-              trigger: teaserRow,
-              start: "top 95%",
-              end: "bottom 80%",
-              scrub: false,
-            },
-          });
-
-          descriptionLineElements.forEach((line, index) => {
-            descriptionTimeline.to(
-              line,
-              {
-                opacity: 1,
-                x: 0,
-                duration: 0.2,
-                ease: "power2.out",
-              },
-              index * 0.1
-            );
-          });
-
-          // Calculate when description animation completes
-          const descriptionLineCount = descriptionLineElements.length;
-          const descriptionEndTime = descriptionLineCount * 0.1 + 0.2; // After all description lines + their duration
-
-          // Fade in button and opening elements after description completes
-          const teaserButton = teaserRow.querySelector(".teasers-button");
-          const teaserOpening = teaserRow.querySelector(".teasers-opening");
-
-          const buttonStartTime = descriptionEndTime;
-          // Badge follows title completion (not delayed by description)
-          const openingStartTime = titleEndTime;
-
-          if (teaserButton) {
-            gsap.set(teaserButton, { opacity: 0 });
-            titleTimeline.to(
-              teaserButton,
-              {
-                opacity: 1,
-                duration: 0.3, // 300ms fade-in
-                ease: "power2.out",
-              },
-              buttonStartTime
-            );
-          }
-
-          if (teaserOpening) {
-            // Don't hide by default; only apply "from" values when the timeline plays
-            titleTimeline.fromTo(
-              teaserOpening,
-              { opacity: 0, scale: 0.8 },
-              {
-                opacity: 1,
-                scale: 1,
-                duration: 0.2, // 200ms pop-in
-                ease: "power2.out",
-                immediateRender: false,
-              },
-              openingStartTime
-            );
-          }
-        } else {
-          // If no description, fade in button and opening after title completes
-          const letterCount = letterElements.length;
-          const scrambleDuration = 0.75; // Duration of scramble animation
-          const staggerDelay = 0.06; // Stagger delay between letters (60ms)
-          const titleEndTime = scrambleDuration + letterCount * staggerDelay; // After scramble completes
-
-          const teaserButton = teaserRow.querySelector(".teasers-button");
-          const teaserOpening = teaserRow.querySelector(".teasers-opening");
-          const buttonStartTime = titleEndTime;
-          const openingStartTime = titleEndTime;
-
-          if (teaserButton) {
-            gsap.set(teaserButton, { opacity: 0 });
-            titleTimeline.to(
-              teaserButton,
-              {
-                opacity: 1,
-                duration: 0.3, // 300ms fade-in
-                ease: "power2.out",
-              },
-              buttonStartTime
-            );
-          }
-
-          if (teaserOpening) {
-            // Don't hide by default; only apply "from" values when the timeline plays
-            titleTimeline.fromTo(
-              teaserOpening,
-              { opacity: 0 },
-              {
-                opacity: 1,
-                duration: 0.2, // 200ms pop-in
-                ease: "power2.out",
-                immediateRender: false,
-              },
-              openingStartTime
-            );
-          }
-        }
       }
     });
   }
 
-  // Teasers description animation for rows without titles
-  // Apply same slide-in animation as titles
-  const teaserRows = document.querySelectorAll(".teasers-row");
+  // Teasers description animation (all teaser rows)
+  // Fade in over 200ms while moving 50px from the left.
+  const teaserDescriptions = Array.from(document.querySelectorAll(".teasers-row .teasers-description"));
 
-  if (teaserRows.length > 0 && typeof ScrollTrigger !== "undefined") {
-    teaserRows.forEach((teaserRow) => {
-      const title = teaserRow.querySelector(".teasers-title");
-      const description = teaserRow.querySelector(".teasers-description");
+  if (teaserDescriptions.length > 0 && typeof gsap !== "undefined") {
+    teaserDescriptions.forEach((description) => {
+      const teaserRow = description.closest(".teasers-row") || description;
+      let played = false;
 
-      // Only animate if there's a description but no title
-      if (description && !title) {
-        // Handle both cases: description as <p> tag or as <div> container with <p> tags inside
-        let descriptionParagraphs = description.querySelectorAll("p");
-
-        // If no <p> tags found, treat the description itself as a paragraph
-        if (descriptionParagraphs.length === 0) {
-          descriptionParagraphs = [description];
-        }
-
-        descriptionParagraphs.forEach((paragraph) => {
-          const text = paragraph.textContent.trim();
-          const words = text.split(/\s+/);
-
-          // Clear and rebuild with wrapped words
-          paragraph.innerHTML = words.map((word) => `<span class="teasers-description-word">${word}</span>`).join(" ");
+      const play = () => {
+        if (played) return;
+        played = true;
+        gsap.to(description, {
+          opacity: 1,
+          x: 0,
+          duration: 0.2,
+          ease: "power2.out",
+          overwrite: "auto",
         });
+      };
 
-        // Get all word elements from all paragraphs
-        const descriptionWordElements = description.querySelectorAll(".teasers-description-word");
+      // Initial state (set before triggers)
+      gsap.set(description, { opacity: 0, x: -50 });
 
-        // Set initial state: words are invisible and positioned to the left (same as titles)
-        gsap.set(descriptionWordElements, {
-          opacity: 0,
-          x: -50, // Start from left (negative = left side)
-        });
-
-        // Detect if we're on mobile (matches CSS breakpoint)
-        const isMobile = window.innerWidth <= 768;
-        const startPoint = isMobile ? "top 30%" : "top 60%";
-        const endPoint = isMobile ? "top 10%" : "top 30%";
-
-        // Create a scrubbed timeline for description animation
-        const descriptionTimeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: teaserRow,
-            start: startPoint,
-            end: endPoint,
-            scrub: 0.15, // Smooth scroll-linked animation that reverses
+      if (typeof ScrollTrigger !== "undefined") {
+        ScrollTrigger.create({
+          trigger: teaserRow,
+          start: "top 80%",
+          once: true,
+          onEnter: play,
+          // In case the row is already in-range at refresh (e.g. page loads mid-scroll)
+          onRefresh: (self) => {
+            if (self.isActive) play();
           },
         });
-
-        // Add description word-by-word animation to timeline
-        // Same animation style as title: slide from left to right
-        descriptionWordElements.forEach((word, index) => {
-          descriptionTimeline.to(
-            word,
-            {
-              opacity: 1,
-              x: 0, // End at aligned position (x: 0)
-              duration: 0.2, // Duration per word (same as title)
-              ease: "power2.out",
-            },
-            index * 0.08 // Stagger delay between words (same as title)
-          );
-        });
-
-        // Calculate when description animation completes
-        const descriptionWordCount = descriptionWordElements.length;
-        const descriptionEndTime = descriptionWordCount * 0.08 + 0.2; // After all description words + their duration
-
-        // Fade in button and opening elements after description completes
-        const teaserButton = teaserRow.querySelector(".teasers-button");
-        const teaserOpening = teaserRow.querySelector(".teasers-opening");
-
-        const buttonStartTime = descriptionEndTime;
-        const openingStartTime = buttonStartTime + 0.2;
-
-        if (teaserButton) {
-          gsap.set(teaserButton, { opacity: 0 });
-          descriptionTimeline.to(
-            teaserButton,
-            {
-              opacity: 1,
-              duration: 0.3, // 300ms fade-in
-              ease: "power2.out",
-            },
-            buttonStartTime
-          );
-        }
-
-        if (teaserOpening) {
-          // Don't hide by default; only apply "from" values when the timeline plays
-          descriptionTimeline.fromTo(
-            teaserOpening,
-            { opacity: 0 },
-            {
-              opacity: 1,
-              duration: 0.3, // 300ms fade-in
-              ease: "power2.out",
-              immediateRender: false,
-            },
-            openingStartTime
-          );
-        }
+      } else if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                play();
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { root: null, threshold: 0.25 }
+        );
+        observer.observe(teaserRow);
+      } else {
+        // Absolute fallback: just show it
+        play();
       }
     });
-  }
 
-  // City Store video scroll-triggered playback
-  const cityStoreVideo = document.getElementById("city-store-video");
-  if (cityStoreVideo && typeof ScrollTrigger !== "undefined") {
-    const cityStoreRow = cityStoreVideo.closest(".teasers-row");
-
-    if (cityStoreRow) {
-      ScrollTrigger.create({
-        trigger: cityStoreRow,
-        start: "top 80%",
-        end: "bottom 20%",
-        onEnter: () => {
-          cityStoreVideo.play().catch((e) => {
-            // Handle autoplay restrictions
-            console.log("Video play prevented:", e);
-          });
-        },
-        onEnterBack: () => {
-          cityStoreVideo.play().catch((e) => {
-            console.log("Video play prevented:", e);
-          });
-        },
-        onLeave: () => {
-          cityStoreVideo.pause();
-        },
-        onLeaveBack: () => {
-          cityStoreVideo.pause();
-        },
-      });
+    if (typeof ScrollTrigger !== "undefined") {
+      ScrollTrigger.refresh();
     }
   }
 
-  // Co-op Live video scroll-triggered playback
-  const coopLiveVideo = document.getElementById("coop-live-video");
-  if (coopLiveVideo && typeof ScrollTrigger !== "undefined") {
-    const coopLiveRow = coopLiveVideo.closest(".teasers-row");
+  // Teasers video playback (all teaser videos)
+  // Play when in view, pause when off-screen (saves CPU/battery).
+  const teaserVideos = Array.from(document.querySelectorAll(".teasers-section .teasers-row video"));
 
-    if (coopLiveRow) {
+  if (teaserVideos.length > 0 && typeof ScrollTrigger !== "undefined") {
+    const safePlay = (videoEl) => {
+      if (!videoEl || typeof videoEl.play !== "function") return;
+      // If already playing, don't spam play()
+      if (!videoEl.paused && !videoEl.ended) return;
+      videoEl.play().catch((e) => {
+        // Autoplay can still be blocked in some cases; keep it quiet in prod.
+        // console.log("Video play prevented:", e);
+      });
+    };
+
+    const safePause = (videoEl) => {
+      if (!videoEl || typeof videoEl.pause !== "function") return;
+      if (videoEl.paused) return;
+      videoEl.pause();
+    };
+
+    teaserVideos.forEach((videoEl) => {
+      const teaserRow = videoEl.closest(".teasers-row") || videoEl;
+
       ScrollTrigger.create({
-        trigger: coopLiveRow,
+        trigger: teaserRow,
         start: "top 80%",
         end: "bottom 20%",
-        onEnter: () => {
-          coopLiveVideo.play().catch((e) => {
-            // Handle autoplay restrictions
-            console.log("Video play prevented:", e);
-          });
-        },
-        onEnterBack: () => {
-          coopLiveVideo.play().catch((e) => {
-            console.log("Video play prevented:", e);
-          });
-        },
-        onLeave: () => {
-          coopLiveVideo.pause();
-        },
-        onLeaveBack: () => {
-          coopLiveVideo.pause();
+        onEnter: () => safePlay(videoEl),
+        onEnterBack: () => safePlay(videoEl),
+        onLeave: () => safePause(videoEl),
+        onLeaveBack: () => safePause(videoEl),
+        onRefresh: (self) => {
+          if (self.isActive) safePlay(videoEl);
+          else safePause(videoEl);
         },
       });
-    }
+    });
+
+    ScrollTrigger.refresh();
+  } else if (teaserVideos.length > 0) {
+    // No ScrollTrigger available: default to paused to avoid background playback.
+    teaserVideos.forEach((videoEl) => {
+      if (videoEl && typeof videoEl.pause === "function") {
+        videoEl.pause();
+      }
+    });
   }
 });

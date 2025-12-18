@@ -23,7 +23,7 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
     <script src="js/nav.js" defer></script>
-    <script src="js/animations.js?v=3" defer></script>
+    <script src="js/animations.js?v=6" defer></script>
     <script src="js/animations-experiments.js?v=2" defer></script>
   </head>
   <body>
@@ -118,50 +118,52 @@
     <!-- Ticker Component -->
     <section class="ticker-component">
       <div class="ticker">
-        <div class="ticker__background" aria-hidden="true">
-          <div class="ticker__bg-color"></div>
-          <video class="ticker__video" autoplay muted loop playsinline>
-            <source src="assets/_video/outside-day-wide-1280.mp4" type="video/mp4" />
-          </video>
-        </div>
-        <div class="ticker__content">
-          <div class="ticker__text-wrapper">
-            <p class="ticker__text">
-              <span class="ticker__word ticker__word--pink">music</span>
-              <span class="ticker__word ticker__word--yellow">dining</span>
-              <span class="ticker__word ticker__word--green">education</span>
-              <span class="ticker__word ticker__word--purple">events</span>
-              <span class="ticker__word ticker__word--orange">arts</span>
-              <span class="ticker__word ticker__word--pink">culture</span>
-              <span class="ticker__word ticker__word--yellow">family</span>
-              <span class="ticker__word ticker__word--green">sports</span>
-              <span class="ticker__word ticker__word--purple">music</span>
-              <span class="ticker__word ticker__word--pink">dining</span>
-              <span class="ticker__word ticker__word--yellow">education</span>
-              <span class="ticker__word ticker__word--green">events</span>
-              <span class="ticker__word ticker__word--purple">arts</span>
-              <span class="ticker__word ticker__word--pink">culture</span>
-              <span class="ticker__word ticker__word--yellow">family</span>
-              <span class="ticker__word ticker__word--green">sports</span>
-            </p>
-            <p class="ticker__text ticker__text--duplicate">
-              <span class="ticker__word ticker__word--pink">music</span>
-              <span class="ticker__word ticker__word--yellow">dining</span>
-              <span class="ticker__word ticker__word--green">education</span>
-              <span class="ticker__word ticker__word--purple">events</span>
-              <span class="ticker__word ticker__word--orange">arts</span>
-              <span class="ticker__word ticker__word--pink">culture</span>
-              <span class="ticker__word ticker__word--yellow">family</span>
-              <span class="ticker__word ticker__word--green">sports</span>
-              <span class="ticker__word ticker__word--purple">music</span>
-              <span class="ticker__word ticker__word--pink">dining</span>
-              <span class="ticker__word ticker__word--yellow">education</span>
-              <span class="ticker__word ticker__word--green">events</span>
-              <span class="ticker__word ticker__word--purple">arts</span>
-              <span class="ticker__word ticker__word--pink">culture</span>
-              <span class="ticker__word ticker__word--yellow">family</span>
-              <span class="ticker__word ticker__word--green">sports</span>
-            </p>
+        <div class="ticker__frame">
+          <div class="ticker__background" aria-hidden="true">
+            <div class="ticker__bg-color"></div>
+            <video class="ticker__video" autoplay muted loop playsinline>
+              <source src="assets/_video/outside-day-wide-1280.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="ticker__content">
+            <div class="ticker__text-wrapper">
+              <p class="ticker__text">
+                <span class="ticker__word ticker__word--pink">music</span>
+                <span class="ticker__word ticker__word--yellow">dining</span>
+                <span class="ticker__word ticker__word--green">education</span>
+                <span class="ticker__word ticker__word--purple">events</span>
+                <span class="ticker__word ticker__word--orange">arts</span>
+                <span class="ticker__word ticker__word--pink">culture</span>
+                <span class="ticker__word ticker__word--yellow">family</span>
+                <span class="ticker__word ticker__word--green">sports</span>
+                <span class="ticker__word ticker__word--purple">music</span>
+                <span class="ticker__word ticker__word--pink">dining</span>
+                <span class="ticker__word ticker__word--yellow">education</span>
+                <span class="ticker__word ticker__word--green">events</span>
+                <span class="ticker__word ticker__word--purple">arts</span>
+                <span class="ticker__word ticker__word--pink">culture</span>
+                <span class="ticker__word ticker__word--yellow">family</span>
+                <span class="ticker__word ticker__word--green">sports</span>
+              </p>
+              <p class="ticker__text ticker__text--duplicate">
+                <span class="ticker__word ticker__word--pink">music</span>
+                <span class="ticker__word ticker__word--yellow">dining</span>
+                <span class="ticker__word ticker__word--green">education</span>
+                <span class="ticker__word ticker__word--purple">events</span>
+                <span class="ticker__word ticker__word--orange">arts</span>
+                <span class="ticker__word ticker__word--pink">culture</span>
+                <span class="ticker__word ticker__word--yellow">family</span>
+                <span class="ticker__word ticker__word--green">sports</span>
+                <span class="ticker__word ticker__word--purple">music</span>
+                <span class="ticker__word ticker__word--pink">dining</span>
+                <span class="ticker__word ticker__word--yellow">education</span>
+                <span class="ticker__word ticker__word--green">events</span>
+                <span class="ticker__word ticker__word--purple">arts</span>
+                <span class="ticker__word ticker__word--pink">culture</span>
+                <span class="ticker__word ticker__word--yellow">family</span>
+                <span class="ticker__word ticker__word--green">sports</span>
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -207,12 +209,10 @@
         </div>
         <div class="teasers-col teasers-col--image" data-name="Col Img R" data-node-id="4879:8010">
           <div class="teasers-image-container teasers-image-container--square" data-name="image 18" data-node-id="4879:8011">
-            <video class="teasers-video teasers-image" autoplay muted loop playsinline>
-              <source src="assets/_video/hotel-branding-sq.mp4" type="video/mp4" />
-            </video>
+            <img src="assets/hotel/FB-branding-sq.png" alt="Medlock Hotel branding" class="teasers-image" />
             <div class="teasers-video-logo">
               <!-- Use existing SVG asset so it deploys to Netlify reliably -->
-              <img src="assets/hero/hero-logo.svg" alt="Medlock Hotel logo" />
+              <img src="assets/hotel/medlock-logo-yellow.png" alt="Medlock Hotel logo" />
             </div>
             <div class="teasers-badge">Artist's impression of new design suite.</div>
           </div>
@@ -269,7 +269,7 @@
         </div>
         <div class="teasers-col teasers-col--image" data-name="Col R" data-node-id="4879:8044">
           <div class="teasers-image-container teasers-image-container--square" data-name="Logo Grid" data-node-id="4879:8045">
-            <img src="assets/foodanddrink/food-drink-logos-grid.png" alt="Food and drink logos" class="teasers-image" />
+            <img src="assets/hotel/FB-branding-sq.png" alt="Food and drink branding" class="teasers-image" />
           </div>
         </div>
       </div>
@@ -288,7 +288,9 @@
         </div>
         <div class="teasers-col teasers-col--image teasers-col--image-left" data-name="Col Img R" data-node-id="4879:8055">
           <div class="teasers-image-container teasers-image-container--small" data-name="image 18" data-node-id="4879:8057">
-            <img src="assets/attractions/attraction-etihad-stadium.png" alt="" class="teasers-image" />
+            <video class="teasers-video teasers-image" autoplay muted loop playsinline>
+              <source src="assets/_video/stadium-sq.mp4" type="video/mp4" />
+            </video>
           </div>
         </div>
       </div>
@@ -305,7 +307,9 @@
         </div>
         <div class="teasers-col teasers-col--image" data-name="Col Img R" data-node-id="4879:8115">
           <div class="teasers-image-container teasers-image-container--small" data-name="image 18" data-node-id="4879:8117">
-            <img src="assets/attractions/attraction-coop-live.png" alt="" class="teasers-image" />
+            <video class="teasers-video teasers-image" autoplay muted loop playsinline>
+              <source src="assets/_video/co-op-live-sq.mp4" type="video/mp4" />
+            </video>
             <div class="teasers-badge">Footage from Instagram</div>
           </div>
         </div>

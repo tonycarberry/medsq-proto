@@ -24,7 +24,7 @@
 .intro-text-secondary__text {
   display: flex;
   flex-direction: column;
-  gap: var(--space-7); /* Match Figma: 48px gap */
+  gap: var(--space-5); /* Match Figma: 48px gap - edit looked too big so changed it*/
   align-items: flex-start; /* Left-align text */
   justify-content: center;
   color: var(--theme-text);

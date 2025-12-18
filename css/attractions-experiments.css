@@ -4,8 +4,8 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  /* Keep content inset from viewport edge (matches localhost + other sections) */
-  padding: var(--section-space-main, 112px) var(--site-margin, 56px) var(--section-space-small, 80px);
+  /* Match desired layout: original side gutters + 40px top padding */
+  padding: var(--space-6, 40px) var(--site-margin, 56px) var(--section-space-small, 80px);
   width: 100%;
   margin: 0;
   isolation: isolate;
@@ -14,7 +14,8 @@
 .teasers-row {
   display: flex;
   gap: var(--space-4, 24px);
-  align-items: flex-start;
+  /* Stretch columns so left/right rows share consistent overall height */
+  align-items: stretch;
   overflow: hidden;
   width: 100%;
   padding: 0;
@@ -22,9 +23,7 @@
   background-color: #ffffff;
 }
 
-.teasers-row:first-child {
-  padding-top: var(--space-6, 40px);
-}
+/* Keep all rows consistent; section padding already provides top spacing */
 
 /* Z-index stacking order from Figma */
 .teasers-row:nth-child(1) {
@@ -66,8 +65,10 @@
   flex-direction: column;
   gap: 10px;
   min-height: 500px;
-  padding-top: var(--space-6, 40px);
-  justify-content: flex-end;
+  /* Match Figma: content is vertically centered within the row */
+  padding-top: 0;
+  padding-bottom: 0;
+  justify-content: center;
 }
 
 .teasers-col--text-left {
@@ -103,12 +104,14 @@
   min-height: 500px;
   justify-content: center;
   align-items: flex-end;
-  padding-right: var(--site-margin, 24px);
+  /* Image should sit flush to the row edge */
+  padding-right: 0;
   padding-left: 0;
 }
 
 .teasers-col--image-left {
-  padding-left: var(--site-margin, 24px);
+  /* Image should sit flush to the row edge */
+  padding-left: 0;
   padding-right: 0;
   align-items: flex-start;
 }
@@ -122,7 +125,8 @@
 }
 
 .teasers-copy--food-drink {
-  max-width: 534px;
+  /* Keep Food & Drink row styled identically to other right-image rows */
+  max-width: 596px;
 }
 
 .teasers-title-group {
@@ -196,7 +200,7 @@
   line-height: 1.5;
   color: var(--theme-text, #1f1d1e);
   max-width: 567px;
-  width: 400px;
+  width: 100%;
 }
 
 .teasers-description--right {
@@ -234,19 +238,21 @@
 }
 
 .teasers-button {
-  background-color: #f2fa7d;
-  border: 1.5px solid #f2fa7d;
-  display: flex;
+  background-color: var(--button-primary-background, #f2fa7d);
+  border: var(--border-width-main, 1.5px) solid var(--button-primary-border, #f2fa7d);
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: var(--space-3, 16px) var(--size-1-5, 24px);
-  border-radius: 4px;
+  border-radius: var(--radius-small, 4px);
   font-family: "Montserrat", sans-serif;
-  font-weight: 500;
-  font-size: 20px;
+  font-weight: 600; /* Figma: Montserrat SemiBold */
+  font-size: 14px; /* Figma */
   line-height: 1.5;
-  color: #1f1d1e;
-  white-space: pre;
+  letter-spacing: 0;
+  text-transform: uppercase; /* Figma */
+  color: var(--button-primary-text, #1f1d1e);
+  white-space: nowrap;
   cursor: pointer;
   transition: background-color 0.2s ease, border-color 0.2s ease;
   width: fit-content;
@@ -262,6 +268,8 @@
   width: 100%;
   height: 588px;
   overflow: hidden; /* Required for clip-path animation */
+  /* When clip-path reveals, show off-white (not pure white) behind image/video */
+  background-color: var(--off-white, #e6e6f0);
 }
 
 .teasers-image-container--square {
@@ -293,12 +301,18 @@
   height: 80%;
   object-fit: contain;
   display: block;
-  /* Tint black SVG logo to MSQ yellow for video overlay */
+  filter: none;
+}
+
+/* If we ever use a black SVG as the overlay, tint it to MSQ yellow */
+.teasers-video-logo img[src$=".svg"] {
   filter: brightness(0) saturate(100%) invert(92%) sepia(40%) saturate(650%) hue-rotate(8deg) brightness(105%) contrast(100%);
 }
 
 .teasers-image-container--small {
-  height: 500px;
+  /* Keep all teaser images square so row heights are consistent */
+  aspect-ratio: 1 / 1;
+  height: auto;
 }
 
 .teasers-image-container--large {
@@ -462,8 +476,9 @@
 }
 
 .teasers-button-group .teasers-button {
-  height: 56px;
-  font-size: 16px;
+  /* Match the same button_default styling */
+  height: auto;
+  font-size: 14px;
 }
 
 /* Sticky positioning for Altitude section */
@@ -484,7 +499,7 @@
     flex-direction: column;
     gap: 0;
     background-color: #ffffff;
-    padding: 0 var(--site-margin, 24px);
+    padding: 0 var(--space-4, 24px);
   }
 
   .teasers-row--reverse {

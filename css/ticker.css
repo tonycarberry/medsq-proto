@@ -3,26 +3,30 @@
   width: 100%;
   position: relative;
   margin-bottom: var(--space-8, 64px); /* tighter gap below ticker to match Figma */
+  /* Keep ticker aligned with site gutters; the frame animates within this */
+  padding: 0 var(--site-margin);
 }
 
 .ticker {
   position: relative;
   width: 100%;
-  overflow: hidden; /* Prevent horizontal overflow on mobile while keeping visuals contained */
   /* Create positioning context for absolute children */
 }
 
-.ticker__background {
+.ticker__frame {
   position: relative;
-  pointer-events: none;
-  overflow: hidden; /* Clip zoomed image edges */
+  height: 563px; /* Match current ticker video height */
   width: 100%;
-  margin: 0 auto; /* Center the image container */
-  padding: 0 var(--site-margin); /* Equal padding on left and right */
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  margin: 0 auto;
+  overflow: hidden; /* This is the mask/frame that animates */
+  will-change: width;
+}
+
+.ticker__background {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  width: 100%;
 }
 
 .ticker__bg-color {
@@ -31,8 +35,8 @@
 
 .ticker__video {
   display: block;
-  width: 100%; /* Responsive width */
-  height: 563px; /* Fixed height - maintains y dimension */
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center center;
   max-width: 100%;
@@ -40,20 +44,21 @@
 
 .ticker__content {
   position: absolute;
-  left: 50%; /* Position from viewport center */
-  top: 50%; /* Vertically center */
-  transform: translate(-50%, -50%); /* Center both horizontally and vertically */
-  width: 100vw; /* Full viewport width for edge-to-edge text */
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   overflow: hidden;
   z-index: 2; /* Ensure text appears above video */
 }
 
 @media (max-width: 768px) {
-  .ticker__background {
+  .ticker-component {
     padding: 0 var(--space-5); /* Use smaller padding on mobile (32px) */
   }
 
-  .ticker__video {
+  .ticker__frame {
     height: 563px; /* Maintain same height on mobile */
   }
 
@@ -129,6 +134,8 @@
   background-color: #f2fa7d;
   border-top: 1px solid rgba(31, 29, 30, 0.12);
   border-bottom: 1px solid rgba(31, 29, 30, 0.12);
+  /* Mini ticker should be full-bleed; inner content has its own padding */
+  padding: 0;
 }
 
 .ticker-component--mini .ticker {

@@ -577,6 +577,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const tickerContent = document.querySelector(".ticker__content");
 
   if (tickerTextWrapper && tickerText && tickerContent) {
+    // Guard against double-init (index loads animations.js + animations-experiments.js)
+    if (tickerContent.dataset.tickerTextInit) return;
+    tickerContent.dataset.tickerTextInit = "true";
+
     // Wait for layout to be ready before calculating dimensions
     const initTickerAnimation = () => {
       // Calculate the width of one text element
@@ -1330,10 +1334,21 @@ document.addEventListener("DOMContentLoaded", function () {
       const teaserImage = container.querySelector(".teasers-image") || container.querySelector(".teasers-video");
 
       if (teaserRow && teaserImage) {
-        // Set initial state: fully masked (clip-path inset right at 100%)
-        gsap.set(container, {
-          clipPath: "inset(0 100% 0 0)", // Fully masked - 100% from right
-        });
+        // Check if this is a reverse row (image on the left)
+        const isReverseRow = teaserRow.classList.contains("teasers-row--reverse");
+        
+        // Set initial state based on row direction
+        if (isReverseRow) {
+          // For reverse rows (image on left): mask from left, reveal right to left
+          gsap.set(container, {
+            clipPath: "inset(0 0 0 100%)", // Fully masked - 100% from left
+          });
+        } else {
+          // For normal rows (image on right): mask from right, reveal left to right
+          gsap.set(container, {
+            clipPath: "inset(0 100% 0 0)", // Fully masked - 100% from right
+          });
+        }
 
         // Set initial state for image: normal scale and position
         gsap.set(teaserImage, {
@@ -1343,18 +1358,33 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         // Create scroll-triggered animation for mask reveal
-        // Mask reveals from left to right
-        gsap.to(container, {
-          clipPath: "inset(0 0% 0 0)", // Fully revealed - 0% from right
-          ease: "none", // Linear easing - no easing
-          scrollTrigger: {
-            trigger: teaserRow,
-            start: "top 100%", // Start when the top of the row enters the viewport from the bottom
-            end: "top 40%", // End when the top of the row is 40% down from the top of the viewport
-            scrub: 0.15, // Slower, smoother scroll-linked animation
-            // markers: true, // Uncomment for debugging
-          },
-        });
+        if (isReverseRow) {
+          // Mask reveals from right to left (for images on the left)
+          gsap.to(container, {
+            clipPath: "inset(0 0 0 0%)", // Fully revealed - 0% from left
+            ease: "none", // Linear easing - no easing
+            scrollTrigger: {
+              trigger: teaserRow,
+              start: "top 100%", // Start when the top of the row enters the viewport from the bottom
+              end: "top 40%", // End when the top of the row is 40% down from the top of the viewport
+              scrub: 0.15, // Slower, smoother scroll-linked animation
+              // markers: true, // Uncomment for debugging
+            },
+          });
+        } else {
+          // Mask reveals from left to right (for images on the right)
+          gsap.to(container, {
+            clipPath: "inset(0 0% 0 0)", // Fully revealed - 0% from right
+            ease: "none", // Linear easing - no easing
+            scrollTrigger: {
+              trigger: teaserRow,
+              start: "top 100%", // Start when the top of the row enters the viewport from the bottom
+              end: "top 40%", // End when the top of the row is 40% down from the top of the viewport
+              scrub: 0.15, // Slower, smoother scroll-linked animation
+              // markers: true, // Uncomment for debugging
+            },
+          });
+        }
 
         // Create scroll-triggered animation for image zoom
         // Images zoom to 110% as user scrolls
