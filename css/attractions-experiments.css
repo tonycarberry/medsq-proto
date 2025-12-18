@@ -13,7 +13,8 @@
 
 .teasers-row {
   display: flex;
-  gap: var(--space-4, 24px);
+  /* Match Figma: tiles meet with no gutter between columns */
+  gap: 0;
   /* Stretch columns so left/right rows share consistent overall height */
   align-items: stretch;
   overflow: hidden;
