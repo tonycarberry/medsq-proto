@@ -24,7 +24,7 @@
 .intro-text-secondary__text {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5); /* Match Figma: 48px gap - edit looked too big so changed it*/
+  gap: var(--space-4); /* Match Figma: 48px gap - edit looked too big so changed it*/
   align-items: flex-start; /* Left-align text */
   justify-content: center;
   color: var(--theme-text);
@@ -34,10 +34,10 @@
 .intro-text-secondary__large {
   font-family: "Montserrat", sans-serif; /* Use Montserrat font */
   font-weight: 700; /* Bold */
-  line-height: 1; /* Match Figma: line-height 1 */
+  line-height: 1.1; /* Match Figma: line-height 1 */
   max-width: 1024px; /* Match Figma max-width */
   width: 100%;
-  font-size: 64px; /* Match Figma: 64px H1 size */
+  font-size: 44px; /* Match Figma: 64px H1 size */
   letter-spacing: -3.2px; /* Match Figma: -3.2px tracking */
   margin: 0;
   text-align: left; /* Left-align to match Figma */

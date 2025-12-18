@@ -10,6 +10,8 @@
 .ticker {
   position: relative;
   width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
   /* Create positioning context for absolute children */
 }
 

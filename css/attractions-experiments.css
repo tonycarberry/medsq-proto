@@ -141,12 +141,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: var(--space-2, 4px);
+  background-color: #e6e6f0; /* Off-white pill background */
+  padding: var(--space-4, 8px) var(--space-5, 12px);
+  border-radius: 6px;
+  height: 36px;
   width: fit-content;
 }
 
 .teasers-opening-indicator-wrapper {
   position: relative;
-  width: 16px;
+  width: 13px;
   height: 16px;
   flex-shrink: 0;
   display: flex;
@@ -161,7 +166,7 @@
   display: block;
   max-width: none;
   object-fit: contain;
-  /* Create green circle - hide SVG and use CSS circle instead */
+  /* Hide SVG, use CSS green circle instead */
   display: none;
 }
 
@@ -169,14 +174,20 @@
 .teasers-opening-indicator-wrapper::after {
   content: "";
   display: block;
-  width: 16px;
-  height: 16px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
   background-color: #64d187; /* Green success color */
 }
 
 .teasers-opening-text {
-  display: none; /* Hide text, just show green circle */
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600; /* SemiBold */
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--theme-text, #1f1d1e);
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .teasers-title {
