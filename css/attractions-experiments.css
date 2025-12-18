@@ -141,11 +141,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2, 4px);
-  background-color: #e6e6f0;
-  padding: var(--space-4, 8px) var(--space-5, 12px);
-  border-radius: 6px;
-  height: 36px;
   width: fit-content;
 }
 
@@ -166,15 +161,22 @@
   display: block;
   max-width: none;
   object-fit: contain;
+  /* Create green circle - hide SVG and use CSS circle instead */
+  display: none;
+}
+
+/* Create green circle using CSS */
+.teasers-opening-indicator-wrapper::after {
+  content: "";
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #64d187; /* Green success color */
 }
 
 .teasers-opening-text {
-  font-family: "Kippax Modern", sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 24px;
-  color: var(--theme-text, #1f1d1e);
-  white-space: pre;
+  display: none; /* Hide text, just show green circle */
 }
 
 .teasers-title {
