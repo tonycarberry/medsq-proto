@@ -174,7 +174,9 @@ document.addEventListener("DOMContentLoaded", function () {
         scrollTrigger: {
           trigger: tickerSection,
           start: "top bottom", // when ticker enters viewport
-          end: "bottom top", // until it leaves
+          // Finish earlier: be full width when the ticker is ~60% up the viewport
+          // (i.e. section top reaches 40% from the top of the viewport)
+          end: "top 40%",
           scrub: true,
           invalidateOnRefresh: true,
         },
@@ -199,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
           scrollTrigger: {
             trigger: tickerSection,
             start: "top bottom",
-            end: "bottom top",
+            end: "top 40%",
             scrub: true,
             invalidateOnRefresh: true,
           },
