@@ -123,6 +123,7 @@
   gap: var(--space-7, 48px);
   width: 100%;
   max-width: 596px;
+  box-sizing: border-box;
 }
 
 .teasers-copy--food-drink {
@@ -143,7 +144,7 @@
   justify-content: center;
   gap: var(--space-2, 4px);
   background-color: #e6e6f0; /* Off-white pill background */
-  padding: var(--space-4, 8px) var(--space-5, 12px);
+  padding: var(--space-4, 8px) var(--space-3, 8px);
   border-radius: 6px;
   height: 36px;
   width: fit-content;
@@ -210,7 +211,7 @@
 .teasers-description {
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1.5;
   color: var(--theme-text, #1f1d1e);
   max-width: 567px;
@@ -364,17 +365,31 @@
   gap: 8px;
   align-items: center;
   justify-content: center;
-  height: 500px;
+  height: 100%;
   width: 100%;
-  overflow: hidden;
+  overflow: visible; /* Changed from hidden to visible so logos aren't clipped */
   position: relative;
-  background: radial-gradient(circle at 50% 50%, rgba(230, 230, 240, 1) 63.462%, rgba(255, 255, 255, 1) 100%);
+  z-index: 1; /* Ensure it's above background */
+}
+
+.teasers-logo-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  z-index: 0;
 }
 
 .teasers-logo-grid-container {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 524px;
   height: 350px;
+  z-index: 1;
 }
 
 .teasers-logo-item {
@@ -395,9 +410,14 @@
 .teasers-logo-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: 50% 50%;
+  object-fit: contain; /* Changed from cover to contain so logos fit properly */
+  object-position: center center;
   pointer-events: none;
+  /* Initial state for animation - will be set by GSAP */
+  opacity: 0;
+  transform: scale(0.8);
+  transform-origin: center center;
+  display: block; /* Ensure images are displayed */
 }
 
 /* Logo positioning */
@@ -517,6 +537,16 @@
 
   .teasers-copy {
     max-width: 100%; /* Ensure copy doesn't overflow */
+  }
+
+  /* Add breathing room on mid breakpoints so copy doesn't hit viewport edges */
+  .teasers-col--text-right .teasers-copy {
+    padding-left: 40px;
+  }
+
+  .teasers-col--text-left .teasers-copy,
+  .teasers-col--etihad .teasers-copy {
+    padding-right: 40px;
   }
 }
 

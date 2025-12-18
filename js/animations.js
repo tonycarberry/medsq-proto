@@ -193,19 +193,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       );
 
+      // Video should stay fixed - no animation, no movement, no scaling
       if (tickerVideo) {
-        gsap.set(tickerVideo, { scale: 1, transformOrigin: "center center" });
-        gsap.to(tickerVideo, {
-          scale: 1.2,
-          ease: "none",
-          scrollTrigger: {
-            trigger: tickerSection,
-            start: "top bottom",
-            end: "top 40%",
-            scrub: true,
-            invalidateOnRefresh: true,
-          },
+        gsap.set(tickerVideo, { 
+          scale: 1, 
+          transformOrigin: "center center",
+          x: 0,
+          y: 0,
         });
+        // No animation on video - it stays fixed
       }
     }
   }
@@ -1068,8 +1064,10 @@ document.addEventListener("DOMContentLoaded", function () {
   if (teaserImageContainers.length > 0 && typeof ScrollTrigger !== "undefined") {
     teaserImageContainers.forEach((container) => {
       const teaserImage = container.querySelector(".teasers-image") || container.querySelector(".teasers-video");
+      const logoGrid = container.querySelector(".teasers-logo-grid");
 
-      if (teaserImage) {
+      // Apply mask reveal to containers with images/videos OR logo grids
+      if (teaserImage || logoGrid) {
         // Check if this is a reverse row (image on the left)
         const teaserRow = container.closest(".teasers-row");
         const isReverseRow = teaserRow && teaserRow.classList.contains("teasers-row--reverse");
@@ -1087,12 +1085,14 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
 
-        // Set initial state for image: normal scale and position
-        gsap.set(teaserImage, {
-          scale: 1,
-          x: 0,
-          transformOrigin: "center center",
-        });
+        // Set initial state for image/video: normal scale and position (skip for logo grids)
+        if (teaserImage) {
+          gsap.set(teaserImage, {
+            scale: 1,
+            x: 0,
+            transformOrigin: "center center",
+          });
+        }
 
         // Create scroll-triggered animation for mask reveal
         if (isReverseRow) {
@@ -1123,24 +1123,161 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
 
-        // Create scroll-triggered animation for image zoom
-        // Images zoom to 110% as user scrolls
-        gsap.to(teaserImage, {
-          scale: 1.1, // Zoom to 110%
-          ease: "none", // Linear easing for smooth scroll-linked movement
-          scrollTrigger: {
-            trigger: container, // Trigger on the individual image container
-            start: "top bottom", // Start when image enters viewport
-            end: "bottom top", // End when image leaves viewport
-            scrub: 0.15, // Smooth scroll-linked animation (matches mask reveal timing)
-            // markers: true, // Uncomment for debugging
-          },
-        });
+        // Create scroll-triggered animation for image zoom (only for images/videos, not logo grids)
+        if (teaserImage) {
+          gsap.to(teaserImage, {
+            scale: 1.1, // Zoom to 110%
+            ease: "none", // Linear easing for smooth scroll-linked movement
+            scrollTrigger: {
+              trigger: container, // Trigger on the individual image container
+              start: "top bottom", // Start when image enters viewport
+              end: "bottom top", // End when image leaves viewport
+              scrub: 0.15, // Smooth scroll-linked animation (matches mask reveal timing)
+              // markers: true, // Uncomment for debugging
+            },
+          });
+        }
       }
     });
 
     // Refresh ScrollTrigger to handle sections already in view
     ScrollTrigger.refresh();
+  }
+
+  // Food & Drink logos animation - staggered scale and opacity
+  const logoGrid = document.querySelector(".teasers-logo-grid");
+  if (logoGrid && typeof ScrollTrigger !== "undefined" && typeof gsap !== "undefined") {
+    const logoImages = logoGrid.querySelectorAll(".teasers-logo-image");
+    const logoContainer = logoGrid.closest(".teasers-image-container");
+    const logoGridContainer = logoGrid.querySelector(".teasers-logo-grid-container");
+    
+    if (logoImages.length > 0 && logoContainer) {
+      // Set initial state instantly (for page load)
+      const setInitialState = () => {
+        logoImages.forEach((logo) => {
+          gsap.set(logo, {
+            opacity: 0,
+            scale: 0.8,
+            transformOrigin: "center center",
+          });
+          logo.classList.remove("teasers-logo-image--animated");
+        });
+        
+        // Set initial state for container (centered, normal scale)
+        if (logoGridContainer) {
+          gsap.set(logoGridContainer, {
+            scale: 1,
+            transformOrigin: "center center",
+          });
+        }
+      };
+      
+      // Animate logos out (reverse of animate in)
+      // Store the last random order to reverse in the same order
+      let lastRandomOrder = null;
+      
+      const resetLogos = () => {
+        if (logoImages.length === 0) return;
+        
+        // Use the same random order as the last animate in (if available)
+        // Otherwise create a new random order
+        if (!lastRandomOrder) {
+          const indices = Array.from({ length: logoImages.length }, (_, i) => i);
+          for (let i = indices.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [indices[i], indices[j]] = [indices[j], indices[i]];
+          }
+          lastRandomOrder = indices;
+        }
+        
+        // Reverse animation: fade out and scale down in reverse of animate order
+        logoImages.forEach((logo, originalIndex) => {
+          const randomOrder = lastRandomOrder.indexOf(originalIndex);
+          gsap.to(logo, {
+            opacity: 0,
+            scale: 0.8,
+            duration: 0.15, // same duration as animate in
+            ease: "power2.out", // same easing as animate in
+            delay: randomOrder * 0.12, // same stagger as animate in (120ms)
+            onComplete: () => {
+              logo.classList.remove("teasers-logo-image--animated");
+            },
+          });
+        });
+        
+        // Reset container scale
+        if (logoGridContainer) {
+          gsap.to(logoGridContainer, {
+            scale: 1,
+            duration: 0.3,
+            ease: "power2.out",
+          });
+        }
+        
+        // Clear the stored order after reset
+        lastRandomOrder = null;
+      };
+      
+      // Set initial state for all logos (instant, for page load)
+      setInitialState();
+      
+      // Animate logos when container enters viewport
+      const animateLogos = () => {
+        if (logoImages.length === 0) return;
+        
+        // Create random order for this animation cycle
+        const indices = Array.from({ length: logoImages.length }, (_, i) => i);
+        // Fisher-Yates shuffle
+        for (let i = indices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+        
+        // Store this order for reverse animation
+        lastRandomOrder = indices;
+        
+        // Fast staggered pop-in (match Figma feel) in random order
+        // Each logo has its own overshoot animation (0.8 → 1.05 → 1.0)
+        logoImages.forEach((logo, originalIndex) => {
+          const randomOrder = indices.indexOf(originalIndex);
+          
+          // Create timeline for each logo with overshoot
+          const logoTimeline = gsap.timeline({
+            delay: randomOrder * 0.12, // slightly slower stagger (120ms between logos)
+            onComplete: () => {
+              logo.classList.add("teasers-logo-image--animated");
+            },
+          });
+          
+          // Animate: fade in + scale from 0.8 to 1.05 (overshoot)
+          logoTimeline.to(logo, {
+            opacity: 1,
+            scale: 1.05, // Overshoot to 105%
+            duration: 0.2,
+            ease: "power2.out",
+          })
+          // Then settle back to 1.0
+          .to(logo, {
+            scale: 1, // Settle back to 100%
+            duration: 0.15,
+            ease: "power2.out",
+          });
+        });
+      };
+      
+      // Keep logos visible while the container is visible.
+      // Only reset once the container is fully off-screen.
+      // Delay animation until container is well centered in viewport
+      ScrollTrigger.create({
+        trigger: logoContainer,
+        start: "top 50%", // Wait until container top reaches middle of viewport
+        end: "bottom top", // fully off-screen above
+        onEnter: animateLogos,
+        onEnterBack: animateLogos,
+        onLeave: resetLogos,
+        onLeaveBack: resetLogos,
+      });
+    }
   }
 
   // Teasers title scramble text animation (matching hero logo style)
