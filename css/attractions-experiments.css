@@ -490,6 +490,25 @@
   top: 0;
 }
 
+/* Tablet Styles */
+@media (max-width: 1200px) and (min-width: 769px) {
+  .teasers-title {
+    font-size: 64px;
+    line-height: 1.05;
+    letter-spacing: -0.64px;
+    white-space: normal; /* Allow wrapping at tablet sizes */
+  }
+
+  .teasers-description {
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  .teasers-copy {
+    max-width: 100%; /* Ensure copy doesn't overflow */
+  }
+}
+
 /* Mobile Styles */
 @media (max-width: 768px) {
   .teasers-section {
