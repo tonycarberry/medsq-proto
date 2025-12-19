@@ -324,6 +324,26 @@
   filter: brightness(0) saturate(100%) invert(92%) sepia(40%) saturate(650%) hue-rotate(8deg) brightness(105%) contrast(100%);
 }
 
+.teasers-altitude-logo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.teasers-altitude-logo img {
+  width: auto;
+  height: auto;
+  max-width: 60%;
+  max-height: 40%;
+  object-fit: contain;
+  display: block;
+  transform-origin: bottom center;
+}
+
 .teasers-image-container--small {
   /* Keep all teaser images square so row heights are consistent */
   aspect-ratio: 1 / 1;
@@ -395,6 +415,9 @@
 .teasers-logo-item {
   position: absolute;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .teasers-logo-item--166 {
@@ -448,11 +471,13 @@
 }
 
 .teasers-logo-item:nth-child(5) .teasers-logo-image {
-  width: 120.13%;
-  height: 102.5%;
+  width: 100%;
+  height: 100%;
   position: absolute;
-  left: -8.31%;
+  left: 0;
   top: 0;
+  object-fit: cover;
+  object-position: right center;
 }
 
 .teasers-badge {

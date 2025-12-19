@@ -1624,4 +1624,88 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+  // Altitude logo animation - rises up smoothly after 2 seconds of being on screen
+  const altitudeLogoContainer = document.querySelector(".teasers-altitude-logo");
+  if (altitudeLogoContainer) {
+    const altitudeLogoImg = altitudeLogoContainer.querySelector("img");
+    const altitudeVideoContainer = altitudeLogoContainer.closest(".teasers-image-container");
+    
+    if (altitudeLogoImg && altitudeVideoContainer) {
+      // Set initial state: logo is small, invisible, and positioned at final location
+      gsap.set(altitudeLogoImg, {
+        opacity: 0,
+        scale: 0.3,
+        y: -200, // Final position - 200px above center
+        transformOrigin: "bottom center",
+      });
+
+      let timeoutId = null;
+
+      const resetAnimation = () => {
+        // Clear any pending timeout
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+          timeoutId = null;
+        }
+        // Reset to initial state
+        gsap.set(altitudeLogoImg, {
+          opacity: 0,
+          scale: 0.3,
+          y: -200, // Final position - 200px above center
+          transformOrigin: "bottom center",
+        });
+      };
+
+      const startAnimation = () => {
+        // Clear any existing timeout
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+        // Wait 1 second after entering viewport, then animate
+        timeoutId = setTimeout(() => {
+          gsap.to(altitudeLogoImg, {
+            opacity: 1,
+            scale: 1,
+            y: -200, // Stay at final position - 200px above center
+            duration: 3,
+            ease: "power2.out",
+          });
+        }, 1000);
+      };
+
+      if (typeof ScrollTrigger !== "undefined") {
+        ScrollTrigger.create({
+          trigger: altitudeVideoContainer,
+          start: "top 80%",
+          end: "bottom 20%",
+          onEnter: startAnimation,
+          onEnterBack: startAnimation,
+          onLeave: resetAnimation,
+          onLeaveBack: resetAnimation,
+          onRefresh: (self) => {
+            if (self.isActive) {
+              startAnimation();
+            } else {
+              resetAnimation();
+            }
+          },
+        });
+      } else if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                startAnimation();
+              } else {
+                resetAnimation();
+              }
+            });
+          },
+          { root: null, threshold: 0.25 }
+        );
+        observer.observe(altitudeVideoContainer);
+      }
+    }
+  }
 });
