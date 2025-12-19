@@ -1433,6 +1433,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const teaserRow = title.closest(".teasers-row");
 
       if (teaserRow) {
+        const teaserOpening = teaserRow.querySelector(".teasers-opening");
+        const openingFadeDuration = 0.25;
+        const openingBaseScale = 0.8;
+
         const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
         
         // Reset function to prepare for replay
@@ -1444,10 +1448,27 @@ document.addEventListener("DOMContentLoaded", function () {
             letter.style.color = baseColor;
             letter.style.opacity = "0";
           });
+
+          if (teaserOpening) {
+            gsap.set(teaserOpening, {
+              opacity: 0,
+              scale: openingBaseScale,
+              transformOrigin: "center center",
+            });
+          }
         };
 
         // Color-only pop (no character scrambling)
         const scrambleIntoPlace = () => {
+          // Ensure badge is hidden until the title finishes animating
+          if (teaserOpening) {
+            gsap.set(teaserOpening, {
+              opacity: 0,
+              scale: openingBaseScale,
+              transformOrigin: "center center",
+            });
+          }
+
           letterElements.forEach((letter, index) => {
             const targetColor = getRandomMSQColor();
             gsap.to(letter, {
@@ -1468,6 +1489,19 @@ document.addEventListener("DOMContentLoaded", function () {
               },
             });
           });
+
+          // Fade the badge in AFTER the last letter has appeared
+          if (teaserOpening) {
+            const lastLetterEnd = (Math.max(letterElements.length - 1, 0) * 0.045) + 0.1;
+            gsap.to(teaserOpening, {
+              opacity: 1,
+              scale: 1,
+              duration: openingFadeDuration,
+              delay: lastLetterEnd + 0.1,
+              ease: "power2.out",
+              overwrite: "auto",
+            });
+          }
         };
 
         // Detect if we're on mobile (matches CSS breakpoint)
@@ -1515,65 +1549,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
     });
-  }
-
-  // Teasers description animation (all teaser rows)
-  // Fade in over 200ms while moving 50px from the left.
-  const teaserDescriptions = Array.from(document.querySelectorAll(".teasers-row .teasers-description"));
-
-  if (teaserDescriptions.length > 0 && typeof gsap !== "undefined") {
-    teaserDescriptions.forEach((description) => {
-      const teaserRow = description.closest(".teasers-row") || description;
-      let played = false;
-
-      const play = () => {
-        if (played) return;
-        played = true;
-        gsap.to(description, {
-          opacity: 1,
-          x: 0,
-          duration: 0.2,
-          ease: "power2.out",
-          overwrite: "auto",
-        });
-      };
-
-      // Initial state (set before triggers)
-      gsap.set(description, { opacity: 0, x: -50 });
-
-      if (typeof ScrollTrigger !== "undefined") {
-        ScrollTrigger.create({
-          trigger: teaserRow,
-          start: "top 80%",
-          once: true,
-          onEnter: play,
-          // In case the row is already in-range at refresh (e.g. page loads mid-scroll)
-          onRefresh: (self) => {
-            if (self.isActive) play();
-          },
-        });
-      } else if ("IntersectionObserver" in window) {
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                play();
-                observer.unobserve(entry.target);
-              }
-            });
-          },
-          { root: null, threshold: 0.25 }
-        );
-        observer.observe(teaserRow);
-      } else {
-        // Absolute fallback: just show it
-        play();
-      }
-    });
-
-    if (typeof ScrollTrigger !== "undefined") {
-      ScrollTrigger.refresh();
-    }
   }
 
   // Teasers video playback (all teaser videos)

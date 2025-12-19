@@ -175,8 +175,8 @@
 }
 
 .attractions-section__button {
-  background-color: #f2fa7d; /* Match Figma: var(--button/primary/background,#f2fa7d) */
-  border: 1.5px solid #f2fa7d; /* Match Figma: var(--border-width/main,1.5px) var(--button/primary/border,#f2fa7d) */
+  background-color: #9D78FE; /* Purple button */
+  border: 1.5px solid #9D78FE; /* Purple border */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -185,7 +185,7 @@
   font-family: var(--primary-family, "Montserrat", sans-serif);
   font-weight: 400;
   line-height: 1.5; /* Match Figma: var(--line-height-text,1.5) */
-  color: #1f1d1e; /* Match Figma: var(--button/primary/text,#1f1d1e) */
+  color: var(--theme-text, #1f1d1e); /* Dark text to match nav button */
   font-size: 16px; /* Match Figma: var(--font-size/text-main,16px) */
   white-space: pre;
   cursor: pointer;
@@ -194,8 +194,8 @@
 }
 
 .attractions-section__button:hover {
-  background-color: #e8f06a; /* Slightly darker yellow on hover */
-  border-color: #e8f06a;
+  background-color: #8B6AE8; /* Slightly darker purple on hover */
+  border-color: #8B6AE8;
 }
 
 .attraction__visual {

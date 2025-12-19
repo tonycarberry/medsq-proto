@@ -64,7 +64,7 @@
 }
 
 .booking-form__button {
-  background-color: #652c27;
+  background-color: #9D78FE;
   border: none;
   padding: 16px 24px;
   color: white;
@@ -79,7 +79,7 @@
 }
 
 .booking-form__button:hover {
-  background-color: #7a352f;
+  background-color: #8B6AE8;
 }
 
 /* Intro Text Secondary Hotel Background Override - Beige background matching Figma */

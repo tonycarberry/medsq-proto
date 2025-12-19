@@ -1431,7 +1431,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Get the parent teaser row for ScrollTrigger
       const teaserRow = title.closest(".teasers-row");
-      const teaserDescription = teaserRow?.querySelector(".teasers-description");
 
       if (teaserRow) {
         // Detect if we're on mobile (matches CSS breakpoint)
@@ -1468,217 +1467,29 @@ document.addEventListener("DOMContentLoaded", function () {
           );
         });
 
-        // Animate description text with same slide-in effect as title, after title completes
-        if (teaserDescription) {
-          // Handle both cases: description as <p> tag or as <div> container with <p> tags inside
-          let descriptionParagraphs = teaserDescription.querySelectorAll("p");
+        // Fade in button and opening after title completes (no description animations)
+        const titleWordCount = wordElements.length;
+        const titleEndTime = titleWordCount * 0.08 + 0.2; // After all title words + their duration
 
-          // If no <p> tags found, treat the description itself as a paragraph
-          if (descriptionParagraphs.length === 0) {
-            descriptionParagraphs = [teaserDescription];
-          }
-
-          descriptionParagraphs.forEach((paragraph) => {
-            const text = paragraph.textContent.trim();
-            const words = text.split(/\s+/);
-
-            // Clear and rebuild with wrapped words
-            paragraph.innerHTML = words.map((word) => `<span class="teasers-description-word">${word}</span>`).join(" ");
-          });
-
-          // Get all word elements from all paragraphs
-          const descriptionWordElements = teaserDescription.querySelectorAll(".teasers-description-word");
-
-          // Set initial state: words are invisible and positioned to the left (same as titles)
-          gsap.set(descriptionWordElements, {
-            opacity: 0,
-            x: -50, // Start from left (negative = left side)
-          });
-
-          // Calculate when description should start animating (after all title words have animated)
-          const wordCount = wordElements.length;
-          const descriptionStartTime = wordCount * 0.08 + 0.2; // After all words + their duration
-
-          // Add description word-by-word animation to timeline after title completes
-          // Same animation style as title: slide from left to right
-          descriptionWordElements.forEach((word, index) => {
-            titleTimeline.to(
-              word,
-              {
-                opacity: 1,
-                x: 0, // End at aligned position (x: 0)
-                duration: 0.2, // Duration per word (same as title)
-                ease: "power2.out",
-              },
-              descriptionStartTime + index * 0.08 // Stagger delay between words (same as title)
-            );
-          });
-
-          // Calculate when description animation completes
-          const descriptionWordCount = descriptionWordElements.length;
-          const descriptionEndTime = descriptionStartTime + descriptionWordCount * 0.08 + 0.2; // After all description words + their duration
-
-          // Fade in button and opening elements after description completes
-          const teaserButton = teaserRow.querySelector(".teasers-button");
-          const teaserOpening = teaserRow.querySelector(".teasers-opening");
-
-          if (teaserButton) {
-            gsap.set(teaserButton, { opacity: 0 });
-            titleTimeline.to(
-              teaserButton,
-              {
-                opacity: 1,
-                duration: 0.3, // 300ms fade-in
-                ease: "power2.out",
-              },
-              descriptionEndTime
-            );
-          }
-
-          if (teaserOpening) {
-            // Don't hide by default; only apply "from" values when the timeline plays
-            titleTimeline.fromTo(
-              teaserOpening,
-              { opacity: 0 },
-              {
-                opacity: 1,
-                duration: 0.3, // 300ms fade-in
-                ease: "power2.out",
-                immediateRender: false,
-              },
-              descriptionEndTime
-            );
-          }
-        } else {
-          // If no description, fade in button and opening after title completes
-          const titleWordCount = wordElements.length;
-          const titleEndTime = titleWordCount * 0.08 + 0.2; // After all title words + their duration
-
-          const teaserButton = teaserRow.querySelector(".teasers-button");
-          const teaserOpening = teaserRow.querySelector(".teasers-opening");
-
-          if (teaserButton) {
-            gsap.set(teaserButton, { opacity: 0 });
-            titleTimeline.to(
-              teaserButton,
-              {
-                opacity: 1,
-                duration: 0.3, // 300ms fade-in
-                ease: "power2.out",
-              },
-              titleEndTime
-            );
-          }
-
-          if (teaserOpening) {
-            // Don't hide by default; only apply "from" values when the timeline plays
-            titleTimeline.fromTo(
-              teaserOpening,
-              { opacity: 0 },
-              {
-                opacity: 1,
-                duration: 0.3, // 300ms fade-in
-                ease: "power2.out",
-                immediateRender: false,
-              },
-              titleEndTime
-            );
-          }
-        }
-      }
-    });
-  }
-
-  // Teasers description animation for rows without titles
-  // Apply same slide-in animation as titles
-  const teaserRows = document.querySelectorAll(".teasers-row");
-
-  if (teaserRows.length > 0 && typeof ScrollTrigger !== "undefined") {
-    teaserRows.forEach((teaserRow) => {
-      const title = teaserRow.querySelector(".teasers-title");
-      const description = teaserRow.querySelector(".teasers-description");
-
-      // Only animate if there's a description but no title
-      if (description && !title) {
-        // Handle both cases: description as <p> tag or as <div> container with <p> tags inside
-        let descriptionParagraphs = description.querySelectorAll("p");
-
-        // If no <p> tags found, treat the description itself as a paragraph
-        if (descriptionParagraphs.length === 0) {
-          descriptionParagraphs = [description];
-        }
-
-        descriptionParagraphs.forEach((paragraph) => {
-          const text = paragraph.textContent.trim();
-          const words = text.split(/\s+/);
-
-          // Clear and rebuild with wrapped words
-          paragraph.innerHTML = words.map((word) => `<span class="teasers-description-word">${word}</span>`).join(" ");
-        });
-
-        // Get all word elements from all paragraphs
-        const descriptionWordElements = description.querySelectorAll(".teasers-description-word");
-
-        // Set initial state: words are invisible and positioned to the left (same as titles)
-        gsap.set(descriptionWordElements, {
-          opacity: 0,
-          x: -50, // Start from left (negative = left side)
-        });
-
-        // Detect if we're on mobile (matches CSS breakpoint)
-        const isMobile = window.innerWidth <= 768;
-        const startPoint = isMobile ? "top 30%" : "top 60%";
-        const endPoint = isMobile ? "top 10%" : "top 30%";
-
-        // Create a scrubbed timeline for description animation
-        const descriptionTimeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: teaserRow,
-            start: startPoint,
-            end: endPoint,
-            scrub: 0.15, // Smooth scroll-linked animation that reverses
-          },
-        });
-
-        // Add description word-by-word animation to timeline
-        // Same animation style as title: slide from left to right
-        descriptionWordElements.forEach((word, index) => {
-          descriptionTimeline.to(
-            word,
-            {
-              opacity: 1,
-              x: 0, // End at aligned position (x: 0)
-              duration: 0.2, // Duration per word (same as title)
-              ease: "power2.out",
-            },
-            index * 0.08 // Stagger delay between words (same as title)
-          );
-        });
-
-        // Calculate when description animation completes
-        const descriptionWordCount = descriptionWordElements.length;
-        const descriptionEndTime = descriptionWordCount * 0.08 + 0.2; // After all description words + their duration
-
-        // Fade in button and opening elements after description completes
         const teaserButton = teaserRow.querySelector(".teasers-button");
         const teaserOpening = teaserRow.querySelector(".teasers-opening");
 
         if (teaserButton) {
           gsap.set(teaserButton, { opacity: 0 });
-          descriptionTimeline.to(
+          titleTimeline.to(
             teaserButton,
             {
               opacity: 1,
               duration: 0.3, // 300ms fade-in
               ease: "power2.out",
             },
-            descriptionEndTime
+            titleEndTime
           );
         }
 
         if (teaserOpening) {
           // Don't hide by default; only apply "from" values when the timeline plays
-          descriptionTimeline.fromTo(
+          titleTimeline.fromTo(
             teaserOpening,
             { opacity: 0 },
             {
@@ -1687,10 +1498,12 @@ document.addEventListener("DOMContentLoaded", function () {
               ease: "power2.out",
               immediateRender: false,
             },
-            descriptionEndTime
+            titleEndTime
           );
         }
       }
     });
   }
+
+  // Note: teaser description animations removed (they were rewriting content / setting opacity).
 });
