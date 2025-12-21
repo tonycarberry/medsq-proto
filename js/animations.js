@@ -1779,4 +1779,162 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+  // Intro Text Secondary Component - word-by-word animation
+  const introTextSecondarySection = document.querySelector(".intro-text-secondary-component");
+  if (introTextSecondarySection && typeof gsap !== "undefined") {
+    const introTextLarge = introTextSecondarySection.querySelector(".intro-text-secondary__large");
+
+    // Word-by-word text animation (similar to hero title)
+    if (introTextLarge) {
+      // Split title text into words and wrap each in a span
+      const text = introTextLarge.textContent.trim();
+      const words = text.split(/\s+/);
+
+      // Clear and rebuild with wrapped words
+      introTextLarge.innerHTML = words.map((word) => `<span class="intro-text-secondary__word">${word}</span>`).join(" ");
+
+      // Get all word elements
+      const wordElements = introTextLarge.querySelectorAll(".intro-text-secondary__word");
+
+      // Set initial state: words are invisible and positioned to the right
+      gsap.set(wordElements, {
+        opacity: 0,
+        x: 50,
+      });
+
+      if (typeof ScrollTrigger !== "undefined") {
+        ScrollTrigger.create({
+          trigger: introTextSecondarySection,
+          start: "top 80%",
+          once: true,
+          onEnter: () => {
+            // Animate words sequentially with stagger
+            gsap.to(wordElements, {
+              opacity: 1,
+              x: 0,
+              duration: 0.8,
+              delay: 0.3,
+              stagger: 0.1, // 0.1 second delay between each word
+              ease: "power2.out",
+            });
+          },
+        });
+      } else {
+        // Fallback: animate on page load
+        gsap.to(wordElements, {
+          opacity: 1,
+          x: 0,
+          duration: 0.8,
+          delay: 1.5,
+          stagger: 0.1,
+          ease: "power2.out",
+        });
+      }
+    }
+  }
+
+  // Video Text Component - video jump up and text word-by-word animation
+  const videoTextSection = document.querySelector(".video-text-component");
+  if (videoTextSection && typeof gsap !== "undefined") {
+    const videoWrapper = videoTextSection.querySelector(".video-text__video-wrapper");
+    const videoElement = videoTextSection.querySelector(".video-text__video");
+    const videoTextBody = videoTextSection.querySelector(".video-text__body");
+
+    // Animate video jumping up from bottom
+    if (videoWrapper) {
+      // Function to reset video animation state
+      const resetVideo = () => {
+        gsap.set(videoWrapper, {
+          y: 100,
+          opacity: 0,
+        });
+      };
+
+      // Function to animate video
+      const animateVideo = () => {
+        gsap.to(videoWrapper, {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power2.out",
+        });
+      };
+
+      // Set initial state
+      resetVideo();
+
+      if (typeof ScrollTrigger !== "undefined") {
+        ScrollTrigger.create({
+          trigger: videoTextSection,
+          start: "top 80%",
+          end: "bottom 20%",
+          once: false, // Allow replay
+          onEnter: animateVideo,
+          onEnterBack: animateVideo,
+          onLeave: resetVideo,
+          onLeaveBack: resetVideo,
+        });
+      }
+    }
+
+    // Word-by-word text animation (similar to hero title)
+    if (videoTextBody) {
+      // Split text into words and wrap each in a span
+      const text = videoTextBody.textContent.trim();
+      const words = text.split(/\s+/);
+
+      // Clear and rebuild with wrapped words
+      videoTextBody.innerHTML = words.map((word) => `<span class="video-text__word">${word}</span>`).join(" ");
+
+      // Get all word elements
+      const wordElements = videoTextBody.querySelectorAll(".video-text__word");
+
+      // Function to reset text animation state
+      const resetText = () => {
+        gsap.set(wordElements, {
+          opacity: 0,
+          x: 50,
+        });
+      };
+
+      // Function to animate text
+      const animateText = () => {
+        gsap.to(wordElements, {
+          opacity: 1,
+          x: 0,
+          duration: 0.35, // Faster duration
+          delay: 0.2, // Shorter delay
+          stagger: 0.03, // Faster stagger (0.03s between words)
+          ease: "power2.out",
+        });
+      };
+
+      // Set initial state
+      resetText();
+
+      if (typeof ScrollTrigger !== "undefined") {
+        ScrollTrigger.create({
+          trigger: videoTextSection,
+          start: "top 80%",
+          end: "bottom 20%",
+          once: false, // Allow replay
+          onEnter: animateText,
+          onEnterBack: animateText,
+          onLeave: resetText,
+          onLeaveBack: resetText,
+        });
+      } else {
+        // Fallback: animate on page load
+        gsap.to(wordElements, {
+          opacity: 1,
+          x: 0,
+          duration: 0.35,
+          delay: 0.2,
+          stagger: 0.03,
+          ease: "power2.out",
+        });
+      }
+    }
+  }
 });
