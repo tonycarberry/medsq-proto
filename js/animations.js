@@ -1683,4 +1683,100 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   }
+
+  // Teaser button arrow micro-animation - animate arrows when button enters viewport
+  const teaserButtons = Array.from(document.querySelectorAll(".teasers-button, .attractions-section__button"));
+  
+  if (teaserButtons.length > 0 && typeof gsap !== "undefined") {
+    teaserButtons.forEach((button) => {
+      // Skip nav buttons
+      if (button.closest(".nav") || button.classList.contains("nav__button")) {
+        return;
+      }
+
+      const teaserRow = button.closest(".teasers-row") || button.closest(".attractions-section") || button;
+      
+      // Set initial state: arrows start slightly to the left and invisible
+      button.style.setProperty("--arrow-opacity", "0");
+      button.style.setProperty("--arrow-x", "-8px");
+
+      const animateArrows = () => {
+        // Create a bouncy animation timeline for the arrows
+        const tl = gsap.timeline({ delay: 0.2 });
+        
+        // Fade in and slide in with bounce
+        tl.to(button, {
+          "--arrow-opacity": 1,
+          "--arrow-x": "0px",
+          duration: 0.3,
+          ease: "power2.out",
+        })
+        // First bounce
+        .to(button, {
+          "--arrow-x": "6px",
+          duration: 0.15,
+          ease: "power2.out",
+        })
+        .to(button, {
+          "--arrow-x": "0px",
+          duration: 0.15,
+          ease: "power2.out",
+        })
+        // Second bounce (smaller)
+        .to(button, {
+          "--arrow-x": "4px",
+          duration: 0.12,
+          ease: "power2.out",
+        })
+        .to(button, {
+          "--arrow-x": "0px",
+          duration: 0.12,
+          ease: "power2.out",
+        })
+        // Third bounce (even smaller)
+        .to(button, {
+          "--arrow-x": "2px",
+          duration: 0.1,
+          ease: "power2.out",
+        })
+        .to(button, {
+          "--arrow-x": "0px",
+          duration: 0.1,
+          ease: "power2.out",
+        });
+      };
+
+      const resetArrows = () => {
+        button.style.setProperty("--arrow-opacity", "0");
+        button.style.setProperty("--arrow-x", "-8px");
+      };
+
+      if (typeof ScrollTrigger !== "undefined") {
+        ScrollTrigger.create({
+          trigger: teaserRow,
+          start: "top 85%",
+          end: "bottom 20%",
+          once: false, // Allow replay
+          onEnter: animateArrows,
+          onEnterBack: animateArrows,
+          onLeave: resetArrows,
+          onLeaveBack: resetArrows,
+        });
+      } else if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                animateArrows();
+              } else {
+                resetArrows();
+              }
+            });
+          },
+          { root: null, threshold: 0.25 }
+        );
+        observer.observe(teaserRow);
+      }
+    });
+  }
 });

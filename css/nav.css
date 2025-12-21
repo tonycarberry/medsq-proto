@@ -1,11 +1,11 @@
 /* Nav Component */
 .nav-component {
   width: 100%;
+  background-color: var(--theme-background-dark, #1e1e28);
 }
 
 .nav {
   /* Figma: dark nav bar */
-  background-color: var(--theme-background-dark, #1e1e28);
   color: #ffffff;
   /* Used by `assets/hero/hero-logo.svg` (it uses CSS variables for fill) */
   --fill-0: #ffffff;
@@ -15,6 +15,8 @@
   /* Figma is 1440w with 120px gutters, but clamp for smaller screens */
   padding: 0 clamp(32px, 8vw, 120px);
   width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
   position: relative;
 }
 

@@ -175,13 +175,13 @@
 }
 
 .attractions-section__button {
-  background-color: #9D78FE; /* Purple button */
-  border: 1.5px solid #9D78FE; /* Purple border */
+  background-color: transparent;
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px 24px; /* Match Figma: py-[var(--space/3,16px)] px-[var(--size/1\,5,24px)] */
-  border-radius: 4px; /* Match Figma: var(--border-radius/small,4px) */
+  gap: 6px; /* Space between text and arrows */
+  padding: 12px 16px; /* Larger hit area while keeping transparent background */
   font-family: var(--primary-family, "Montserrat", sans-serif);
   font-weight: 400;
   line-height: 1.5; /* Match Figma: var(--line-height-text,1.5) */
@@ -189,13 +189,29 @@
   font-size: 16px; /* Match Figma: var(--font-size/text-main,16px) */
   white-space: pre;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-  height: 56px; /* Match Figma: h-[56px] */
+  transition: color 0.2s ease;
+  height: auto;
+  position: relative;
+}
+
+/* Add two arrows after button text */
+.attractions-section__button::after {
+  content: ">>";
+  color: #9D78FE;
+  font-weight: 600;
+  display: inline-block;
+  transition: transform 0.3s ease, opacity 0.3s ease, color 0.2s ease;
+  opacity: var(--arrow-opacity, 1);
+  transform: translateX(var(--arrow-x, 0));
 }
 
 .attractions-section__button:hover {
-  background-color: #8B6AE8; /* Slightly darker purple on hover */
-  border-color: #8B6AE8;
+  color: var(--theme-text, #1f1d1e);
+}
+
+.attractions-section__button:hover::after {
+  transform: translateX(calc(var(--arrow-x, 0) + 4px));
+  color: #8B6AE8;
 }
 
 .attraction__visual {
