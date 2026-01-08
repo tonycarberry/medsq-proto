@@ -551,14 +551,15 @@
     flex-direction: column;
     align-items: center;
     padding: 0 !important;
-    background-color: #f9f4ee !important;
+    background-color: transparent !important; /* Remove background, each row has own color */
+    gap: 0 !important; /* Override base 80px gap */
   }
 
   .teasers-section--hotel .teasers-row {
     width: 343px !important;
     flex-direction: column !important;
     padding: 0 !important;
-    margin: 0 auto 0 auto;
+    margin: 0 auto !important; /* No vertical margin between rows */
     background-color: transparent !important;
   }
 
@@ -573,29 +574,81 @@
     height: 100% !important;
   }
 
-  .teasers-section--hotel .teasers-col--text {
+  .teasers-section--hotel .teasers-col--text,
+  .teasers-section--hotel .teasers-col--text-left,
+  .teasers-section--hotel .teasers-col--text-right {
     width: 100% !important;
-    padding: 64px 24px !important;
+    padding: 48px 24px !important; /* 48px vertical, 24px horizontal per Figma */
     order: 2;
     text-align: left !important;
+    align-items: flex-start !important;
+  }
+
+  /* First teaser row has 64px vertical padding per Figma */
+  .teasers-row--hotel-teaser-1 .teasers-col--text {
+    background-color: #A8B4C7 !important;
+    padding: 64px 24px !important;
   }
 
   /* Match teaser row background colors to the text column on mobile */
-  .teasers-row--hotel-teaser-1 .teasers-col--text { background-color: #A8B4C7 !important; }
   .teasers-row--hotel-teaser-2 .teasers-col--text { background-color: #ECEF81 !important; }
   .teasers-row--hotel-teaser-3 .teasers-col--text { background-color: #F6C8B1 !important; }
   .teasers-row--hotel-teaser-4 .teasers-col--text { background-color: #652C27 !important; }
 
-  .teasers-section--hotel .teasers-title {
+  .teasers-section--hotel .teasers-title,
+  .teasers-section--hotel .teasers-title--right {
     font-size: 40px !important;
     letter-spacing: -0.4px !important;
-    margin-bottom: 24px;
+    margin-bottom: 0 !important;
+    text-align: left !important;
+    width: 100% !important;
   }
 
-  .teasers-section--hotel .teasers-description {
-    font-size: 16px;
-    line-height: 1.5;
+  .teasers-section--hotel .teasers-title-group {
     text-align: left !important;
+    align-items: flex-start !important;
+    margin-bottom: 28px !important; /* 28px gap between title and description per Figma */
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .teasers-section--hotel .teasers-copy {
+    text-align: left !important;
+    align-items: flex-start !important;
+    gap: 28px !important; /* Gap between description and button */
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .teasers-section--hotel .teasers-description,
+  .teasers-section--hotel .teasers-description--right {
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+    text-align: left !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  /* Gap between paragraphs in description */
+  .teasers-section--hotel .teasers-description p + p {
+    margin-top: 16px !important;
+  }
+
+  .teasers-section--hotel .teasers-button {
+    justify-content: flex-start !important;
+    text-align: left !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    align-self: flex-start !important; /* Override align-self: center */
+    padding-left: 0 !important; /* Left aligned buttons usually have no left padding in this design */
   }
 
   /* Hotel Info Section */
@@ -805,6 +858,7 @@ html {
   padding: 48px 0;
   border: none;
   width: 100%;
+  overflow: hidden; /* Prevent horizontal scroll from ticker text */
 }
 
 .ticker-component--hotel .ticker {
