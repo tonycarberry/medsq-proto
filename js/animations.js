@@ -258,19 +258,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Start position: start from 0 so text immediately covers full viewport
       // The first text element starts at the left edge, and duplicates follow seamlessly
-      const initialX = 0;
+      const isHotel = tickerSection.classList.contains("ticker-component--hotel");
+      const initialX = isHotel ? -textWidth : 0;
 
       gsap.set(tickerTextWrapper, {
         x: initialX,
       });
 
-      // Animate continuously moving left
-      // The animation moves by exactly one text width, then seamlessly loops
-      // With multiple copies, there's always text visible, preventing any gaps
-      // Starting from 0 ensures full viewport coverage from the start
+      // Animate continuously
+      // For hotel: move from -textWidth to 0 (Left-to-Right)
+      // For others: move from 0 to -textWidth (Right-to-Left)
       gsap.to(tickerTextWrapper, {
-        x: initialX - totalWidth, // Move left by exactly one text width
-        duration: 35, // Slower animation (higher duration = slower speed)
+        x: isHotel ? 0 : initialX - textWidth,
+        duration: isHotel ? 50 : 35, // Slower for hotel ticker
         ease: "none", // Constant speed - essential for seamless loop
         repeat: -1, // Infinite loop - seamless reset
       });
@@ -1477,17 +1477,21 @@ document.addEventListener("DOMContentLoaded", function () {
               delay: index * 0.045,
               ease: "none",
             });
-            gsap.to(letter, {
-              color: targetColor,
-              duration: 0.6,
-              delay: index * 0.045,
-              ease: easeOutCubic,
-              yoyo: true,
-              repeat: 1,
-              onComplete: () => {
-                letter.style.color = baseColor;
-              },
-            });
+
+            // Skip color scrambling for hotel page teasers
+            if (!teaserRow.closest(".teasers-section--hotel")) {
+              gsap.to(letter, {
+                color: targetColor,
+                duration: 0.6,
+                delay: index * 0.045,
+                ease: easeOutCubic,
+                yoyo: true,
+                repeat: 1,
+                onComplete: () => {
+                  letter.style.color = baseColor;
+                },
+              });
+            }
           });
 
           // Fade the badge in AFTER the last letter has appeared

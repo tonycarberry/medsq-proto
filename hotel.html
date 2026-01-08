@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="css/ticker.css?v=2" />
     <link rel="stylesheet" href="css/intro-text-secondary.css?v=2" />
     <link rel="stylesheet" href="css/attraction.css?v=10" />
+    <link rel="stylesheet" href="css/attractions-experiments.css?v=2" />
     <link rel="stylesheet" href="css/sticky-left.css?v=1" />
     <link rel="stylesheet" href="css/styles.css?v=2" />
     <link rel="stylesheet" href="css/footer.css?v=2" />
@@ -26,6 +27,7 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
     <script src="js/nav.js" defer></script>
     <script src="js/animations.js" defer></script>
+    <script src="js/hotel.js" defer></script>
   </head>
   <body>
     <!-- Nav Component -->
@@ -78,7 +80,12 @@
       <div class="hero">
         <div class="hero__background" aria-hidden="true">
           <div class="hero__bg-color"></div>
-          <img src="assets/attractions/attraction-hotel.png" alt="" class="hero__image" />
+          <video class="hero__video hero__image" autoplay muted loop playsinline>
+            <source src="assets/_video/hotel-hero-nologo.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="hero__logo-wrapper">
+          <img src="assets/hotel/medlock-logo-yellow.png" alt="Medlock Hotel" class="hero__logo" />
         </div>
         <div class="hero__content">
           <div class="hero__text">
@@ -90,236 +97,365 @@
 
     <!-- Booking Form -->
     <div class="booking-form">
-      <div class="booking-form__field">
-        <div class="booking-form__label">Check in</div>
-        <div class="booking-form__value">Sun 21 Feb</div>
+      <div class="booking-form__field-wrapper">
+        <div class="booking-form__field js-date-trigger" data-type="check-in">
+          <div class="booking-form__label">Check in</div>
+          <div class="booking-form__input">
+            <div class="booking-form__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 4H5C3.89543 4 3 4.89543 3 6V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V6C21 4.89543 20.1046 4 19 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 2V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 2V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M3 10H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="booking-form__value">Wed 21 May</div>
+          </div>
+        </div>
+        <!-- Check-in Date Picker Modal -->
+        <div class="booking-modal booking-modal--date js-date-picker-modal" id="date-picker-check-in">
+          <div class="date-picker">
+            <div class="date-picker__header">
+              <button class="date-picker__nav">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <span class="date-picker__month">May 2025</span>
+              <button class="date-picker__nav">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+            <div class="date-picker__weekdays">
+              <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+            </div>
+            <div class="date-picker__days">
+              <span class="date-picker__day date-picker__day--disabled">1</span>
+              <span class="date-picker__day date-picker__day--disabled">2</span>
+              <span class="date-picker__day date-picker__day--disabled">3</span>
+              <span class="date-picker__day date-picker__day--disabled">4</span>
+              <span class="date-picker__day date-picker__day--disabled">5</span>
+              <span class="date-picker__day date-picker__day--disabled">6</span>
+              <span class="date-picker__day date-picker__day--disabled">7</span>
+              <span class="date-picker__day date-picker__day--disabled">8</span>
+              <span class="date-picker__day date-picker__day--disabled">9</span>
+              <span class="date-picker__day">10</span>
+              <span class="date-picker__day">11</span>
+              <span class="date-picker__day">12</span>
+              <span class="date-picker__day">13</span>
+              <span class="date-picker__day">14</span>
+              <span class="date-picker__day">15</span>
+              <span class="date-picker__day">16</span>
+              <span class="date-picker__day">17</span>
+              <span class="date-picker__day">18</span>
+              <span class="date-picker__day">19</span>
+              <span class="date-picker__day">20</span>
+              <span class="date-picker__day date-picker__day--selected">21</span>
+              <span class="date-picker__day">22</span>
+              <span class="date-picker__day">23</span>
+              <span class="date-picker__day">24</span>
+              <span class="date-picker__day">25</span>
+              <span class="date-picker__day">26</span>
+              <span class="date-picker__day">27</span>
+              <span class="date-picker__day">28</span>
+              <span class="date-picker__day">29</span>
+              <span class="date-picker__day">30</span>
+              <span class="date-picker__day">31</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="booking-form__field">
-        <div class="booking-form__label">Check out</div>
-        <div class="booking-form__value">Wed 24 Feb</div>
+
+      <div class="booking-form__field-wrapper">
+        <div class="booking-form__field js-date-trigger" data-type="check-out">
+          <div class="booking-form__label">Check out</div>
+          <div class="booking-form__input">
+            <div class="booking-form__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 4H5C3.89543 4 3 4.89543 3 6V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V6C21 4.89543 20.1046 4 19 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 2V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 2V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M3 10H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="booking-form__value">Sat 24 May</div>
+          </div>
+        </div>
+        <!-- Check-out Date Picker Modal -->
+        <div class="booking-modal booking-modal--date js-date-picker-modal" id="date-picker-check-out">
+          <div class="date-picker">
+            <div class="date-picker__header">
+              <button class="date-picker__nav">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <span class="date-picker__month">May 2025</span>
+              <button class="date-picker__nav">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+            <div class="date-picker__weekdays">
+              <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+            </div>
+            <div class="date-picker__days">
+              <span class="date-picker__day date-picker__day--disabled">1</span>
+              <span class="date-picker__day date-picker__day--disabled">2</span>
+              <span class="date-picker__day date-picker__day--disabled">3</span>
+              <span class="date-picker__day date-picker__day--disabled">4</span>
+              <span class="date-picker__day date-picker__day--disabled">5</span>
+              <span class="date-picker__day date-picker__day--disabled">6</span>
+              <span class="date-picker__day date-picker__day--disabled">7</span>
+              <span class="date-picker__day date-picker__day--disabled">8</span>
+              <span class="date-picker__day date-picker__day--disabled">9</span>
+              <span class="date-picker__day">10</span>
+              <span class="date-picker__day">11</span>
+              <span class="date-picker__day">12</span>
+              <span class="date-picker__day">13</span>
+              <span class="date-picker__day">14</span>
+              <span class="date-picker__day">15</span>
+              <span class="date-picker__day">16</span>
+              <span class="date-picker__day">17</span>
+              <span class="date-picker__day">18</span>
+              <span class="date-picker__day">19</span>
+              <span class="date-picker__day">20</span>
+              <span class="date-picker__day">21</span>
+              <span class="date-picker__day">22</span>
+              <span class="date-picker__day">23</span>
+              <span class="date-picker__day date-picker__day--selected">24</span>
+              <span class="date-picker__day">25</span>
+              <span class="date-picker__day">26</span>
+              <span class="date-picker__day">27</span>
+              <span class="date-picker__day">28</span>
+              <span class="date-picker__day">29</span>
+              <span class="date-picker__day">30</span>
+              <span class="date-picker__day">31</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="booking-form__field">
-        <div class="booking-form__label">Guests</div>
-        <div class="booking-form__value">2 adults, 1 child</div>
+
+      <div class="booking-form__field-wrapper">
+        <div class="booking-form__field js-guests-trigger">
+          <div class="booking-form__label">Guests</div>
+          <div class="booking-form__input">
+            <div class="booking-form__value">2 adults, 1 child</div>
+          </div>
+        </div>
+        <!-- Guests Modal -->
+        <div class="booking-modal booking-modal--guests" id="guests-modal">
+          <div class="participants">
+            <div class="participants__row">
+              <div class="participants__info">
+                <span class="participants__type">Adult</span>
+                <span class="participants__age">(Age 16+)</span>
+              </div>
+              <div class="participants__counter">
+                <button class="participants__btn">-</button>
+                <span class="participants__value">2</span>
+                <button class="participants__btn">+</button>
+              </div>
+            </div>
+            <div class="participants__divider"></div>
+            <div class="participants__row">
+              <div class="participants__info">
+                <span class="participants__type">Child</span>
+                <span class="participants__age">(Age 3-16)</span>
+              </div>
+              <div class="participants__counter">
+                <button class="participants__btn">-</button>
+                <span class="participants__value">1</span>
+                <button class="participants__btn">+</button>
+              </div>
+            </div>
+            <div class="participants__divider"></div>
+            <div class="participants__row">
+              <div class="participants__info">
+                <span class="participants__type">Infant</span>
+                <span class="participants__age">(Age 0-2)</span>
+              </div>
+              <div class="participants__counter">
+                <button class="participants__btn">-</button>
+                <span class="participants__value">0</span>
+                <button class="participants__btn">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <button class="booking-form__button">BOOK NOW</button>
+
+      <div class="booking-form__actions">
+        <button class="booking-form__button">BOOK NOW</button>
+      </div>
+    </div>
     </div>
 
     <!-- Intro Text Section -->
     <section class="intro-text-secondary-component intro-text-secondary-component--white">
       <div class="intro-text-secondary">
         <div class="intro-text-secondary__content">
-          <div class="intro-text-secondary__text">
-            <h2 class="intro-text-secondary__heading">Introducing the Medlock Hotel.​</h2>
-            <div class="intro-text-secondary__small">
-              <p>More than just a place to stay. A perfect blend of comfort, style, and excitement.</p>
-              <p>Situated in the heart of the Entertainment District, it's a vibrant hub where guests can immerse themselves in the electrifying atmosphere of their favourite events.​</p>
+          <div class="intro-text-secondary__layout">
+            <h2 class="intro-text-secondary__heading">Introducing the Medlock Hotel.</h2>
+            <div class="intro-text-secondary__details">
+              <p class="intro-text-secondary__lead">Where contemporary style meets true Manchester warmth.</p>
+              <div class="intro-text-secondary__copy">
+                <p>Set in the heart of the Entertainment District, we blend modern design with an inviting, down-to-earth feel that makes every stay effortless.</p>
+                <p>Whether you’re here for business, football, music, or a weekend away, our spaces are designed for comfort, calm, and connection.</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Hotel Vibes Section -->
-    <section class="attractions-section">
-      <!-- You're welcome at ours anytime -->
-      <div class="attraction attraction--peach">
-        <div class="attraction__content">
-          <div class="attraction__text">
-            <h2 class="attraction__title">You're welcome at ours anytime.</h2>
-            <div class="attraction__description">
-              <p>Match day. Gig with the girls. City break. Missed the last train home. We got you.</p>
+    <!-- Hotel Vibes Section (Teaser Layout) -->
+    <section class="teasers-section teasers-section--hotel">
+      <!-- Hotel Teaser 1 (Rooms) -->
+      <div class="teasers-row teasers-row--hotel-teaser-1">
+        <div class="teasers-col teasers-col--text teasers-col--text-right">
+          <div class="teasers-copy">
+            <div class="teasers-title-group">
+              <h2 class="teasers-title teasers-title--right">Our Rooms</h2>
             </div>
+            <div class="teasers-description teasers-description--right">
+              <p>From our <strong>Standard Rooms</strong> all the way up to the <strong>Pitchview</strong> and <strong>Penthouse Suites</strong>, every space offers a calm retreat from the energy of the city.</p>
+              <p>Clean, modern design, warm finishes, and thoughtful details create a stay that feels relaxed, refreshed, and distinctly Manchester.</p>
+            </div>
+            <button class="teasers-button">our rooms</button>
           </div>
         </div>
-        <div class="attraction__visual">
-          <img src="assets/hotel/image 18.png" alt="" class="attraction__image" />
+        <div class="teasers-col teasers-col--image">
+          <div class="teasers-image-container teasers-image-container--square teasers-image-container--hotel-salmon">
+            <video class="teasers-video" autoplay muted loop playsinline>
+              <source src="assets/_video/hotel-teaser-rooms.mp4" type="video/mp4" />
+            </video>
+          </div>
         </div>
       </div>
 
-      <!-- Days and nights at Blend -->
-      <div class="attraction attraction--dark">
-        <div class="attraction__content">
-          <div class="attraction__text">
-            <h2 class="attraction__title">Days and nights at Blend</h2>
-            <div class="attraction__description">
-              <p>By day, it's the city's baristas, bakers, and delis. <br />By night, its mixologists, breweries and wine merchants.</p>
+      <!-- Hotel Teaser 2 (Brasserie) -->
+      <div class="teasers-row teasers-row--reverse teasers-row--hotel-teaser-2">
+        <div class="teasers-col teasers-col--text teasers-col--text-left">
+          <div class="teasers-copy">
+            <div class="teasers-title-group">
+              <h2 class="teasers-title">The Brasserie</h2>
             </div>
+            <div class="teasers-description">
+              <p>Experience the best of local flavors at <strong>The Brasserie</strong>, our signature dining space. From hearty breakfasts to elegant evening meals, we serve up classic dishes with a modern Manchester twist.</p>
+              <p>With an inviting atmosphere and a menu focused on seasonal ingredients, it's the perfect spot for a relaxed meal or a special celebration.</p>
+            </div>
+            <button class="teasers-button">book a table</button>
           </div>
         </div>
-        <div class="attraction__visual">
-          <img src="assets/hotel/image 18-1.png" alt="" class="attraction__image" />
+        <div class="teasers-col teasers-col--image teasers-col--image-left">
+          <div class="teasers-image-container teasers-image-container--square teasers-image-container--hotel-brown">
+            <video class="teasers-video" autoplay muted loop playsinline>
+              <source src="assets/_video/hotel-teaser-brasserie.mp4" type="video/mp4" />
+            </video>
+          </div>
         </div>
       </div>
 
-      <!-- A tune. A flavour. A process. -->
-      <div class="attraction attraction--yellow">
-        <div class="attraction__content">
-          <div class="attraction__text">
-            <h2 class="attraction__title">A tune. A flavour. A process.</h2>
-            <div class="attraction__description">
-              <p>We're a day and night place. Just you or all your mates place.</p>
+      <!-- Hotel Teaser 3 (Gym) -->
+      <div class="teasers-row teasers-row--hotel-teaser-3">
+        <div class="teasers-col teasers-col--text teasers-col--text-right">
+          <div class="teasers-copy">
+            <div class="teasers-title-group">
+              <h2 class="teasers-title teasers-title--right">Wellness & Gym</h2>
+            </div>
+            <div class="teasers-description teasers-description--right">
+              <p>Keep up your routine in our state-of-the-art <strong>Gym and Wellness</strong> suite. Equipped with the latest fitness technology, it's designed to help you stay energized during your stay.</p>
+              <p>After your workout, unwind in our tranquil wellness spaces, ensuring you leave feeling refreshed and ready for whatever the city has in store.</p>
             </div>
           </div>
         </div>
-        <div class="attraction__visual">
-          <img src="assets/hotel/hotel-2.png" alt="" class="attraction__image" />
+        <div class="teasers-col teasers-col--image">
+          <div class="teasers-image-container teasers-image-container--square teasers-image-container--hotel-blue">
+            <video class="teasers-video" autoplay muted loop playsinline>
+              <source src="assets/_video/hotel-teaser-gym.mp4" type="video/mp4" />
+            </video>
+          </div>
         </div>
       </div>
 
-      <!-- Big flavours at The Brasserie -->
-      <div class="attraction attraction--dark">
-        <div class="attraction__content">
-          <div class="attraction__text">
-            <h2 class="attraction__title">Big flavours at The Brassierie</h2>
-            <div class="attraction__description">
-              <p>Serving up delicious food and drinks, all day and night, to match your 24hr lifestyle.</p>
+      <!-- Hotel Teaser 4 (Pitchview) -->
+      <div class="teasers-row teasers-row--reverse teasers-row--hotel-teaser-4">
+        <div class="teasers-col teasers-col--text teasers-col--text-left">
+          <div class="teasers-copy">
+            <div class="teasers-title-group">
+              <h2 class="teasers-title">Spaces made for big ideas</h2>
             </div>
-          </div>
-        </div>
-        <div class="attraction__visual">
-          <img src="assets/hotel/hotel-3.png" alt="" class="attraction__image" />
-        </div>
-      </div>
-    </section>
-
-    <!-- Our Rooms Section -->
-    <section class="intro-text-secondary-component intro-text-secondary-component--white">
-      <div class="intro-text-secondary">
-        <div class="intro-text-secondary__content">
-          <div class="intro-text-secondary__text">
-            <h2 class="intro-text-secondary__heading">Our rooms</h2>
-            <div class="intro-text-secondary__small">
-              <p>From cozy to luxurious, we're sure our rooms have something perfect for everyone.</p>
+            <div class="teasers-description">
+              <p>From focused start-up sessions to creative team meet-ups, our <strong>Pitchview Rooms</strong> offer flexible, light-filled spaces designed to help ideas flow. For something a little more celebratory, our two-floor <strong>Penthouse</strong> sets the scene perfectly — a standout venue for private dinners, milestone moments, and events that deserve a city-skyline backdrop.</p>
+              <p>With warm service and a central location, hosting at The Medlock feels effortless from start to finish.</p>
             </div>
+            <button class="teasers-button">our spaces</button>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- Sticky Left Section 1 -->
-    <section class="sticky-left-section">
-      <div class="sticky-left-section__container">
-        <div class="sticky-left-section__visuals">
-          <div class="sticky-left-section__visual">
-            <img src="assets/hotel/hotel-standard-room-1.png" alt="" class="sticky-left-section__image" />
-          </div>
-          <div class="sticky-left-section__visual">
-            <img src="assets/hotel/hotel-standard-room-2.png" alt="" class="sticky-left-section__image" />
-          </div>
-        </div>
-        <div class="sticky-left-section__content">
-          <div class="sticky-left-section__text">
-            <p class="sticky-left-section__shoulder">Standard</p>
-            <h2 class="sticky-left-section__title">Effortless comfort, everyday luxury</h2>
-            <div class="sticky-left-section__description">
-              <p>Discover relaxed sophistication in our beautifully designed <strong>Standard Rooms</strong> – where comfort, quality, and style come together seamlessly.</p>
-              <p>Thoughtfully crafted for travellers who value both design and practicality, each room offers a calming retreat with premium finishes, plush bedding, and smart technology to make your stay effortless.</p>
-            </div>
+        <div class="teasers-col teasers-col--image teasers-col--image-left">
+          <div class="teasers-image-container teasers-image-container--square teasers-image-container--hotel-yellow">
+            <video class="teasers-video" autoplay muted loop playsinline>
+              <source src="assets/_video/hotel-teaser-pitchview.mp4" type="video/mp4" />
+            </video>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Sticky Left Section 2 -->
-    <section class="sticky-left-section sticky-left-section--alt-bg sticky-left-section--reversed">
-      <div class="sticky-left-section__container">
-        <div class="sticky-left-section__visuals">
-          <div class="sticky-left-section__visual">
-            <img src="assets/hotel/hotel-penthouse-1.png" alt="" class="sticky-left-section__image" />
-          </div>
-          <div class="sticky-left-section__visual">
-            <img src="assets/hotel/hotel-penthouse-2.png" alt="" class="sticky-left-section__image" />
-          </div>
-          <div class="sticky-left-section__visual">
-            <img src="assets/hotel/hotel-penthouse-3.png" alt="" class="sticky-left-section__image" />
-          </div>
-        </div>
-        <div class="sticky-left-section__content">
-          <div class="sticky-left-section__text">
-            <p class="sticky-left-section__shoulder">Penthouse</p>
-            <h2 class="sticky-left-section__title">Elevate your stay to the extraordinary</h2>
-            <div class="sticky-left-section__description">
-              <p>For those who demand nothing but the best, our <strong>Penthouse Suites</strong> deliver the pinnacle of Manchester luxury.</p>
-              <p>Boasting expansive living spaces, designer furnishings, and breathtaking skyline or stadium views, these suites are a statement in sophistication. Unwind in your private lounge, soak in the spa-style bathroom, or entertain guests with a backdrop that captures the city's vibrant energy.</p>
+    <!-- Hotel Info Section -->
+    <section class="hotel-info-section">
+      <div class="hotel-info">
+        <div class="hotel-info__layout">
+          <h2 class="hotel-info__title">More information</h2>
+          <div class="hotel-info__content">
+            <p class="hotel-info__lead">Contact Radisson or manage your booking on the main Radisson site.</p>
+            <div class="hotel-info__actions">
+              <a href="#" class="hotel-info__button">Manage my booking</a>
+              <a href="#" class="hotel-info__button">Go to Radisson</a>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Sticky Left Section 3 -->
-    <section class="sticky-left-section">
-      <div class="sticky-left-section__container">
-        <div class="sticky-left-section__visuals">
-          <div class="sticky-left-section__visual">
-            <img src="assets/hotel/image%2018.png" alt="Pitch-side room lounge area" class="sticky-left-section__image" />
-          </div>
-          <div class="sticky-left-section__visual">
-            <img src="assets/hotel/image%2018-1.png" alt="Pitch-side room bedroom with stadium view" class="sticky-left-section__image" />
-          </div>
-          <div class="sticky-left-section__visual">
-            <img src="assets/hotel/image%2019.png" alt="Pitch-side room seating overlooking the pitch" class="sticky-left-section__image" />
-          </div>
-        </div>
-        <div class="sticky-left-section__content">
-          <div class="sticky-left-section__text">
-            <p class="sticky-left-section__shoulder">Pitchside</p>
-            <h2 class="sticky-left-section__title">Pitch-side Rooms</h2>
-            <div class="sticky-left-section__description">
-              <p>Get closer to the action with our <strong>Pitch-side Rooms</strong>, designed for fans who want every match day to feel unforgettable.</p>
-              <p>Floor-to-ceiling views put the Etihad pitch in full focus, while bespoke furnishings and premium amenities ensure the atmosphere inside stays as special as the one outside.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Final Section (Placeholder) -->
-    <section class="hotel-final-section">
-      <div class="hotel-final-section__content"></div>
-    </section>
-
-    <!-- Ticker Component -->
-    <section class="ticker-component ticker-component--mini">
+    <!-- Ticker Section -->
+    <section class="ticker-component ticker-component--hotel">
       <div class="ticker">
         <div class="ticker__content">
           <div class="ticker__text-wrapper">
             <p class="ticker__text">
-              <span class="ticker__word">FOOTBALL</span>
-              <span class="ticker__separator"> </span>
-              <span class="ticker__word">CONCERTS</span>
-              <span class="ticker__separator"> </span>
-              <span class="ticker__word">EVENTS</span>
-              <span class="ticker__separator"> </span>
-              <span class="ticker__word">TOURS</span>
-              <span class="ticker__separator"> </span>
-              <span class="ticker__word">ADVENTURE</span>
-              <span class="ticker__separator"> </span>
-              <span class="ticker__word">ENTERTAINMENT</span>
-              <span class="ticker__separator"> </span>
-              <span class="ticker__word">CULTURE</span>
-              <span class="ticker__separator"> </span>
-              <span class="ticker__word">SPORTS</span>
-              <span class="ticker__separator"> / </span>
+              <span class="ticker__word ticker__word--pink">music</span>
+              <span class="ticker__word">dining</span>
+              <span class="ticker__word ticker__word--green">education</span>
+              <span class="ticker__word ticker__word--purple">events</span>
+              <span class="ticker__word ticker__word--orange">arts</span>
+              <span class="ticker__word ticker__word--pink">culture</span>
+              <span class="ticker__word">family</span>
+              <span class="ticker__word ticker__word--green">sports</span>
+              <span class="ticker__word ticker__word--purple">music</span>
+              <span class="ticker__word ticker__word--pink">dining</span>
+              <span class="ticker__word ticker__word--yellow">education</span>
+              <span class="ticker__word ticker__word--green">events</span>
+              <span class="ticker__word ticker__word--purple">arts</span>
+              <span class="ticker__word ticker__word--pink">culture</span>
+              <span class="ticker__word">family</span>
+              <span class="ticker__word ticker__word--green">sports</span>
+              <span class="ticker__word ticker__word--purple">music</span>
             </p>
             <p class="ticker__text ticker__text--duplicate">
-              <span class="ticker__word">FOOTBALL</span>
-              <span class="ticker__separator"> </span>
-              <span class="ticker__word">CONCERTS</span>
-              <span class="ticker__separator"> </span>
-              <span class="ticker__word">EVENTS</span>
-              <span class="ticker__separator"> </span>
-              <span class="ticker__word">TOURS</span>
-              <span class="ticker__separator"> </span>
-              <span class="ticker__word">ADVENTURE</span>
-              <span class="ticker__separator"> </span>
-              <span class="ticker__word">ENTERTAINMENT</span>
-              <span class="ticker__separator"> </span>
-              <span class="ticker__word">CULTURE</span>
-              <span class="ticker__separator"> </span>
-              <span class="ticker__word">SPORTS</span>
-              <span class="ticker__separator"> / </span>
+              <span class="ticker__word ticker__word--pink">music</span>
+              <span class="ticker__word">dining</span>
+              <span class="ticker__word ticker__word--green">education</span>
+              <span class="ticker__word ticker__word--purple">events</span>
+              <span class="ticker__word ticker__word--orange">arts</span>
+              <span class="ticker__word ticker__word--pink">culture</span>
+              <span class="ticker__word">family</span>
+              <span class="ticker__word ticker__word--green">sports</span>
+              <span class="ticker__word ticker__word--purple">music</span>
+              <span class="ticker__word ticker__word--pink">dining</span>
+              <span class="ticker__word ticker__word--yellow">education</span>
+              <span class="ticker__word ticker__word--green">events</span>
+              <span class="ticker__word ticker__word--purple">arts</span>
+              <span class="ticker__word ticker__word--pink">culture</span>
+              <span class="ticker__word">family</span>
+              <span class="ticker__word ticker__word--green">sports</span>
+              <span class="ticker__word ticker__word--purple">music</span>
             </p>
           </div>
         </div>
@@ -331,77 +467,47 @@
       <div class="footer__top">
         <div class="footer__logo-wrap">
           <a href="index.html" class="footer__logo-link">
-            <svg width="196" height="196" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" class="footer__logo" aria-label="Logo">
-              <path d="M2.36269 15.4541H0.0672184V0.191978H4.46526L5.62264 11.0387H5.81554L6.97292 0.191978H11.1974V15.4541H8.74757L8.92117 4.33868H8.72828L7.22368 15.4541H3.94444L2.42056 4.33868H2.22766L2.36269 15.4541Z" fill="#1f1d1e" />
-              <path d="M15.0499 8.67736V13.4H18.1169V15.4541H12.3493V0.191978H18.0205V2.24613H15.0499V6.6424H17.2296V8.67736H15.0499Z" fill="#1f1d1e" />
-              <path d="M22.59 15.4541H19.06V0.191978H22.59C24.8083 0.191978 26.12 1.95817 26.12 4.9722V10.6931C26.12 13.688 24.8083 15.4541 22.59 15.4541ZM21.7606 2.24613V13.4H22.59C23.1301 13.4 23.4195 13.016 23.4195 12.3057V3.3596C23.4195 2.63008 23.1301 2.24613 22.59 2.24613H21.7606Z" fill="#1f1d1e" />
-              <path d="M30.0348 0.191978V13.4H32.8318V15.4541H27.3342V0.191978H30.0348Z" fill="#1f1d1e" />
-              <path d="M35.9336 15.6461C33.7153 15.6461 32.4036 13.8223 32.4036 10.6931V4.9722C32.4036 1.84298 33.7153 0 35.9336 0C38.1327 0 39.4636 1.84298 39.4636 4.9722V10.6931C39.4636 13.8223 38.1327 15.6461 35.9336 15.6461ZM35.9336 13.4192C36.4737 13.4192 36.7631 13.016 36.7631 12.2673V3.39799C36.7631 2.63008 36.4737 2.22693 35.9336 2.22693C35.3742 2.22693 35.1042 2.63008 35.1042 3.39799V12.2673C35.1042 13.016 35.3742 13.4192 35.9336 13.4192Z" fill="#1f1d1e" />
-              <path d="M43.8638 15.6461C41.6648 15.6461 40.3531 13.8031 40.3531 10.6931V4.9722C40.3531 1.84298 41.6648 0 43.8638 0C46.0049 0 47.3745 1.7086 47.3745 4.31948V6.91117L44.674 7.04555V3.39799C44.674 2.63008 44.4039 2.22693 43.8638 2.22693C43.343 2.22693 43.0536 2.63008 43.0536 3.39799V12.2673C43.0536 13.016 43.3237 13.4192 43.8638 13.4192C44.4039 13.4192 44.674 13.016 44.674 12.2673V8.44699L47.3745 8.60057V11.2498C47.3745 13.8991 46.0049 15.6461 43.8638 15.6461Z" fill="#1f1d1e" />
-              <path d="M51.2933 15.4541H48.5928V0.191978H51.2933V6.6616H51.4862L53.068 0.191978H55.8457L53.9167 7.54469L56 15.4541H53.1644L51.4862 8.71575H51.2933V15.4541Z" fill="#1f1d1e" />
-              <path d="M53.6373 40.5459H55.9328V55.808H51.5347L50.3774 44.9613H50.1845L49.0271 55.808H44.8026V40.5459H47.2524L47.0788 51.6613H47.2717L48.7763 40.5459H52.0556L53.5794 51.6613H53.7723L53.6373 40.5459Z" fill="#1f1d1e" />
-              <path d="M40.9501 47.3226V42.6H37.8831V40.5459H43.6507V55.808H37.9795V53.7539H40.9501V49.3576H38.7704V47.3226H40.9501Z" fill="#1f1d1e" />
-              <path d="M33.6029 40.5459H37.1329V55.808H33.6029C31.3846 55.808 30.0729 54.0418 30.0729 51.0278V45.3069C30.0729 42.3121 31.3846 40.5459 33.6029 40.5459ZM34.4323 53.7539V42.6H33.6029C33.0628 42.6 32.7734 42.984 32.7734 43.6943V52.6404C32.7734 53.3699 33.0628 53.7539 33.6029 53.7539H34.4323Z" fill="#1f1d1e" />
-              <path d="M26.351 55.808V42.6H23.554V40.5459H29.0516V55.808H26.351Z" fill="#1f1d1e" />
-              <path d="M19.8735 40.3539C22.0918 40.3539 23.4035 42.1777 23.4035 45.3069V51.0278C23.4035 54.157 22.0918 56 19.8735 56C17.6745 56 16.3435 54.157 16.3435 51.0278V45.3069C16.3435 42.1777 17.6745 40.3539 19.8735 40.3539ZM19.8735 42.5808C19.3334 42.5808 19.044 42.984 19.044 43.7327V52.602C19.044 53.3699 19.3334 53.7731 19.8735 53.7731C20.4329 53.7731 20.7029 53.3699 20.7029 52.602V43.7327C20.7029 42.984 20.4329 42.5808 19.8735 42.5808Z" fill="#1f1d1e" />
-              <path d="M11.9433 40.3539C14.1423 40.3539 15.454 42.1969 15.454 45.3069V51.0278C15.454 54.157 14.1423 56 11.9433 56C9.80216 56 8.4326 54.2914 8.4326 51.6805V49.0888L11.1331 48.9544V52.602C11.1331 53.3699 11.4032 53.7731 11.9433 53.7731C12.4641 53.7731 12.7535 53.3699 12.7535 52.602V43.7327C12.7535 42.984 12.4834 42.5808 11.9433 42.5808C11.4032 42.5808 11.1331 42.984 11.1331 43.7327V47.553L8.4326 47.3994V44.7502C8.4326 42.1009 9.80216 40.3539 11.9433 40.3539Z" fill="#1f1d1e" />
-              <path d="M4.70668 40.5459H7.40723V55.808H4.70668V49.3384H4.51378L2.93203 55.808H0.154318L2.08328 48.4553L0 40.5459H2.83558L4.51378 47.2842H4.70668V40.5459Z" fill="#1f1d1e" />
-              <path
-                d="M44.271 35.8542C42.1684 35.8542 40.8181 34.2992 40.8181 31.8803V30.3637L43.403 30.2101V32.5906C43.403 33.3201 43.7116 33.7233 44.271 33.7233C44.8111 33.7233 45.1005 33.3201 45.1005 32.5906V31.5731C45.1005 28.5399 41.1268 28.8663 41.1268 24.8539V24.086C41.1268 21.7247 42.4192 20.2081 44.3867 20.2081C46.3929 20.2081 47.6853 21.7247 47.6853 24.086V25.5259L45.1776 25.6794V23.4333C45.1776 22.7038 44.9076 22.339 44.4253 22.339C43.9624 22.339 43.7309 22.7038 43.7309 23.4333V24.4124C43.7309 27.1193 47.801 27.388 47.801 30.978V31.8803C47.801 34.2992 46.4122 35.8542 44.271 35.8542Z"
-                fill="#1f1d1e"
-              />
-              <path
-                d="M55.5693 25.1803V30.9012C55.5693 33.2433 54.7784 34.8175 53.3896 35.4127V35.5087C53.3896 35.8734 53.5632 36.0078 53.9297 36.0078H54.682V38.0619H53.3896C51.4413 38.0619 50.7083 37.4092 50.7083 35.7006V35.4319C49.3002 34.8367 48.5093 33.2433 48.5093 30.9012V25.1803C48.5093 22.0511 49.821 20.2081 52.0393 20.2081C54.2383 20.2081 55.5693 22.0511 55.5693 25.1803ZM51.2099 23.6061V32.4754C51.2099 33.2241 51.4799 33.6273 52.0393 33.6273C52.5794 33.6273 52.8688 33.2241 52.8688 32.4754V23.6061C52.8688 22.8382 52.5794 22.435 52.0393 22.435C51.4799 22.435 51.2099 22.8382 51.2099 23.6061Z"
-                fill="#1f1d1e"
-              />
-              <path
-                d="M11.729 20.3142C13.8316 20.3142 15.1819 21.8692 15.1819 24.2881V25.8047L12.597 25.9583V23.5778C12.597 22.8483 12.2884 22.4451 11.729 22.4451C11.1889 22.4451 10.8995 22.8483 10.8995 23.5778V24.5953C10.8995 27.6285 14.8732 27.3021 14.8732 31.3145V32.0824C14.8732 34.4437 13.5808 35.9603 11.6133 35.9603C9.60714 35.9603 8.31473 34.4437 8.31473 32.0824V30.6425L10.8224 30.489V32.7351C10.8224 33.4646 11.0924 33.8294 11.5747 33.8294C12.0376 33.8294 12.2691 33.4646 12.2691 32.7351V31.756C12.2691 29.0491 8.19899 28.7804 8.199 25.1904V24.2881C8.199 21.8692 9.58785 20.3142 11.729 20.3142Z"
-                fill="#1f1d1e"
-              />
-              <path
-                d="M0.430687 30.9881L0.430687 25.2672C0.430687 22.9251 1.22156 21.3509 2.61042 20.7557V20.6597C2.61042 20.295 2.43681 20.1606 2.07031 20.1606H1.31801L1.31801 18.1065L2.61042 18.1065C4.55868 18.1065 5.29168 18.7592 5.29168 20.4678V20.7365C6.69983 21.3317 7.4907 22.9251 7.4907 25.2672L7.4907 30.9881C7.4907 34.1173 6.17901 35.9603 3.96069 35.9603C1.76167 35.9603 0.430686 34.1173 0.430687 30.9881ZM4.79015 32.5623L4.79015 23.693C4.79015 22.9443 4.5201 22.5411 3.9607 22.5411C3.42059 22.5411 3.13124 22.9443 3.13124 23.693L3.13124 32.5623C3.13124 33.3302 3.42058 33.7334 3.96069 33.7334C4.52009 33.7334 4.79015 33.3302 4.79015 32.5623Z"
-                fill="#1f1d1e"
-              />
-            </svg>
+            <img src="assets/hero/hero-logo.svg" alt="Medlock Square logo" class="footer__logo" />
           </a>
         </div>
         <div class="footer__nav">
           <div class="footer__nav-list footer__nav-list--first">
             <a href="hotel.html" class="footer__link">
-              <p class="footer__link-text">Hotel</p>
+              <p class="footer__link-text">hotel</p>
             </a>
             <a href="attractions.html" class="footer__link">
-              <p class="footer__link-text">Attractions</p>
+              <p class="footer__link-text">things to do</p>
             </a>
             <a href="food-and-drink.html" class="footer__link">
-              <p class="footer__link-text">Food & Drink</p>
+              <p class="footer__link-text">food & drink</p>
             </a>
             <a href="#" class="footer__link">
-              <p class="footer__link-text">Offices</p>
+              <p class="footer__link-text">offices</p>
+            </a>
+            <a href="conferences-and-events.html" class="footer__link">
+              <p class="footer__link-text">conferences & events</p>
             </a>
           </div>
           <div class="footer__nav-list footer__nav-list--second">
-            <a href="conferences-and-events.html" class="footer__link">
-              <p class="footer__link-text">Conferences & Events</p>
+            <a href="#" class="footer__link">
+              <p class="footer__link-text">facebook</p>
             </a>
             <a href="#" class="footer__link">
-              <p class="footer__link-text">FACEBOOK</p>
+              <p class="footer__link-text">x</p>
             </a>
             <a href="#" class="footer__link">
-              <p class="footer__link-text">X</p>
-            </a>
-            <a href="#" class="footer__link">
-              <p class="footer__link-text">Instagram</p>
+              <p class="footer__link-text">instagram</p>
             </a>
           </div>
         </div>
       </div>
       <div class="footer__bottom">
         <div class="footer__bottom-content">
-          <p class="footer__copyright">© 2040 Copyright. All Rights Reserved.</p>
-          <button class="footer__button">Button Text</button>
+          <p class="footer__copyright">© 2025 Copyright. All Rights Reserved.</p>
+          <button class="footer__button">Stay informed</button>
         </div>
       </div>
     </footer>
   </body>
 </html>
+
