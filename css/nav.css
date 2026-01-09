@@ -153,6 +153,7 @@
   display: block;
   flex-shrink: 0;
   object-fit: contain;
+  color: currentColor;
 }
 
 /* Fallback burger icon - shows when image fails to load */
@@ -276,16 +277,49 @@
     justify-content: center;
   }
 
-  .nav__icon-link {
-    display: none !important; /* Hide desktop menu icon on mobile/tablet */
+  .nav__icon-link,
+  .nav__action-group .nav__icon-link,
+  .nav__actions .nav__icon-link {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    left: -9999px !important;
+  }
+
+  .nav__icon,
+  .nav__action-group .nav__icon,
+  .nav__actions .nav__icon {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+
+  .nav__actions {
+    gap: 28px; /* Match Figma spacing between button and burger */
+  }
+
+  .nav__action-group {
+    order: 2; /* Burger menu comes after button */
+    display: flex !important;
+    align-items: center !important;
+    gap: 0 !important; /* Remove gap to ensure no space for hidden icon */
+  }
+
+  .nav__action-group > *:not(.nav__mobile-menu-toggle) {
+    display: none !important; /* Hide everything except burger toggle */
   }
 
   .nav__button {
-    display: none !important; /* Hide button on mobile/tablet */
+    display: flex !important; /* Show CTA button on mobile per Figma */
+    order: 1; /* Button comes before burger menu */
   }
 
   .nav {
-    padding: 0 32px;
+    padding: 0 24px; /* Match Figma: 24px horizontal padding */
     height: 72px;
   }
 }

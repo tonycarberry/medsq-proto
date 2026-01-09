@@ -130,7 +130,7 @@
 /* Mobile Styles */
 @media (max-width: 768px) {
   .intro-text-secondary__content {
-    padding: 40px 20px 48px; /* Softer spacing on mobile */
+    padding: 40px 20px 40px; /* Softer spacing on mobile */
   }
 
   .intro-text-secondary__large {

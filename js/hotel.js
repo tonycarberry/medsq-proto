@@ -82,7 +82,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Close modals when clicking outside
   document.addEventListener("click", function (e) {
-    closeAllModals();
+    // Only close if clicking outside modal triggers
+    const clickedTrigger = e.target.closest(".js-date-trigger, .js-guests-trigger");
+    const clickedModal = e.target.closest(".booking-modal");
+    
+    if (!clickedTrigger && !clickedModal) {
+      closeAllModals();
+    }
   });
 
   // Prevent closing when clicking inside modals
@@ -130,49 +136,143 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Video Playback Control: Only one video playing at a time (the most visible)
-  const allVideos = document.querySelectorAll("video");
+  // Hero video - ensure it plays automatically
+  const heroVideo = document.querySelector(".hero__video");
+  if (heroVideo) {
+    // Ensure video is muted and has autoplay attributes
+    heroVideo.muted = true;
+    heroVideo.setAttribute('autoplay', '');
+    heroVideo.setAttribute('playsinline', '');
+    heroVideo.setAttribute('loop', '');
+    heroVideo.setAttribute('preload', 'auto');
+    
+    // Add error handler
+    heroVideo.addEventListener('error', (e) => {
+      console.error("Hero video error:", e, heroVideo.error);
+      console.log("Video src:", heroVideo.currentSrc);
+      console.log("Video readyState:", heroVideo.readyState);
+    });
+    
+    // Try to play immediately
+    const tryPlay = () => {
+      if (heroVideo.paused) {
+        const playPromise = heroVideo.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              console.log("Hero video playing successfully");
+            })
+            .catch(e => {
+              console.log("Hero video play attempt failed:", e.message);
+            });
+        }
+      }
+    };
+    
+    // Try playing when video is ready
+    heroVideo.addEventListener('loadeddata', () => {
+      console.log("Hero video loadeddata event");
+      tryPlay();
+    });
+    heroVideo.addEventListener('canplay', () => {
+      console.log("Hero video canplay event");
+      tryPlay();
+    });
+    heroVideo.addEventListener('canplaythrough', () => {
+      console.log("Hero video canplaythrough event");
+      tryPlay();
+    });
+    
+    // Try immediately
+    tryPlay();
+    
+    // Also try after delays
+    setTimeout(tryPlay, 100);
+    setTimeout(tryPlay, 500);
+    setTimeout(tryPlay, 1000);
+    
+    // Ensure it plays when visible and pauses when not visible
+    const heroObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && entry.intersectionRatio > 0.1) {
+          // Play when visible
+          tryPlay();
+        } else {
+          // Pause when not visible to save resources
+          if (!heroVideo.paused) {
+            heroVideo.pause();
+            console.log("Hero video paused (not visible)");
+          }
+        }
+      });
+    }, { threshold: [0.1] });
+    
+    heroObserver.observe(heroVideo);
+    
+    // Fallback: try on any user interaction
+    document.addEventListener('click', () => {
+      tryPlay();
+    }, { once: true });
+    
+    // Log video state
+    console.log("Hero video initialized:", {
+      src: heroVideo.currentSrc,
+      readyState: heroVideo.readyState,
+      paused: heroVideo.paused,
+      muted: heroVideo.muted
+    });
+  } else {
+    console.error("Hero video element not found!");
+  }
+
+  // Video Playback Control: Only one teaser/room video playing at a time (the most visible)
+  const teaserVideos = document.querySelectorAll(".teasers-video");
+  const roomVideos = document.querySelectorAll(".room-video");
+  const allContentVideos = Array.from(teaserVideos).concat(Array.from(roomVideos));
   
-  // Set initial state: pause all but the first visible one (handled by autoplay normally, but we'll manage it)
-  const observerOptions = {
-    threshold: Array.from({ length: 11 }, (_, i) => i * 0.1) // 0.0, 0.1, ..., 1.0
-  };
+  if (allContentVideos.length > 0) {
+    const observerOptions = {
+      threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+    };
 
-  const videoRatios = new Map();
+    const videoRatios = new Map();
+    let rafId = null;
 
-  const videoObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      videoRatios.set(entry.target, entry.intersectionRatio);
+    const videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        videoRatios.set(entry.target, entry.intersectionRatio);
+      });
+
+      if (rafId) cancelAnimationFrame(rafId);
+      
+      rafId = requestAnimationFrame(() => {
+        let mostVisibleVideo = null;
+        let maxRatio = 0;
+
+        videoRatios.forEach((ratio, video) => {
+          if (ratio > maxRatio) {
+            maxRatio = ratio;
+            mostVisibleVideo = video;
+          }
+        });
+
+        // Pause all content videos and play only the most visible one
+        allContentVideos.forEach((video) => {
+          if (video === mostVisibleVideo && maxRatio > 0.1) {
+            if (video.paused) {
+              video.play().catch(e => console.log("Video play interrupted", e));
+            }
+          } else {
+            if (!video.paused) {
+              video.pause();
+            }
+          }
+        });
+      });
+    }, observerOptions);
+
+    allContentVideos.forEach((video) => {
+      videoObserver.observe(video);
     });
-
-    // Find the video with the highest intersection ratio
-    let mostVisibleVideo = null;
-    let maxRatio = 0;
-
-    videoRatios.forEach((ratio, video) => {
-      if (ratio > maxRatio) {
-        maxRatio = ratio;
-        mostVisibleVideo = video;
-      }
-    });
-
-    // Pause all videos and play only the most visible one
-    allVideos.forEach((video) => {
-      if (video === mostVisibleVideo && maxRatio > 0.1) { // Threshold to prevent playing if barely visible
-        if (video.paused) {
-          video.play().catch(e => console.log("Video play interrupted", e));
-        }
-      } else {
-        if (!video.paused) {
-          video.pause();
-        }
-      }
-    });
-  }, observerOptions);
-
-  allVideos.forEach((video) => {
-    // Ensure videos don't have the 'autoplay' attribute interfering too much
-    // Though we want them to play eventually, our script will manage it.
-    videoObserver.observe(video);
-  });
+  }
 });

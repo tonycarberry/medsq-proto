@@ -162,7 +162,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const tickerFrame = document.querySelector(".ticker__frame");
   const tickerVideo = document.querySelector(".ticker__video");
 
-  if (tickerSection && tickerFrame && typeof ScrollTrigger !== "undefined") {
+  // Skip if ticker is hidden
+  if (tickerSection && tickerFrame && typeof ScrollTrigger !== "undefined" && window.getComputedStyle(tickerSection).display !== 'none') {
     // Guard against double-init (index loads animations.js + animations-experiments.js)
     if (!tickerFrame.dataset.scrollWidthInit) {
       tickerFrame.dataset.scrollWidthInit = "true";
@@ -210,8 +211,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const tickerTextWrapper = document.querySelector(".ticker__text-wrapper");
   const tickerText = document.querySelector(".ticker__text");
   const tickerContent = document.querySelector(".ticker__content");
+  // tickerSection already declared above, reuse it
 
-  if (tickerTextWrapper && tickerText && tickerContent) {
+  // Skip if ticker is hidden
+  if (tickerSection && window.getComputedStyle(tickerSection).display === 'none') {
+    // Ticker is hidden, skip all ticker animations
+  } else if (tickerTextWrapper && tickerText && tickerContent) {
     // Guard against double-init (index loads animations.js + animations-experiments.js)
     if (tickerContent.dataset.tickerTextInit) return;
     tickerContent.dataset.tickerTextInit = "true";

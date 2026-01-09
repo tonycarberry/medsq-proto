@@ -49,11 +49,12 @@
           <div class="nav__actions">
             <div class="nav__action-group">
               <button class="nav__mobile-menu-toggle" aria-label="Toggle menu">
-                <img src="assets/logo.svg" alt="Menu" class="nav__burger-icon" />
+                <svg class="nav__burger-icon" width="28" height="14" viewBox="0 0 28 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <line x1="0" y1="1" x2="28" y2="1" stroke="currentColor" stroke-width="2"/>
+                  <line x1="0" y1="7" x2="28" y2="7" stroke="currentColor" stroke-width="2"/>
+                  <line x1="0" y1="13" x2="28" y2="13" stroke="currentColor" stroke-width="2"/>
+                </svg>
               </button>
-              <a href="#" class="nav__icon-link">
-                <img src="assets/logo.svg" alt="Menu" class="nav__icon" />
-              </a>
             </div>
             <a href="experiments.html" class="nav__button">Stay informed</a>
           </div>
@@ -80,7 +81,7 @@
       <div class="hero">
         <div class="hero__background" aria-hidden="true">
           <div class="hero__bg-color"></div>
-          <video class="hero__video hero__image" autoplay muted loop playsinline>
+          <video class="hero__video hero__image" autoplay muted loop playsinline preload="auto">
             <source src="assets/_video/hotel-hero-nologo.mp4" type="video/mp4" />
           </video>
         </div>
@@ -393,6 +394,155 @@
             <video class="teasers-video" autoplay muted loop playsinline>
               <source src="assets/_video/hotel-teaser-pitchview.mp4" type="video/mp4" />
             </video>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Rooms Section -->
+    <section class="intro-text-secondary-component intro-text-secondary-component--beige">
+      <div class="intro-text-secondary">
+        <div class="intro-text-secondary__content">
+          <div class="intro-text-secondary__layout">
+            <h2 class="intro-text-secondary__heading">Our rooms</h2>
+            <div class="intro-text-secondary__details">
+              <p class="intro-text-secondary__lead">Where contemporary style meets true Manchester warmth.</p>
+              <div class="intro-text-secondary__copy">
+                <p>Set in the heart of the Entertainment District, we blend modern design with an inviting, down-to-earth feel that makes every stay effortless.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rooms Section -->
+    <section class="rooms-section">
+      <!-- Standard Rooms -->
+      <div class="room-row room-row--standard">
+        <div class="room-col room-col--images">
+          <div class="room-image-stack">
+            <div class="room-image">
+              <video class="room-video" autoplay muted loop playsinline>
+                <source src="assets/_video/hotel-rooms-standard-1.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="room-image">
+              <video class="room-video" autoplay muted loop playsinline>
+                <source src="assets/_video/hotel-rooms-standard-2.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </div>
+        </div>
+        <div class="room-col room-col--text">
+          <div class="room-copy">
+            <div class="room-title-group">
+              <span class="room-label">Standard Rooms</span>
+              <h3 class="room-title">Your Modern Manchester Base.</h3>
+            </div>
+            <div class="room-body">
+              <p class="room-lead">Sleek lines, soft lighting and warm, natural textures create an inviting atmosphere for both business and leisure travellers.</p>
+              <div class="room-body--small">
+                <p class="room-description">Enjoy a comfortable king or twin bed, smart TV, walk-in shower, and a space designed for clarity and focus. Perfect for: short stays, concert goers, business trips or a base for game day.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pitchview Rooms -->
+      <div class="room-row room-row--pitchview">
+        <div class="room-col room-col--text room-col--text-right">
+          <div class="room-copy">
+            <div class="room-title-group">
+              <span class="room-label">Pitchview Room</span>
+              <h3 class="room-title">The game-changing experience.</h3>
+            </div>
+            <div class="room-body">
+              <p class="room-lead">Bright, modern spaces with sweeping views over the stadium, bringing a touch of energy and excitement to your stay.</p>
+              <div class="room-body--small">
+                <p class="room-description">Clean design, warm finishes, and thoughtful comforts make these rooms perfect for guests who want a little more inspiration from their surroundings.</p>
+                <p class="room-description"><strong>Pitchview Rooms</strong> give you a calm place to unwind with a front-row view of the city's sporting spirit.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="room-col room-col--images">
+          <div class="room-image-stack">
+            <div class="room-image">
+              <img src="assets/hotel/pitchview-img-1.png" alt="Pitchview Room" />
+            </div>
+            <div class="room-image">
+              <video class="room-video" autoplay muted loop playsinline>
+                <source src="assets/_video/hotel-rooms-pitchview.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="room-image">
+              <img src="assets/hotel/pitchview-img-2.png" alt="Pitchview Room" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Suites -->
+      <div class="room-row room-row--single room-row--premium">
+        <div class="room-col room-col--images">
+          <div class="room-image-stack">
+            <div class="room-image">
+              <video class="room-video" autoplay muted loop playsinline>
+                <source src="assets/_video/hotel-rooms-premium.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </div>
+        </div>
+        <div class="room-col room-col--text">
+          <div class="room-copy">
+            <div class="room-title-group">
+              <span class="room-label">Premium Room</span>
+              <h3 class="room-title">Premium made perfect.</h3>
+            </div>
+            <div class="room-body">
+              <p class="room-lead">Spacious, bright, and designed for comfort, our suites are the perfect city retreat.</p>
+              <div class="room-body--small">
+                <p class="room-description">Each suite features a generous open-plan layout, including a separate living area ideal for relaxing or entertaining, and is filled with natural daylight that brings a warm, welcoming atmosphere to every corner.</p>
+                <p class="room-description">Thoughtful touches and modern design make every stay feel effortless, whether you're here for work, leisure, or a little of both.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Penthouse Suite -->
+      <div class="room-row room-row--penthouse">
+        <div class="room-col room-col--text room-col--text-right">
+          <div class="room-copy">
+            <div class="room-title-group">
+              <span class="room-label">Penthouse Suite</span>
+              <h3 class="room-title">Your City Escape, Elevated.</h3>
+            </div>
+            <div class="room-body">
+              <p class="room-lead">Experience Manchester from above in our spectacular two-story <strong>Penthouse</strong>.</p>
+              <div class="room-body--small">
+                <p class="room-description">With sweeping views over Co-op Live and the city centre, this expansive space combines luxury, style, and comfort across two levels.</p>
+                <p class="room-description">A separate living area, dining space, and private terrace create the perfect setting for entertaining or relaxing, while large windows flood the Penthouse with natural light, capturing the energy and spirit of the city below.</p>
+                <p class="room-description">Designed for special occasions, extended stays, or guests who simply want the very best, the Penthouse is Manchester living at its finest.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="room-col room-col--images">
+          <div class="room-image-stack">
+            <div class="room-image">
+              <img src="assets/hotel/penthouse-1.png" alt="Penthouse Suite" />
+            </div>
+            <div class="room-image">
+              <video class="room-video" autoplay muted loop playsinline>
+                <source src="assets/_video/hotel-rooms-penthouse.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="room-image">
+              <img src="assets/hotel/penthouse-2.png" alt="Penthouse Suite" />
+            </div>
           </div>
         </div>
       </div>
