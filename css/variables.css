@@ -6,9 +6,9 @@
   --theme-background-dark: #1e1e28;
   --theme-background-2: #fafafa; /* Light gray background for alternating sections */
   --off-white: #e6e6f0; /* Off-white for opening badge */
-  --button-primary-background: #f2fa7d;
-  --button-primary-border: #f2fa7d;
-  --button-primary-text: #1e1e28;
+  --button-primary-background: #9D78FE;
+  --button-primary-border: #9D78FE;
+  --button-primary-text: #1f1d1e;
 
   /* Spacing */
   --space-2: 12px;
@@ -103,4 +103,13 @@ p,
   text-wrap: balance; /* Fallback */
   orphans: 2;
   widows: 2;
+}
+
+/* Mobile-friendly spacing and margins */
+@media (max-width: 768px) {
+  :root {
+    --site-margin: 24px;
+    --section-space-small: 48px;
+    --section-space-main: 72px;
+  }
 }

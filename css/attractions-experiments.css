@@ -1,10 +1,11 @@
 /* Attractions Teasers Component - Experiments Page Only */
 .teasers-section {
-  background-color: #ffffff;
+  background-color: var(--theme-background-dark);
   display: flex;
   flex-direction: column;
-  gap: var(--space-8, 64px);
-  padding: var(--section-space-small, 80px) 0;
+  gap: 0;
+  /* Match desired layout: original side gutters + 40px top padding */
+  padding: var(--space-6, 40px) var(--site-margin, 56px) var(--section-space-small, 80px);
   width: 100%;
   margin: 0;
   isolation: isolate;
@@ -12,13 +13,20 @@
 
 .teasers-row {
   display: flex;
-  gap: var(--space-4, 24px);
-  align-items: flex-start;
+  /* Match Figma: tiles meet with no gutter between columns */
+  gap: 0;
+  /* Stretch columns so left/right rows share consistent overall height */
+  align-items: stretch;
   overflow: hidden;
   width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
   padding: 0;
   position: relative;
+  background-color: #ffffff;
 }
+
+/* Keep all rows consistent; section padding already provides top spacing */
 
 /* Z-index stacking order from Figma */
 .teasers-row:nth-child(1) {
@@ -60,7 +68,10 @@
   flex-direction: column;
   gap: 10px;
   min-height: 500px;
-  padding-top: var(--space-6, 40px);
+  /* Match Figma: content is vertically centered within the row */
+  padding-top: 0;
+  padding-bottom: 0;
+  justify-content: center;
 }
 
 .teasers-col--text-left {
@@ -96,12 +107,14 @@
   min-height: 500px;
   justify-content: center;
   align-items: flex-end;
-  padding-right: var(--site-margin, 24px);
+  /* Image should sit flush to the row edge */
+  padding-right: 0;
   padding-left: 0;
 }
 
 .teasers-col--image-left {
-  padding-left: var(--site-margin, 24px);
+  /* Image should sit flush to the row edge */
+  padding-left: 0;
   padding-right: 0;
   align-items: flex-start;
 }
@@ -112,10 +125,12 @@
   gap: var(--space-7, 48px);
   width: 100%;
   max-width: 596px;
+  box-sizing: border-box;
 }
 
 .teasers-copy--food-drink {
-  max-width: 534px;
+  /* Keep Food & Drink row styled identically to other right-image rows */
+  max-width: 596px;
 }
 
 .teasers-title-group {
@@ -129,40 +144,36 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2, 4px);
-  background-color: #e6e6f0;
-  padding: var(--space-4, 8px) var(--space-5, 12px);
+  gap: 0;
+  background-color: transparent; /* Outline style */
+  border: 1px solid #e6e6f0; /* Match previous filled badge color */
+  box-sizing: border-box;
+  /* Extra right padding to account for italic slant */
+  padding: 4px 12px 4px 10px;
   border-radius: 6px;
   height: 36px;
   width: fit-content;
 }
 
 .teasers-opening-indicator-wrapper {
-  position: relative;
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  /* Hide indicator wrapper completely */
+  display: none;
 }
 
 .teasers-opening-indicator {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-  display: block;
-  max-width: none;
-  object-fit: contain;
+  display: none;
 }
 
 .teasers-opening-text {
-  font-family: "Kippax Modern", sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 24px;
-  color: var(--theme-text, #1f1d1e);
-  white-space: pre;
+  font-family: "Kippax Modern Condensed Bold", sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+  color: #64646e; /* Grey from Figma */
+  text-transform: uppercase;
+  font-style: italic;
+  white-space: nowrap;
 }
 
 .teasers-title {
@@ -185,11 +196,11 @@
 .teasers-description {
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1.5;
   color: var(--theme-text, #1f1d1e);
   max-width: 567px;
-  width: 400px;
+  width: 100%;
 }
 
 .teasers-description--right {
@@ -227,27 +238,45 @@
 }
 
 .teasers-button {
-  background-color: #f2fa7d;
-  border: 1.5px solid #f2fa7d;
-  display: flex;
+  background-color: transparent;
+  border: none;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-3, 16px) var(--size-1-5, 24px);
-  border-radius: 4px;
+  gap: 6px; /* Space between text and arrows */
+  padding: 12px 16px; /* Larger hit area while keeping transparent background */
   font-family: "Montserrat", sans-serif;
-  font-weight: 500;
-  font-size: 20px;
+  font-weight: 600; /* Figma: Montserrat SemiBold */
+  font-size: 14px; /* Figma */
   line-height: 1.5;
-  color: #1f1d1e;
-  white-space: pre;
+  letter-spacing: 0;
+  text-transform: uppercase; /* Figma */
+  color: var(--theme-text, #1f1d1e);
+  white-space: nowrap;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition: color 0.2s ease;
   width: fit-content;
+  position: relative;
+}
+
+/* Add two arrows after button text */
+.teasers-button::after {
+  content: ">>";
+  color: #9D78FE;
+  font-weight: 600;
+  display: inline-block;
+  transition: transform 0.3s ease, opacity 0.3s ease, color 0.2s ease;
+  opacity: var(--arrow-opacity, 1);
+  transform: translateX(var(--arrow-x, 0));
 }
 
 .teasers-button:hover {
-  background-color: #e8f06a;
-  border-color: #e8f06a;
+  color: var(--theme-text, #1f1d1e);
+}
+
+.teasers-button:hover::after {
+  transform: translateX(calc(var(--arrow-x, 0) + 4px));
+  color: #8B6AE8;
 }
 
 .teasers-image-container {
@@ -255,10 +284,71 @@
   width: 100%;
   height: 588px;
   overflow: hidden; /* Required for clip-path animation */
+  /* When clip-path reveals, show off-white (not pure white) behind image/video */
+  background-color: var(--off-white, #e6e6f0);
+}
+
+.teasers-image-container--square {
+  aspect-ratio: 1 / 1;
+  height: auto;
+}
+
+.teasers-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+.teasers-video-logo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10%;
+  pointer-events: none;
+}
+
+.teasers-video-logo img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  display: block;
+  filter: none;
+}
+
+/* If we ever use a black SVG as the overlay, tint it to MSQ yellow */
+.teasers-video-logo img[src$=".svg"] {
+  filter: brightness(0) saturate(100%) invert(92%) sepia(40%) saturate(650%) hue-rotate(8deg) brightness(105%) contrast(100%);
+}
+
+.teasers-altitude-logo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.teasers-altitude-logo img {
+  width: auto;
+  height: auto;
+  max-width: 60%;
+  max-height: 40%;
+  object-fit: contain;
+  display: block;
+  transform-origin: bottom center;
 }
 
 .teasers-image-container--small {
-  height: 500px;
+  /* Keep all teaser images square so row heights are consistent */
+  aspect-ratio: 1 / 1;
+  height: auto;
 }
 
 .teasers-image-container--large {
@@ -296,22 +386,39 @@
   gap: 8px;
   align-items: center;
   justify-content: center;
-  height: 500px;
+  height: 100%;
   width: 100%;
-  overflow: hidden;
+  overflow: visible; /* Changed from hidden to visible so logos aren't clipped */
   position: relative;
-  background: radial-gradient(circle at 50% 50%, rgba(230, 230, 240, 1) 63.462%, rgba(255, 255, 255, 1) 100%);
+  z-index: 1; /* Ensure it's above background */
+}
+
+.teasers-logo-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  z-index: 0;
 }
 
 .teasers-logo-grid-container {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 524px;
   height: 350px;
+  z-index: 1;
 }
 
 .teasers-logo-item {
   position: absolute;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .teasers-logo-item--166 {
@@ -327,9 +434,14 @@
 .teasers-logo-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: 50% 50%;
+  object-fit: contain; /* Changed from cover to contain so logos fit properly */
+  object-position: center center;
   pointer-events: none;
+  /* Initial state for animation - will be set by GSAP */
+  opacity: 0;
+  transform: scale(0.8);
+  transform-origin: center center;
+  display: block; /* Ensure images are displayed */
 }
 
 /* Logo positioning */
@@ -360,11 +472,28 @@
 }
 
 .teasers-logo-item:nth-child(5) .teasers-logo-image {
-  width: 120.13%;
-  height: 102.5%;
+  width: 100%;
+  height: 100%;
   position: absolute;
-  left: -8.31%;
+  left: 0;
   top: 0;
+  object-fit: cover;
+  object-position: right center;
+}
+
+.teasers-badge {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 6px 10px;
+  background: rgba(30, 30, 40, 0.6);
+  color: var(--off-white);
+  font-family: "Montserrat", sans-serif;
+  font-size: 10px;
+  line-height: 1.5;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+  z-index: 2;
 }
 
 .teasers-line {
@@ -386,7 +515,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url("assets/d1e8d77f2523fbde216edeaa1a52c2020e57a97c.svg");
+  /* Path is relative to this CSS file */
+  background-image: url("../assets/d1e8d77f2523fbde216edeaa1a52c2020e57a97c.svg");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
@@ -397,7 +527,8 @@
   gap: var(--space-3, 16px);
   align-items: center;
   justify-content: flex-end;
-  padding: var(--space-6, 40px) 120px;
+  /* Align with section side margins */
+  padding: var(--space-6, 40px) var(--site-margin, 56px);
   width: 100%;
   overflow: hidden;
   position: relative;
@@ -405,8 +536,9 @@
 }
 
 .teasers-button-group .teasers-button {
-  height: 56px;
-  font-size: 16px;
+  /* Match the same button_default styling */
+  height: auto;
+  font-size: 14px;
 }
 
 /* Sticky positioning for Altitude section */
@@ -415,10 +547,39 @@
   top: 0;
 }
 
+/* Tablet Styles */
+@media (max-width: 1200px) and (min-width: 769px) {
+  .teasers-title {
+    font-size: 64px;
+    line-height: 1.05;
+    letter-spacing: -0.64px;
+    white-space: normal; /* Allow wrapping at tablet sizes */
+  }
+
+  .teasers-description {
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  .teasers-copy {
+    max-width: 100%; /* Ensure copy doesn't overflow */
+  }
+
+  /* Add breathing room on mid breakpoints so copy doesn't hit viewport edges */
+  .teasers-col--text-right .teasers-copy {
+    padding-left: 40px;
+  }
+
+  .teasers-col--text-left .teasers-copy,
+  .teasers-col--etihad .teasers-copy {
+    padding-right: 40px;
+  }
+}
+
 /* Mobile Styles */
 @media (max-width: 768px) {
   .teasers-section {
-    gap: var(--space-8, 64px);
+    gap: var(--section-space-small, 80px);
     padding: 0;
     max-width: 100%;
   }
@@ -427,7 +588,7 @@
     flex-direction: column;
     gap: 0;
     background-color: #ffffff;
-    padding: 0 var(--site-margin, 24px);
+    padding: 0 var(--space-4, 24px);
   }
 
   .teasers-row--reverse {
@@ -440,86 +601,103 @@
   }
 
   .teasers-col--text {
+    order: 1;
     padding: var(--space-5, 24px) 0;
     min-height: auto;
-    align-items: flex-start !important;
+    align-items: center !important;
   }
 
   .teasers-col--text-left,
   .teasers-col--text-right {
     padding-left: 0;
     padding-right: 0;
-    align-items: flex-start !important;
+    align-items: center !important;
   }
 
   .teasers-col--text-right .teasers-copy {
-    align-items: flex-start !important;
+    align-items: center !important;
   }
 
   .teasers-col--text-right .teasers-title-group {
-    align-items: flex-start !important;
+    align-items: center !important;
   }
 
   .teasers-col--image {
+    order: -1;
     padding: 0;
     min-height: auto;
     align-items: center;
   }
 
   .teasers-col--image-left {
+    order: -1;
     padding: 0;
     align-items: center;
   }
 
   .teasers-copy {
     gap: var(--space-5, 24px);
-    align-items: flex-start !important;
+    align-items: center !important;
+    max-width: 100%;
+    width: 100%;
   }
 
   .teasers-title-group {
     gap: var(--space-4, 16px);
-    align-items: flex-start !important;
+    align-items: center !important;
+    width: 100%;
+  }
+
+  .teasers-opening {
+    align-self: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .teasers-title {
-    font-size: 56px;
-    line-height: 52px;
-    letter-spacing: -0.56px;
+    font-size: 44px;
+    line-height: 1.05;
+    letter-spacing: -0.44px;
     width: 100%;
     white-space: normal;
-    text-align: left !important;
+    text-align: center !important;
   }
 
   .teasers-title--right {
-    text-align: left !important;
+    text-align: center !important;
   }
 
   .teasers-description {
-    font-size: 18px;
+    font-size: 16px;
     width: 100%;
     max-width: 100%;
-    text-align: left !important;
+    text-align: center !important;
   }
 
   .teasers-description--right {
-    text-align: left !important;
+    text-align: center !important;
   }
 
   .teasers-image-container {
-    height: 245px;
-    width: 327px;
+    width: 100%;
     max-width: 100%;
+    aspect-ratio: 4 / 3;
+    height: auto;
     margin: 0 auto;
   }
 
   .teasers-image-container--small {
-    height: 327px;
-    width: 327px;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 1 / 1;
+    height: auto;
   }
 
   .teasers-image-container--large {
-    height: 561.748px;
-    width: 327px;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 4 / 3;
+    height: auto;
   }
 
   .teasers-image-bg {
@@ -544,6 +722,9 @@
 
   .teasers-button {
     padding: var(--space-3, 12px) var(--size-1-5, 24px);
+    align-self: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .teasers-button-group {

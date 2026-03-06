@@ -2,50 +2,66 @@
 .ticker-component {
   width: 100%;
   position: relative;
+  margin-bottom: var(--space-8, 64px); /* tighter gap below ticker to match Figma */
+  /* Keep ticker aligned with site gutters; the frame animates within this */
+  padding: 0 var(--site-margin);
 }
 
 .ticker {
   position: relative;
   width: 100%;
-  overflow: visible; /* Allow image to show at full height */
+  max-width: 1440px;
+  margin: 0 auto;
+  /* Create positioning context for absolute children */
+}
+
+.ticker__frame {
+  position: relative;
+  height: 563px; /* Match current ticker video height */
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden; /* This is the mask/frame that animates */
+  will-change: width;
 }
 
 .ticker__background {
-  position: relative;
+  position: absolute;
+  inset: 0;
   pointer-events: none;
-  overflow: hidden; /* Clip zoomed image edges */
   width: 100%;
-  max-width: 1440px; /* Constrain image to max-width */
-  margin: 0 auto; /* Center the image container */
-  padding: 0 var(--site-margin); /* Add side padding */
-  box-sizing: border-box;
 }
 
 .ticker__bg-color {
   display: none; /* Not needed when image determines height */
 }
 
-.ticker__image {
+.ticker__video {
   display: block;
-  width: 100%; /* Constrain to container width */
-  height: auto; /* Let image maintain aspect ratio */
-  max-width: 100%; /* Constrain to container */
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center center;
+  max-width: 100%;
 }
 
 .ticker__content {
   position: absolute;
-  left: 0;
-  top: 50%; /* Vertically center */
-  transform: translateY(-50%); /* Center vertically */
-  width: 100vw; /* Full viewport width for edge-to-edge scrolling */
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   overflow: hidden;
+  z-index: 2; /* Ensure text appears above video */
 }
 
 @media (max-width: 768px) {
-  .ticker__background {
+  .ticker-component {
     padding: 0 var(--space-5); /* Use smaller padding on mobile (32px) */
+  }
+
+  .ticker__frame {
+    height: 563px; /* Maintain same height on mobile */
   }
 
   .ticker__text {
@@ -65,7 +81,7 @@
   font-weight: 700; /* Bold */
   font-style: normal;
   line-height: 1; /* Match Figma: line-height 1 */
-  font-size: 100px; /* Match Figma: 100px Display size */
+  font-size: 40px; /* Match Figma: 100px Display size */
   text-transform: uppercase; /* Match Figma: uppercase */
   white-space: nowrap;
   letter-spacing: -1px; /* Match Figma: -1px tracking */
@@ -76,12 +92,14 @@
 
 .ticker__word {
   display: inline-block;
+  margin-right: 1.5em; /* Add more space after each word */
 }
 
 .ticker__separator {
   display: inline-block;
   white-space: pre; /* Preserve spacing */
   color: #f2fa7d; /* Yellow separator color */
+  margin: 0 0.75em; /* Increase space between groups */
 }
 
 .ticker__word--pink {
@@ -118,6 +136,8 @@
   background-color: #f2fa7d;
   border-top: 1px solid rgba(31, 29, 30, 0.12);
   border-bottom: 1px solid rgba(31, 29, 30, 0.12);
+  /* Mini ticker should be full-bleed; inner content has its own padding */
+  padding: 0;
 }
 
 .ticker-component--mini .ticker {

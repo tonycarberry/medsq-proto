@@ -154,39 +154,91 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Ticker image zoom animation - zooms from 100% to 120% as user scrolls
-  const tickerImage = document.querySelector(".ticker__image");
+  // Ticker frame scroll animation:
+  // - Frame enters as a square (width = height)
+  // - Scroll expands width until it's full width
+  // - Optional subtle video zoom on scroll
   const tickerSection = document.querySelector(".ticker-component");
+  const tickerFrame = document.querySelector(".ticker__frame");
+  const tickerVideo = document.querySelector(".ticker__video");
 
-  if (tickerImage && tickerSection && typeof ScrollTrigger !== "undefined") {
-    // Set initial scale to 100%
-    gsap.set(tickerImage, {
-      scale: 1,
-      transformOrigin: "center center",
-    });
+  // Skip if ticker is hidden
+  if (tickerSection && tickerFrame && typeof ScrollTrigger !== "undefined" && window.getComputedStyle(tickerSection).display !== 'none') {
+    // Guard against double-init (index loads animations.js + animations-experiments.js)
+    if (!tickerFrame.dataset.scrollWidthInit) {
+      tickerFrame.dataset.scrollWidthInit = "true";
 
-    // Create scroll-triggered zoom animation
-    // Image zooms from 100% to 140% as user scrolls through the section
-    gsap.to(tickerImage, {
-      scale: 1.4, // Zoom to 140%
-      ease: "none", // Linear easing for smooth scroll-linked animation
-      scrollTrigger: {
-        trigger: tickerSection,
-        start: "top bottom", // Start when top of section enters bottom of viewport
-        end: "bottom top", // End when bottom of section reaches top of viewport
-        scrub: true, // Smooth scroll-linked animation (no jumps)
-      },
-    });
+      const getAvailableWidth = () => tickerFrame.parentElement?.clientWidth || tickerSection.clientWidth || window.innerWidth;
+      const getFrameHeight = () => tickerFrame.getBoundingClientRect().height || 563;
+
+      const frameTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: tickerSection,
+          start: "top bottom", // when ticker enters viewport
+          // Finish earlier: be full width when the ticker is ~60% up the viewport
+          // (i.e. section top reaches 40% from the top of the viewport)
+          end: "top 40%",
+          scrub: true,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      frameTimeline.fromTo(
+        tickerFrame,
+        {
+          width: () => `${Math.min(getFrameHeight(), getAvailableWidth())}px`,
+        },
+        {
+          width: () => `${getAvailableWidth()}px`,
+          ease: "none",
+        }
+      );
+
+      // Video should stay fixed - no animation, no movement, no scaling
+      if (tickerVideo) {
+        gsap.set(tickerVideo, { 
+          scale: 1, 
+          transformOrigin: "center center",
+          x: 0,
+          y: 0,
+        });
+        // No animation on video - it stays fixed
+      }
+    }
   }
 
   // Ticker text horizontal scrolling animation
   const tickerTextWrapper = document.querySelector(".ticker__text-wrapper");
   const tickerText = document.querySelector(".ticker__text");
   const tickerContent = document.querySelector(".ticker__content");
+  // tickerSection already declared above, reuse it
 
-  if (tickerTextWrapper && tickerText && tickerContent) {
+  // Skip if ticker is hidden
+  if (tickerSection && window.getComputedStyle(tickerSection).display === 'none') {
+    // Ticker is hidden, skip all ticker animations
+  } else if (tickerTextWrapper && tickerText && tickerContent) {
+    // Guard against double-init (index loads animations.js + animations-experiments.js)
+    if (tickerContent.dataset.tickerTextInit) return;
+    tickerContent.dataset.tickerTextInit = "true";
+
     // Wait for layout to be ready before calculating dimensions
     const initTickerAnimation = () => {
+      // Intro mask reveal from center outward, triggered on enter (not on load)
+      if (typeof ScrollTrigger !== "undefined") {
+        gsap.set(tickerContent, { clipPath: "inset(0 50% 0 50%)" });
+        gsap.to(tickerContent, {
+          clipPath: "inset(0 0% 0 0%)",
+          duration: 1.2,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: tickerSection || tickerContent,
+            start: "top 85%",
+            end: "top 60%",
+            once: true,
+          },
+        });
+      }
+
       // Calculate the width of one text element
       const textWidth = tickerText.offsetWidth;
       const contentWidth = window.innerWidth || document.documentElement.clientWidth;
@@ -211,19 +263,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Start position: start from 0 so text immediately covers full viewport
       // The first text element starts at the left edge, and duplicates follow seamlessly
-      const initialX = 0;
+      const isHotel = tickerSection.classList.contains("ticker-component--hotel");
+      const initialX = isHotel ? -textWidth : 0;
 
       gsap.set(tickerTextWrapper, {
         x: initialX,
       });
 
-      // Animate continuously moving left
-      // The animation moves by exactly one text width, then seamlessly loops
-      // With multiple copies, there's always text visible, preventing any gaps
-      // Starting from 0 ensures full viewport coverage from the start
+      // Animate continuously
+      // For hotel: move from -textWidth to 0 (Left-to-Right)
+      // For others: move from 0 to -textWidth (Right-to-Left)
       gsap.to(tickerTextWrapper, {
-        x: initialX - totalWidth, // Move left by exactly one text width
-        duration: 35, // Slower animation (higher duration = slower speed)
+        x: isHotel ? 0 : initialX - textWidth,
+        duration: isHotel ? 50 : 35, // Slower for hotel ticker
         ease: "none", // Constant speed - essential for seamless loop
         repeat: -1, // Infinite loop - seamless reset
       });
@@ -283,7 +335,7 @@ document.addEventListener("DOMContentLoaded", function () {
           duration: 0.2, // Quick transition per word
           ease: "power1.out",
         },
-        index * 0.05, // Small stagger (0.05s per word) to ensure sequential animation
+        index * 0.05 // Small stagger (0.05s per word) to ensure sequential animation
       );
     });
   }
@@ -337,7 +389,7 @@ document.addEventListener("DOMContentLoaded", function () {
               duration: 0.2, // Quick transition per word
               ease: "power1.out",
             },
-            index * 0.05, // Small stagger (0.05s per word) to ensure sequential animation
+            index * 0.05 // Small stagger (0.05s per word) to ensure sequential animation
           );
         });
 
@@ -361,7 +413,7 @@ document.addEventListener("DOMContentLoaded", function () {
               duration: 0.4, // 0.4 second fade-in
               ease: "power1.out",
             },
-            animationEndTime, // Start fade-in when word animation completes
+            animationEndTime // Start fade-in when word animation completes
           );
         }
       }
@@ -616,7 +668,7 @@ document.addEventListener("DOMContentLoaded", function () {
               duration: 0.2,
               ease: "power2.out",
             },
-            index * 0.08,
+            index * 0.08
           );
         });
 
@@ -631,7 +683,7 @@ document.addEventListener("DOMContentLoaded", function () {
               duration: 0.4,
               ease: "power2.out",
             },
-            descriptionStart,
+            descriptionStart
           );
         }
 
@@ -659,7 +711,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   duration: 0.5,
                   ease: "power2.out",
                 },
-                imagesStart + index * 0.1, // Stagger images
+                imagesStart + index * 0.1 // Stagger images
               );
             });
           }
@@ -749,7 +801,7 @@ document.addEventListener("DOMContentLoaded", function () {
               duration: 0.2, // Duration per word
               ease: "power2.out",
             },
-            index * 0.08, // Stagger delay between words
+            index * 0.08 // Stagger delay between words
           );
         });
 
@@ -790,7 +842,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 duration: 0.2, // Duration per word (same as title)
                 ease: "power2.out",
               },
-              descriptionStartTime + index * 0.08, // Stagger delay between words (same as title)
+              descriptionStartTime + index * 0.08 // Stagger delay between words (same as title)
             );
           });
         }
@@ -855,7 +907,7 @@ document.addEventListener("DOMContentLoaded", function () {
               duration: 0.2, // Duration per word (same as title)
               ease: "power2.out",
             },
-            index * 0.08, // Stagger delay between words (same as title)
+            index * 0.08 // Stagger delay between words (same as title)
           );
         });
       }
@@ -1001,7 +1053,7 @@ document.addEventListener("DOMContentLoaded", function () {
           () => {
             observers.forEach((observer) => observer.disconnect());
           },
-          { once: true },
+          { once: true }
         );
       }
     }
@@ -1016,49 +1068,80 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (teaserImageContainers.length > 0 && typeof ScrollTrigger !== "undefined") {
     teaserImageContainers.forEach((container) => {
-      const teaserImage = container.querySelector(".teasers-image");
+      const teaserImage = container.querySelector(".teasers-image") || container.querySelector(".teasers-video");
+      const logoGrid = container.querySelector(".teasers-logo-grid");
 
-      if (teaserImage) {
-        // Set initial state: fully masked (clip-path inset right at 100%)
-        gsap.set(container, {
-          clipPath: "inset(0 100% 0 0)", // Fully masked - 100% from right
-        });
+      // Apply mask reveal to containers with images/videos OR logo grids
+      if (teaserImage || logoGrid) {
+        // Check if this is a reverse row (image on the left)
+        const teaserRow = container.closest(".teasers-row");
+        const isReverseRow = teaserRow && teaserRow.classList.contains("teasers-row--reverse");
+        
+        // Set initial state based on row direction
+        if (isReverseRow) {
+          // For reverse rows (image on left): mask from left, reveal right to left
+          gsap.set(container, {
+            clipPath: "inset(0 0 0 100%)", // Fully masked - 100% from left
+          });
+        } else {
+          // For normal rows (image on right): mask from right, reveal left to right
+          gsap.set(container, {
+            clipPath: "inset(0 100% 0 0)", // Fully masked - 100% from right
+          });
+        }
 
-        // Set initial state for image: normal scale and position
-        gsap.set(teaserImage, {
-          scale: 1,
-          x: 0,
-          transformOrigin: "center center",
-        });
+        // Set initial state for image/video: normal scale and position (skip for logo grids)
+        if (teaserImage) {
+          gsap.set(teaserImage, {
+            scale: 1,
+            x: 0,
+            transformOrigin: "center center",
+          });
+        }
 
         // Create scroll-triggered animation for mask reveal
-        // Mask reveals from left to right
-        // Each image animates separately when its top enters the bottom of the viewport
-        gsap.to(container, {
-          clipPath: "inset(0 0% 0 0)", // Fully revealed - 0% from right
-          ease: "none", // Linear easing - no easing
-          scrollTrigger: {
-            trigger: container, // Trigger on the individual image container
-            start: "top bottom", // Start when the top of the image enters the bottom of the viewport
-            end: "top 40%", // End when the top of the image is 40% down from the top of the viewport
-            scrub: 0.15, // Slower, smoother scroll-linked animation
-            // markers: true, // Uncomment for debugging
-          },
-        });
+        if (isReverseRow) {
+          // Mask reveals from right to left (for images on the left)
+          gsap.to(container, {
+            clipPath: "inset(0 0 0 0%)", // Fully revealed - 0% from left
+            ease: "none", // Linear easing - no easing
+            scrollTrigger: {
+              trigger: container, // Trigger on the individual image container
+              start: "top bottom", // Start when the top of the image enters the bottom of the viewport
+              end: "top 40%", // End when the top of the image is 40% down from the top of the viewport
+              scrub: 0.15, // Slower, smoother scroll-linked animation
+              // markers: true, // Uncomment for debugging
+            },
+          });
+        } else {
+          // Mask reveals from left to right (for images on the right)
+          gsap.to(container, {
+            clipPath: "inset(0 0% 0 0)", // Fully revealed - 0% from right
+            ease: "none", // Linear easing - no easing
+            scrollTrigger: {
+              trigger: container, // Trigger on the individual image container
+              start: "top bottom", // Start when the top of the image enters the bottom of the viewport
+              end: "top 40%", // End when the top of the image is 40% down from the top of the viewport
+              scrub: 0.15, // Slower, smoother scroll-linked animation
+              // markers: true, // Uncomment for debugging
+            },
+          });
+        }
 
-        // Create scroll-triggered animation for image zoom
-        // Images zoom to 110% as user scrolls
-        gsap.to(teaserImage, {
-          scale: 1.1, // Zoom to 110%
-          ease: "none", // Linear easing for smooth scroll-linked movement
-          scrollTrigger: {
-            trigger: container, // Trigger on the individual image container
-            start: "top bottom", // Start when image enters viewport
-            end: "bottom top", // End when image leaves viewport
-            scrub: 0.15, // Smooth scroll-linked animation (matches mask reveal timing)
-            // markers: true, // Uncomment for debugging
-          },
-        });
+        // Create scroll-triggered animation for image zoom (only for images/videos, not logo grids)
+        if (teaserImage) {
+          gsap.to(teaserImage, {
+            scale: 1.1, // Zoom to 110%
+            ease: "none", // Linear easing for smooth scroll-linked movement
+            scrollTrigger: {
+              trigger: container, // Trigger on the individual image container
+              start: "top bottom", // Start when image enters viewport
+              end: "bottom top", // End when image leaves viewport
+              scrub: 0.15, // Smooth scroll-linked animation (matches mask reveal timing)
+              // markers: true, // Uncomment for debugging
+            },
+          });
+        }
       }
     });
 
@@ -1066,10 +1149,147 @@ document.addEventListener("DOMContentLoaded", function () {
     ScrollTrigger.refresh();
   }
 
-  // Teasers title fade-in animation
-  const teaserTitles = document.querySelectorAll(".teasers-title");
+  // Food & Drink logos animation - staggered scale and opacity
+  const logoGrid = document.querySelector(".teasers-logo-grid");
+  if (logoGrid && typeof ScrollTrigger !== "undefined" && typeof gsap !== "undefined") {
+    const logoImages = logoGrid.querySelectorAll(".teasers-logo-image");
+    const logoContainer = logoGrid.closest(".teasers-image-container");
+    const logoGridContainer = logoGrid.querySelector(".teasers-logo-grid-container");
+    
+    if (logoImages.length > 0 && logoContainer) {
+      // Set initial state instantly (for page load)
+      const setInitialState = () => {
+        logoImages.forEach((logo) => {
+          gsap.set(logo, {
+            opacity: 0,
+            scale: 0.8,
+            transformOrigin: "center center",
+          });
+          logo.classList.remove("teasers-logo-image--animated");
+        });
+        
+        // Set initial state for container (centered, normal scale)
+        if (logoGridContainer) {
+          gsap.set(logoGridContainer, {
+            scale: 1,
+            transformOrigin: "center center",
+          });
+        }
+      };
+      
+      // Animate logos out (reverse of animate in)
+      // Store the last random order to reverse in the same order
+      let lastRandomOrder = null;
+      
+      const resetLogos = () => {
+        if (logoImages.length === 0) return;
+        
+        // Use the same random order as the last animate in (if available)
+        // Otherwise create a new random order
+        if (!lastRandomOrder) {
+          const indices = Array.from({ length: logoImages.length }, (_, i) => i);
+          for (let i = indices.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [indices[i], indices[j]] = [indices[j], indices[i]];
+          }
+          lastRandomOrder = indices;
+        }
+        
+        // Reverse animation: fade out and scale down in reverse of animate order
+        logoImages.forEach((logo, originalIndex) => {
+          const randomOrder = lastRandomOrder.indexOf(originalIndex);
+          gsap.to(logo, {
+            opacity: 0,
+            scale: 0.8,
+            duration: 0.15, // same duration as animate in
+            ease: "power2.out", // same easing as animate in
+            delay: randomOrder * 0.12, // same stagger as animate in (120ms)
+            onComplete: () => {
+              logo.classList.remove("teasers-logo-image--animated");
+            },
+          });
+        });
+        
+        // Reset container scale
+        if (logoGridContainer) {
+          gsap.to(logoGridContainer, {
+            scale: 1,
+            duration: 0.3,
+            ease: "power2.out",
+          });
+        }
+        
+        // Clear the stored order after reset
+        lastRandomOrder = null;
+      };
+      
+      // Set initial state for all logos (instant, for page load)
+      setInitialState();
+      
+      // Animate logos when container enters viewport
+      const animateLogos = () => {
+        if (logoImages.length === 0) return;
+        
+        // Create random order for this animation cycle
+        const indices = Array.from({ length: logoImages.length }, (_, i) => i);
+        // Fisher-Yates shuffle
+        for (let i = indices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+        
+        // Store this order for reverse animation
+        lastRandomOrder = indices;
+        
+        // Fast staggered pop-in (match Figma feel) in random order
+        // Each logo has its own overshoot animation (0.8 → 1.05 → 1.0)
+        logoImages.forEach((logo, originalIndex) => {
+          const randomOrder = indices.indexOf(originalIndex);
+          
+          // Create timeline for each logo with overshoot
+          const logoTimeline = gsap.timeline({
+            delay: randomOrder * 0.12, // slightly slower stagger (120ms between logos)
+            onComplete: () => {
+              logo.classList.add("teasers-logo-image--animated");
+            },
+          });
+          
+          // Animate: fade in + scale from 0.8 to 1.05 (overshoot)
+          logoTimeline.to(logo, {
+            opacity: 1,
+            scale: 1.05, // Overshoot to 105%
+            duration: 0.2,
+            ease: "power2.out",
+          })
+          // Then settle back to 1.0
+          .to(logo, {
+            scale: 1, // Settle back to 100%
+            duration: 0.15,
+            ease: "power2.out",
+          });
+        });
+      };
+      
+      // Keep logos visible while the container is visible.
+      // Only reset once the container is fully off-screen.
+      // Delay animation until container is well centered in viewport
+      ScrollTrigger.create({
+        trigger: logoContainer,
+        start: "top 50%", // Wait until container top reaches middle of viewport
+        end: "bottom top", // fully off-screen above
+        onEnter: animateLogos,
+        onEnterBack: animateLogos,
+        onLeave: resetLogos,
+        onLeaveBack: resetLogos,
+      });
+    }
+  }
 
-  // Scramble text function (used by hero logo, etc.)
+  // Teasers title scramble text animation (matching hero logo style)
+  const teaserTitles = document.querySelectorAll(".teasers-title");
+  const teaserCharSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+  // Scramble text function (same as hero logo)
   const scrambleElement = (element, config = {}) => {
     const { duration = 3, scrambleRatio = 0.65, chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", once = true, scrambleInterval = 50, target, onStart, onUpdate, onComplete, ease = (t) => t } = config;
 
@@ -1170,345 +1390,560 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   if (teaserTitles.length > 0 && typeof ScrollTrigger !== "undefined") {
-    const LETTER_STAGGER = 0.08;
-    const LETTER_DURATION = 0.2;
+    const rootStyles = getComputedStyle(document.documentElement);
+    // MSQ color palette (same as hero logo)
+    const msqColors = [
+      "#75D8FF", // Blue
+      "#64D187", // Green
+      "#F2FA7D", // Yellow
+      "#9D78FE", // Purple
+      "#FEA5E5", // Pink
+      "#FE8F00", // Orange
+    ];
+    const getRandomMSQColor = () => msqColors[Math.floor(Math.random() * msqColors.length)];
+    const getRandomChar = (charset) => charset[Math.floor(Math.random() * charset.length)] || "A";
+    const baseColor = (rootStyles.getPropertyValue("--theme-text-dark") || "#1f1d1e").trim() || "#1f1d1e";
+    const toDisplayChar = (char) => (char === " " ? NBSP : char);
 
     teaserTitles.forEach((title) => {
-      // Split title into letter spans for left-to-right animation
+      // Split title text into letters and wrap each in a span (like hero logo)
       const text = title.textContent.trim();
       const letters = text.split("");
-      title.innerHTML = letters.map((letter) => `<span class="teasers-title-letter">${letter === " " ? "\u00A0" : letter}</span>`).join("");
 
+      // Clear and rebuild with wrapped letters
+      title.innerHTML = letters.map((letter) => `<span class="teasers-title-letter">${letter === " " ? "&nbsp;" : letter}</span>`).join("");
+
+      // Get all letter elements
       const letterElements = Array.from(title.querySelectorAll(".teasers-title-letter"));
 
-      // Set initial state: letters start off to the left, invisible
+      // Initialize each letter with base color and store original text (no scrambling)
+      letterElements.forEach((letter) => {
+        const original = letter.textContent.trim() || letter.innerHTML.trim();
+        if (original.length > 0 && original !== "&nbsp;") {
+          letter.dataset.scrambleWord = original;
+        } else if (original === "&nbsp;") {
+          letter.dataset.scrambleWord = " ";
+        }
+        const isSpace = letter.dataset.scrambleWord === " ";
+        letter.textContent = isSpace ? NBSP : letter.dataset.scrambleWord;
+        letter.style.color = baseColor;
+      });
+
+      // Set initial state: letters are invisible
       gsap.set(letterElements, {
         opacity: 0,
-        x: -50,
       });
 
       // Get the parent teaser row for ScrollTrigger
       const teaserRow = title.closest(".teasers-row");
-      const teaserDescription = teaserRow?.querySelector(".teasers-description");
 
       if (teaserRow) {
-        // Detect if we're on mobile (matches CSS breakpoint)
-        const isMobile = window.innerWidth <= 768;
-
-        // On mobile, titles are below images, so trigger animation later
-        // On desktop, start later so transition is visible when scrolling down
-        const startPoint = isMobile ? "top 30%" : "top 60%";
-
-        // Create a timeline for title letters + description (scrubbed to scroll)
-        const titleTimeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: teaserRow,
-            start: startPoint,
-            end: isMobile ? "top 10%" : "top 30%",
-            scrub: 0.15,
-          },
-        });
-
-        // Animate title letters left-to-right (no scramble, no color change)
-        letterElements.forEach((letter, index) => {
-          titleTimeline.to(
-            letter,
-            {
-              opacity: 1,
-              x: 0,
-              duration: LETTER_DURATION,
-              ease: "power2.out",
-            },
-            index * LETTER_STAGGER
-          );
-        });
-
-        const titleEndTime = letterElements.length * LETTER_STAGGER + LETTER_DURATION;
-
-        // Animate description text with same slide-in effect, after title completes
-        if (teaserDescription) {
-          // Handle both cases: description as <p> tag or as <div> container with <p> tags inside
-          let descriptionParagraphs = teaserDescription.querySelectorAll("p");
-
-          // If no <p> tags found, treat the description itself as a paragraph
-          if (descriptionParagraphs.length === 0) {
-            descriptionParagraphs = [teaserDescription];
-          }
-
-          descriptionParagraphs.forEach((paragraph) => {
-            const text = paragraph.textContent.trim();
-            const words = text.split(/\s+/);
-
-            // Clear and rebuild with wrapped words
-            paragraph.innerHTML = words.map((word) => `<span class="teasers-description-word">${word}</span>`).join(" ");
-          });
-
-          // Get all word elements from all paragraphs
-          const descriptionWordElements = teaserDescription.querySelectorAll(".teasers-description-word");
-
-          // Set initial state: words are invisible and positioned to the left (same as titles)
-          gsap.set(descriptionWordElements, {
-            opacity: 0,
-            x: -50, // Start from left (negative = left side)
-          });
-
-          // Calculate when description should start animating (after title letters complete)
-          const descriptionStartTime = titleEndTime;
-
-          // Add description word-by-word animation to timeline after title completes
-          // Same animation style as title: slide from left to right
-          descriptionWordElements.forEach((word, index) => {
-            titleTimeline.to(
-              word,
-              {
-                opacity: 1,
-                x: 0, // End at aligned position (x: 0)
-                duration: 0.2, // Duration per word (same as title)
-                ease: "power2.out",
-              },
-              descriptionStartTime + index * 0.08, // Stagger delay between words (same as title)
-            );
-          });
-
-          // Calculate when description animation completes
-          const descriptionWordCount = descriptionWordElements.length;
-          const descriptionEndTime = descriptionStartTime + descriptionWordCount * 0.08 + 0.2; // After all description words + their duration
-
-          // Fade in button and opening elements after description completes
-          const teaserButton = teaserRow.querySelector(".teasers-button");
-          const teaserOpening = teaserRow.querySelector(".teasers-opening");
-
-          const buttonStartTime = descriptionEndTime;
-          const openingStartTime = buttonStartTime + 0.2; // Badge follows CTA
-
-          if (teaserButton) {
-            gsap.set(teaserButton, { opacity: 0 });
-            titleTimeline.to(
-              teaserButton,
-              {
-                opacity: 1,
-                duration: 0.3, // 300ms fade-in
-                ease: "power2.out",
-              },
-              buttonStartTime,
-            );
-          }
-
-          if (teaserOpening) {
-            gsap.set(teaserOpening, { opacity: 0 });
-            titleTimeline.to(
-              teaserOpening,
-              {
-                opacity: 1,
-                duration: 0.3, // 300ms fade-in
-                ease: "power2.out",
-              },
-              openingStartTime,
-            );
-          }
-        } else {
-          // If no description, fade in button and opening after title completes
-
-          const teaserButton = teaserRow.querySelector(".teasers-button");
-          const teaserOpening = teaserRow.querySelector(".teasers-opening");
-          const buttonStartTime = titleEndTime;
-          const openingStartTime = buttonStartTime + 0.2;
-
-          if (teaserButton) {
-            gsap.set(teaserButton, { opacity: 0 });
-            titleTimeline.to(
-              teaserButton,
-              {
-                opacity: 1,
-                duration: 0.3, // 300ms fade-in
-                ease: "power2.out",
-              },
-              buttonStartTime,
-            );
-          }
-
-          if (teaserOpening) {
-            gsap.set(teaserOpening, { opacity: 0 });
-            titleTimeline.to(
-              teaserOpening,
-              {
-                opacity: 1,
-                duration: 0.3, // 300ms fade-in
-                ease: "power2.out",
-              },
-              openingStartTime,
-            );
-          }
-        }
-      }
-    });
-  }
-
-  // Teasers description animation for rows without titles
-  // Apply same slide-in animation as titles
-  const teaserRows = document.querySelectorAll(".teasers-row");
-
-  if (teaserRows.length > 0 && typeof ScrollTrigger !== "undefined") {
-    teaserRows.forEach((teaserRow) => {
-      const title = teaserRow.querySelector(".teasers-title");
-      const description = teaserRow.querySelector(".teasers-description");
-
-      // Only animate if there's a description but no title
-      if (description && !title) {
-        // Handle both cases: description as <p> tag or as <div> container with <p> tags inside
-        let descriptionParagraphs = description.querySelectorAll("p");
-
-        // If no <p> tags found, treat the description itself as a paragraph
-        if (descriptionParagraphs.length === 0) {
-          descriptionParagraphs = [description];
-        }
-
-        descriptionParagraphs.forEach((paragraph) => {
-          const text = paragraph.textContent.trim();
-          const words = text.split(/\s+/);
-
-          // Clear and rebuild with wrapped words
-          paragraph.innerHTML = words.map((word) => `<span class="teasers-description-word">${word}</span>`).join(" ");
-        });
-
-        // Get all word elements from all paragraphs
-        const descriptionWordElements = description.querySelectorAll(".teasers-description-word");
-
-        // Set initial state: words are invisible and positioned to the left (same as titles)
-        gsap.set(descriptionWordElements, {
-          opacity: 0,
-          x: -50, // Start from left (negative = left side)
-        });
-
-        // Detect if we're on mobile (matches CSS breakpoint)
-        const isMobile = window.innerWidth <= 768;
-        const startPoint = isMobile ? "top 30%" : "top 60%";
-        const endPoint = isMobile ? "top 10%" : "top 30%";
-
-        // Create a scrubbed timeline for description animation
-        const descriptionTimeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: teaserRow,
-            start: startPoint,
-            end: endPoint,
-            scrub: 0.15, // Smooth scroll-linked animation that reverses
-          },
-        });
-
-        // Add description word-by-word animation to timeline
-        // Same animation style as title: slide from left to right
-        descriptionWordElements.forEach((word, index) => {
-          descriptionTimeline.to(
-            word,
-            {
-              opacity: 1,
-              x: 0, // End at aligned position (x: 0)
-              duration: 0.2, // Duration per word (same as title)
-              ease: "power2.out",
-            },
-            index * 0.08, // Stagger delay between words (same as title)
-          );
-        });
-
-        // Calculate when description animation completes
-        const descriptionWordCount = descriptionWordElements.length;
-        const descriptionEndTime = descriptionWordCount * 0.08 + 0.2; // After all description words + their duration
-
-        // Fade in button and opening elements after description completes
-        const teaserButton = teaserRow.querySelector(".teasers-button");
         const teaserOpening = teaserRow.querySelector(".teasers-opening");
+        const openingFadeDuration = 0.25;
+        const openingBaseScale = 0.8;
 
-        const buttonStartTime = descriptionEndTime;
-        const openingStartTime = buttonStartTime + 0.2;
+        const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+        
+        // Reset function to prepare for replay
+        const resetScramble = () => {
+          // Reset letters to original text and base color
+          letterElements.forEach((letter) => {
+            const isSpace = letter.dataset.scrambleWord === " ";
+            letter.textContent = isSpace ? NBSP : letter.dataset.scrambleWord;
+            letter.style.color = baseColor;
+            letter.style.opacity = "0";
+          });
 
-        if (teaserButton) {
-          gsap.set(teaserButton, { opacity: 0 });
-          descriptionTimeline.to(
-            teaserButton,
-            {
+          if (teaserOpening) {
+            gsap.set(teaserOpening, {
+              opacity: 0,
+              scale: openingBaseScale,
+              transformOrigin: "center center",
+            });
+          }
+        };
+
+        // Color-only pop (no character scrambling)
+        const scrambleIntoPlace = () => {
+          // Ensure badge is hidden until the title finishes animating
+          if (teaserOpening) {
+            gsap.set(teaserOpening, {
+              opacity: 0,
+              scale: openingBaseScale,
+              transformOrigin: "center center",
+            });
+          }
+
+          letterElements.forEach((letter, index) => {
+            const targetColor = getRandomMSQColor();
+            gsap.to(letter, {
               opacity: 1,
-              duration: 0.3, // 300ms fade-in
-              ease: "power2.out",
-            },
-            buttonStartTime,
-          );
-        }
+              duration: 0.1,
+              delay: index * 0.045,
+              ease: "none",
+            });
 
-        if (teaserOpening) {
-          gsap.set(teaserOpening, { opacity: 0 });
-          descriptionTimeline.to(
-            teaserOpening,
-            {
+            // Skip color scrambling for hotel page teasers
+            if (!teaserRow.closest(".teasers-section--hotel")) {
+              gsap.to(letter, {
+                color: targetColor,
+                duration: 0.6,
+                delay: index * 0.045,
+                ease: easeOutCubic,
+                yoyo: true,
+                repeat: 1,
+                onComplete: () => {
+                  letter.style.color = baseColor;
+                },
+              });
+            }
+          });
+
+          // Fade the badge in AFTER the last letter has appeared
+          if (teaserOpening) {
+            const lastLetterEnd = (Math.max(letterElements.length - 1, 0) * 0.045) + 0.1;
+            gsap.to(teaserOpening, {
               opacity: 1,
-              duration: 0.3, // 300ms fade-in
+              scale: 1,
+              duration: openingFadeDuration,
+              delay: lastLetterEnd + 0.1,
               ease: "power2.out",
+              overwrite: "auto",
+            });
+          }
+        };
+
+        // Detect if we're on mobile (matches CSS breakpoint)
+        const isMobile = window.innerWidth <= 768;
+
+        // Trigger only when the row is well inside the viewport; end when it actually leaves
+        const startPoint = isMobile ? "top 85%" : "top 90%";
+        const endPoint = "bottom top";
+
+        // Create ScrollTrigger for scramble animation - replay every time it enters
+        const st = ScrollTrigger.create({
+          trigger: teaserRow,
+          start: startPoint,
+          end: endPoint,
+          once: false, // Allow replay
+          onEnter: scrambleIntoPlace,
+          onEnterBack: scrambleIntoPlace,
+          onLeave: resetScramble,
+          onLeaveBack: resetScramble,
+        });
+
+        // IntersectionObserver fallback to ensure titles animate when entering viewport
+        // Note: This is kept for compatibility but ScrollTrigger handles the replay logic
+        if ("IntersectionObserver" in window) {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  // Only trigger if ScrollTrigger hasn't already handled it
+                  if (!title.dataset.scrambleStarted) {
+                    scrambleIntoPlace();
+                  }
+                } else {
+                  // Reset when leaving viewport
+                  resetScramble();
+                }
+              });
             },
-            openingStartTime,
+            {
+              root: null,
+              threshold: 0.25,
+            }
           );
+          observer.observe(teaserRow);
         }
       }
     });
   }
 
-  // City Store video scroll-triggered playback
-  const cityStoreVideo = document.getElementById("city-store-video");
-  if (cityStoreVideo && typeof ScrollTrigger !== "undefined") {
-    const cityStoreRow = cityStoreVideo.closest(".teasers-row");
+  // Teasers video playback (all teaser videos)
+  // Play when in view, pause when off-screen (saves CPU/battery).
+  const teaserVideos = Array.from(document.querySelectorAll(".teasers-section .teasers-row video"));
 
-    if (cityStoreRow) {
+  if (teaserVideos.length > 0 && typeof ScrollTrigger !== "undefined") {
+    const safePlay = (videoEl) => {
+      if (!videoEl || typeof videoEl.play !== "function") return;
+      // If already playing, don't spam play()
+      if (!videoEl.paused && !videoEl.ended) return;
+      videoEl.play().catch((e) => {
+        // Autoplay can still be blocked in some cases; keep it quiet in prod.
+        // console.log("Video play prevented:", e);
+      });
+    };
+
+    const safePause = (videoEl) => {
+      if (!videoEl || typeof videoEl.pause !== "function") return;
+      if (videoEl.paused) return;
+      videoEl.pause();
+    };
+
+    teaserVideos.forEach((videoEl) => {
+      const teaserRow = videoEl.closest(".teasers-row") || videoEl;
+
       ScrollTrigger.create({
-        trigger: cityStoreRow,
+        trigger: teaserRow,
         start: "top 80%",
         end: "bottom 20%",
-        onEnter: () => {
-          cityStoreVideo.play().catch((e) => {
-            // Handle autoplay restrictions
-            console.log("Video play prevented:", e);
-          });
-        },
-        onEnterBack: () => {
-          cityStoreVideo.play().catch((e) => {
-            console.log("Video play prevented:", e);
-          });
-        },
-        onLeave: () => {
-          cityStoreVideo.pause();
-        },
-        onLeaveBack: () => {
-          cityStoreVideo.pause();
+        onEnter: () => safePlay(videoEl),
+        onEnterBack: () => safePlay(videoEl),
+        onLeave: () => safePause(videoEl),
+        onLeaveBack: () => safePause(videoEl),
+        onRefresh: (self) => {
+          if (self.isActive) safePlay(videoEl);
+          else safePause(videoEl);
         },
       });
+    });
+
+    ScrollTrigger.refresh();
+  } else if (teaserVideos.length > 0) {
+    // No ScrollTrigger available: default to paused to avoid background playback.
+    teaserVideos.forEach((videoEl) => {
+      if (videoEl && typeof videoEl.pause === "function") {
+        videoEl.pause();
+      }
+    });
+  }
+
+  // Altitude logo animation - rises up smoothly after 2 seconds of being on screen
+  const altitudeLogoContainer = document.querySelector(".teasers-altitude-logo");
+  if (altitudeLogoContainer) {
+    const altitudeLogoImg = altitudeLogoContainer.querySelector("img");
+    const altitudeVideoContainer = altitudeLogoContainer.closest(".teasers-image-container");
+    
+    if (altitudeLogoImg && altitudeVideoContainer) {
+      // Set initial state: logo is small, invisible, and positioned at final location
+      gsap.set(altitudeLogoImg, {
+        opacity: 0,
+        scale: 0.3,
+        y: -200, // Final position - 200px above center
+        transformOrigin: "bottom center",
+      });
+
+      let timeoutId = null;
+
+      const resetAnimation = () => {
+        // Clear any pending timeout
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+          timeoutId = null;
+        }
+        // Reset to initial state
+        gsap.set(altitudeLogoImg, {
+          opacity: 0,
+          scale: 0.3,
+          y: -200, // Final position - 200px above center
+          transformOrigin: "bottom center",
+        });
+      };
+
+      const startAnimation = () => {
+        // Clear any existing timeout
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+        // Wait 1 second after entering viewport, then animate
+        timeoutId = setTimeout(() => {
+          gsap.to(altitudeLogoImg, {
+            opacity: 1,
+            scale: 1,
+            y: -200, // Stay at final position - 200px above center
+            duration: 3,
+            ease: "power2.out",
+          });
+        }, 1000);
+      };
+
+      if (typeof ScrollTrigger !== "undefined") {
+        ScrollTrigger.create({
+          trigger: altitudeVideoContainer,
+          start: "top 80%",
+          end: "bottom 20%",
+          onEnter: startAnimation,
+          onEnterBack: startAnimation,
+          onLeave: resetAnimation,
+          onLeaveBack: resetAnimation,
+          onRefresh: (self) => {
+            if (self.isActive) {
+              startAnimation();
+            } else {
+              resetAnimation();
+            }
+          },
+        });
+      } else if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                startAnimation();
+              } else {
+                resetAnimation();
+              }
+            });
+          },
+          { root: null, threshold: 0.25 }
+        );
+        observer.observe(altitudeVideoContainer);
+      }
     }
   }
 
-  // Co-op Live video scroll-triggered playback
-  const coopLiveVideo = document.getElementById("coop-live-video");
-  if (coopLiveVideo && typeof ScrollTrigger !== "undefined") {
-    const coopLiveRow = coopLiveVideo.closest(".teasers-row");
+  // Teaser button arrow micro-animation - animate arrows when button enters viewport
+  const teaserButtons = Array.from(document.querySelectorAll(".teasers-button, .attractions-section__button"));
+  
+  if (teaserButtons.length > 0 && typeof gsap !== "undefined") {
+    teaserButtons.forEach((button) => {
+      // Skip nav buttons
+      if (button.closest(".nav") || button.classList.contains("nav__button")) {
+        return;
+      }
 
-    if (coopLiveRow) {
-      ScrollTrigger.create({
-        trigger: coopLiveRow,
-        start: "top 80%",
-        end: "bottom 20%",
-        onEnter: () => {
-          coopLiveVideo.play().catch((e) => {
-            // Handle autoplay restrictions
-            console.log("Video play prevented:", e);
-          });
-        },
-        onEnterBack: () => {
-          coopLiveVideo.play().catch((e) => {
-            console.log("Video play prevented:", e);
-          });
-        },
-        onLeave: () => {
-          coopLiveVideo.pause();
-        },
-        onLeaveBack: () => {
-          coopLiveVideo.pause();
-        },
+      const teaserRow = button.closest(".teasers-row") || button.closest(".attractions-section") || button;
+      
+      // Set initial state: arrows start slightly to the left and invisible
+      button.style.setProperty("--arrow-opacity", "0");
+      button.style.setProperty("--arrow-x", "-8px");
+
+      const animateArrows = () => {
+        // Create a bouncy animation timeline for the arrows
+        const tl = gsap.timeline({ delay: 0.2 });
+        
+        // Fade in and slide in with bounce
+        tl.to(button, {
+          "--arrow-opacity": 1,
+          "--arrow-x": "0px",
+          duration: 0.3,
+          ease: "power2.out",
+        })
+        // First bounce
+        .to(button, {
+          "--arrow-x": "6px",
+          duration: 0.15,
+          ease: "power2.out",
+        })
+        .to(button, {
+          "--arrow-x": "0px",
+          duration: 0.15,
+          ease: "power2.out",
+        })
+        // Second bounce (smaller)
+        .to(button, {
+          "--arrow-x": "4px",
+          duration: 0.12,
+          ease: "power2.out",
+        })
+        .to(button, {
+          "--arrow-x": "0px",
+          duration: 0.12,
+          ease: "power2.out",
+        })
+        // Third bounce (even smaller)
+        .to(button, {
+          "--arrow-x": "2px",
+          duration: 0.1,
+          ease: "power2.out",
+        })
+        .to(button, {
+          "--arrow-x": "0px",
+          duration: 0.1,
+          ease: "power2.out",
+        });
+      };
+
+      const resetArrows = () => {
+        button.style.setProperty("--arrow-opacity", "0");
+        button.style.setProperty("--arrow-x", "-8px");
+      };
+
+      if (typeof ScrollTrigger !== "undefined") {
+        ScrollTrigger.create({
+          trigger: teaserRow,
+          start: "top 85%",
+          end: "bottom 20%",
+          once: false, // Allow replay
+          onEnter: animateArrows,
+          onEnterBack: animateArrows,
+          onLeave: resetArrows,
+          onLeaveBack: resetArrows,
+        });
+      } else if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                animateArrows();
+              } else {
+                resetArrows();
+              }
+            });
+          },
+          { root: null, threshold: 0.25 }
+        );
+        observer.observe(teaserRow);
+      }
+    });
+  }
+
+  // Intro Text Secondary Component - word-by-word animation
+  const introTextSecondarySection = document.querySelector(".intro-text-secondary-component");
+  if (introTextSecondarySection && typeof gsap !== "undefined") {
+    const introTextLarge = introTextSecondarySection.querySelector(".intro-text-secondary__large");
+
+    // Word-by-word text animation (similar to hero title)
+    if (introTextLarge) {
+      // Split title text into words and wrap each in a span
+      const text = introTextLarge.textContent.trim();
+      const words = text.split(/\s+/);
+
+      // Clear and rebuild with wrapped words
+      introTextLarge.innerHTML = words.map((word) => `<span class="intro-text-secondary__word">${word}</span>`).join(" ");
+
+      // Get all word elements
+      const wordElements = introTextLarge.querySelectorAll(".intro-text-secondary__word");
+
+      // Set initial state: words are invisible and positioned to the right
+      gsap.set(wordElements, {
+        opacity: 0,
+        x: 50,
       });
+
+      if (typeof ScrollTrigger !== "undefined") {
+        ScrollTrigger.create({
+          trigger: introTextSecondarySection,
+          start: "top 80%",
+          once: true,
+          onEnter: () => {
+            // Animate words sequentially with stagger
+            gsap.to(wordElements, {
+              opacity: 1,
+              x: 0,
+              duration: 0.8,
+              delay: 0.3,
+              stagger: 0.1, // 0.1 second delay between each word
+              ease: "power2.out",
+            });
+          },
+        });
+      } else {
+        // Fallback: animate on page load
+        gsap.to(wordElements, {
+          opacity: 1,
+          x: 0,
+          duration: 0.8,
+          delay: 1.5,
+          stagger: 0.1,
+          ease: "power2.out",
+        });
+      }
+    }
+  }
+
+  // Video Text Component - video jump up and text word-by-word animation
+  const videoTextSection = document.querySelector(".video-text-component");
+  if (videoTextSection && typeof gsap !== "undefined") {
+    const videoWrapper = videoTextSection.querySelector(".video-text__video-wrapper");
+    const videoElement = videoTextSection.querySelector(".video-text__video");
+    const videoTextBody = videoTextSection.querySelector(".video-text__body");
+
+    // Animate video jumping up from bottom
+    if (videoWrapper) {
+      // Function to reset video animation state
+      const resetVideo = () => {
+        gsap.set(videoWrapper, {
+          y: 100,
+          opacity: 0,
+        });
+      };
+
+      // Function to animate video
+      const animateVideo = () => {
+        gsap.to(videoWrapper, {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power2.out",
+        });
+      };
+
+      // Set initial state
+      resetVideo();
+
+      if (typeof ScrollTrigger !== "undefined") {
+        ScrollTrigger.create({
+          trigger: videoTextSection,
+          start: "top 80%",
+          end: "bottom 20%",
+          once: false, // Allow replay
+          onEnter: animateVideo,
+          onEnterBack: animateVideo,
+          onLeave: resetVideo,
+          onLeaveBack: resetVideo,
+        });
+      }
+    }
+
+    // Word-by-word text animation (similar to hero title)
+    if (videoTextBody) {
+      // Split text into words and wrap each in a span
+      const text = videoTextBody.textContent.trim();
+      const words = text.split(/\s+/);
+
+      // Clear and rebuild with wrapped words
+      videoTextBody.innerHTML = words.map((word) => `<span class="video-text__word">${word}</span>`).join(" ");
+
+      // Get all word elements
+      const wordElements = videoTextBody.querySelectorAll(".video-text__word");
+
+      // Function to reset text animation state
+      const resetText = () => {
+        gsap.set(wordElements, {
+          opacity: 0,
+          x: 50,
+        });
+      };
+
+      // Function to animate text
+      const animateText = () => {
+        gsap.to(wordElements, {
+          opacity: 1,
+          x: 0,
+          duration: 0.35, // Faster duration
+          delay: 0.2, // Shorter delay
+          stagger: 0.03, // Faster stagger (0.03s between words)
+          ease: "power2.out",
+        });
+      };
+
+      // Set initial state
+      resetText();
+
+      if (typeof ScrollTrigger !== "undefined") {
+        ScrollTrigger.create({
+          trigger: videoTextSection,
+          start: "top 80%",
+          end: "bottom 20%",
+          once: false, // Allow replay
+          onEnter: animateText,
+          onEnterBack: animateText,
+          onLeave: resetText,
+          onLeaveBack: resetText,
+        });
+      } else {
+        // Fallback: animate on page load
+        gsap.to(wordElements, {
+          opacity: 1,
+          x: 0,
+          duration: 0.35,
+          delay: 0.2,
+          stagger: 0.03,
+          ease: "power2.out",
+        });
+      }
     }
   }
 });

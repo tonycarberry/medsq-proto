@@ -15,14 +15,14 @@
 .hero {
   position: relative;
   width: 100%;
-  height: 598px; /* Match Figma design: 598px height */
+  height: 700px; /* Increased from 598px for better visual impact */
   overflow: hidden;
   background-color: var(--theme-background-dark); /* Dark background so images fade in from dark */
 }
 
 .hero__background {
   position: absolute;
-  inset: 0;
+  inset: 0;§
   pointer-events: none;
 }
 
@@ -207,9 +207,9 @@
 
   .hero {
     height: 519px; /* Match Figma mobile height */
-    margin-left: -32px; /* Extend background to edge */
-    margin-right: -32px; /* Extend background to edge */
-    width: calc(100% + 64px); /* Compensate for negative margins */
+    margin-left: 0; /* Avoid horizontal scrollbars */
+    margin-right: 0;
+    width: 100%;
   }
 
   .hero__content {
@@ -225,9 +225,9 @@
     min-height: auto;
     padding-top: var(--section-space-small); /* Top padding */
     padding-bottom: var(--section-space-small); /* Bottom padding */
-    margin-left: -32px; /* Extend background to edge */
-    margin-right: -32px; /* Extend background to edge */
-    width: calc(100% + 64px); /* Compensate for negative margins */
+    margin-left: 0; /* Avoid horizontal scrollbars */
+    margin-right: 0;
+    width: 100%;
   }
 
   .hero__content-wrapper {

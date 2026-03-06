@@ -8,36 +8,38 @@
     <meta http-equiv="Expires" content="0" />
     <title>Medlock Square</title>
     <link rel="stylesheet" href="css/fonts.css?v=2" />
-    <link rel="stylesheet" href="css/variables.css?v=4" />
+    <link rel="stylesheet" href="css/variables.css?v=5" />
     <link rel="stylesheet" href="css/nav.css?v=2" />
-    <link rel="stylesheet" href="css/hero.css?v=2" />
+    <link rel="stylesheet" href="css/hero.css?v=3" />
+    <link rel="stylesheet" href="css/hero-experiments.css?v=1" />
     <link rel="stylesheet" href="css/intro-text.css?v=2" />
-    <link rel="stylesheet" href="css/intro-text-secondary.css?v=2" />
     <link rel="stylesheet" href="css/ticker.css?v=2" />
-    <link rel="stylesheet" href="css/attractions-experiments.css?v=1" />
+    <link rel="stylesheet" href="css/intro-text-secondary.css?v=2" />
+    <link rel="stylesheet" href="css/video-text.css?v=1" />
+    <link rel="stylesheet" href="css/attraction.css?v=10" />
+    <link rel="stylesheet" href="css/attractions-experiments.css?v=2" />
     <link rel="stylesheet" href="css/footer.css?v=2" />
     <link rel="stylesheet" href="css/styles.css?v=2" />
     <link rel="stylesheet" href="css/home-figma.css?v=2" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
     <script src="js/nav.js" defer></script>
-    <script src="js/animations.js?v=3" defer></script>
-    <script src="js/feature-band.js" defer></script>
+    <script src="js/animations.js?v=32" defer></script>
+    <script src="js/animations-experiments.js?v=3" defer></script>
   </head>
   <body>
-
     <!-- Nav Component -->
     <nav class="nav-component nav-component--figma">
       <div class="nav">
         <div class="nav__logo-wrap">
-          <a href="index-archive.html" class="nav__logo-link" title="Switch to original design">
-            <img src="assets/medlock-square-logo.svg" alt="Medlock Square logo" class="nav__logo" aria-label="Logo" />
+          <a href="index.html" class="nav__logo-link">
+            <img src="assets/hero/hero-logo.svg" alt="Medlock Square logo" class="nav__logo" aria-label="Logo" />
           </a>
         </div>
         <div class="nav__menu">
           <div class="nav__menu-links">
             <a href="hotel.html" class="nav__link">Hotel</a>
-            <a href="attractions.html" class="nav__link">Attractions</a>
+            <a href="attractions.html" class="nav__link">Things to do</a>
             <a href="food-and-drink.html" class="nav__link">Food & Drink</a>
             <a href="#" class="nav__link">Offices</a>
             <a href="conferences-and-events.html" class="nav__link">Conferences & Events</a>
@@ -45,11 +47,7 @@
           <div class="nav__actions">
             <div class="nav__action-group">
               <button class="nav__mobile-menu-toggle" aria-label="Toggle menu">
-                <img src="assets/logo.svg" alt="Menu" class="nav__burger-icon" />
               </button>
-              <a href="#" class="nav__icon-link">
-                <img src="assets/logo.svg" alt="Menu" class="nav__icon" />
-              </a>
             </div>
             <a href="experiments.html" class="nav__button">Stay informed</a>
           </div>
@@ -61,7 +59,7 @@
           <button class="nav__mobile-close" aria-label="Close menu">×</button>
           <div class="nav__mobile-menu-links">
             <a href="hotel.html" class="nav__mobile-link">Hotel</a>
-            <a href="attractions.html" class="nav__mobile-link">Attractions</a>
+            <a href="attractions.html" class="nav__mobile-link">Things to do</a>
             <a href="food-and-drink.html" class="nav__mobile-link">Food & Drink</a>
             <a href="#" class="nav__mobile-link">Offices</a>
             <a href="conferences-and-events.html" class="nav__mobile-link">Conferences & Events</a>
@@ -71,160 +69,285 @@
       </div>
     </nav>
 
-    <!-- Hero — Figma dark variant -->
-    <div class="hero--figma">
-      <div class="hero--figma__logo-wrap">
-        <img class="hero--figma__logo" src="assets/hero/hero-logo.svg" alt="Medlock Square" />
+    <!-- Hero Component (Experiment Variation) -->
+    <div class="hero hero--homepage hero--experiment" data-name="Experiment Variant" data-node-id="4520:3000">
+      <div class="hero__content-wrapper" data-name="Content" data-node-id="4520:3001">
+        <div class="hero__zipwire-container" data-name="zipwire-edit experiment" data-node-id="4520:3002">
+          <div class="hero__zipwire-background" aria-hidden="true">
+            <!-- Base images that appear in all frames -->
+            <div class="hero__zipwire-overflow">
+              <img alt="" class="hero__zipwire-base hero__zipwire-overflow-img" src="assets/hero/hero-img-02.png" />
+            </div>
+            <img alt="" class="hero__zipwire-base hero__zipwire-base-img" src="assets/hero/hero-img-01.png" />
+
+            <!-- Figma-selected hero frames -->
+            <img alt="" class="hero__zipwire-frame" data-frame="frame-01" src="assets/hero/hero-img-03.png" />
+            <img alt="" class="hero__zipwire-frame" data-frame="frame-02" src="assets/hero/hero-img-04.png" />
+            <img alt="" class="hero__zipwire-frame" data-frame="frame-03" src="assets/hero/hero-img-05.png" />
+            <img alt="" class="hero__zipwire-frame" data-frame="frame-04" src="assets/hero/hero-img-06.png" />
+            <img alt="" class="hero__zipwire-frame" data-frame="frame-05" src="assets/hero/hero-img-07.png" />
+            <img alt="" class="hero__zipwire-frame" data-frame="frame-06" src="assets/hero/hero-img-08.png" />
+            <img alt="" class="hero__zipwire-frame" data-frame="frame-07" src="assets/hero/hero-img-09.png" />
+            <img alt="" class="hero__zipwire-frame" data-frame="frame-08" src="assets/hero/hero-img-10.png" />
+            <img alt="" class="hero__zipwire-frame" data-frame="frame-09" src="assets/hero/hero-img-05.png" />
+            <img alt="" class="hero__zipwire-frame" data-frame="frame-10" src="assets/hero/hero-img-06.png" />
+            <img alt="" class="hero__zipwire-frame" data-frame="frame-11" src="assets/hero/hero-img-07.png" />
+            <img alt="" class="hero__zipwire-frame" data-frame="frame-12" src="assets/hero/hero-img-08.png" />
+            <img alt="" class="hero__zipwire-frame" data-frame="frame-13" src="assets/hero/hero-img-09.png" />
+          </div>
+        </div>
+        <div class="hero__vector-container" data-name="Vector" data-node-id="4520:3003">
+          <img class="hero__vector-image" src="assets/medlock-square-logo.svg" alt="Medlock Square logo" />
+        </div>
       </div>
     </div>
 
-    <!-- Intro Text — Figma centred variant -->
+    <!-- Intro Text Secondary Component -->
     <section class="intro-text-secondary-component">
-      <div class="intro-text-secondary intro-text-secondary--center intro-text-secondary--figma">
+      <div class="intro-text-secondary intro-text-secondary--center">
         <div class="intro-text-secondary__content">
           <div class="intro-text-secondary__text">
-            <h1 class="intro-text-secondary__large">A destination unlike any other.</h1>
+            <h1 class="intro-text-secondary__large">Medlock Square is a destination unlike any other.</h1>
             <div class="intro-text-secondary__small">
-              <p>Located in the heart of the action, between the iconic Etihad Stadium and next-generation, live entertainment arena, Co-op Live. Medlock Square is a place where mouth-watering cuisine and world class entertainment experiences converge.</p>
+              <p>Nestled between the iconic Etihad Stadium and the state-of-the-art Co-op Live arena, this is a place where mouthwatering cuisine and world class entertainment converge.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Feature Band — dark section with video + yellow ticker + cursor glyph trail -->
-    <section class="feature-band">
-      <div class="feature-band__image-wrap">
-        <video class="feature-band__video" autoplay muted loop playsinline>
-          <source src="assets/_video/outside-day-1.mp4" type="video/mp4" />
-        </video>
-      </div>
-      <div class="ticker__content">
-        <div class="ticker__text-wrapper">
-          <p class="ticker__text">
-            <span class="ticker__word">events</span><span class="ticker__separator">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ticker__word">music</span><span class="ticker__separator">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ticker__word">dining</span><span class="ticker__separator">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ticker__word">education</span><span class="ticker__separator">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ticker__word">arts</span><span class="ticker__separator">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ticker__word">culture</span><span class="ticker__separator">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ticker__word">family</span><span class="ticker__separator">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ticker__word">sports</span><span class="ticker__separator">&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</span>
-          </p>
-          <p class="ticker__text ticker__text--duplicate">
-            <span class="ticker__word">events</span><span class="ticker__separator">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ticker__word">music</span><span class="ticker__separator">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ticker__word">dining</span><span class="ticker__separator">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ticker__word">education</span><span class="ticker__separator">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ticker__word">arts</span><span class="ticker__separator">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ticker__word">culture</span><span class="ticker__separator">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ticker__word">family</span><span class="ticker__separator">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="ticker__word">sports</span><span class="ticker__separator">&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;</span>
-          </p>
+    <!-- Ticker Component -->
+    <section class="ticker-component">
+      <div class="ticker">
+        <div class="ticker__frame">
+          <div class="ticker__background" aria-hidden="true">
+            <div class="ticker__bg-color"></div>
+            <video class="ticker__video" autoplay muted loop playsinline>
+              <source src="assets/_video/outside-day-wide-1280.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="ticker__content">
+            <div class="ticker__text-wrapper">
+              <p class="ticker__text">
+                <span class="ticker__word ticker__word--pink">music</span>
+                <span class="ticker__word ticker__word--yellow">dining</span>
+                <span class="ticker__word ticker__word--green">education</span>
+                <span class="ticker__word ticker__word--purple">events</span>
+                <span class="ticker__word ticker__word--orange">arts</span>
+                <span class="ticker__word ticker__word--pink">culture</span>
+                <span class="ticker__word ticker__word--yellow">family</span>
+                <span class="ticker__word ticker__word--green">sports</span>
+                <span class="ticker__word ticker__word--purple">music</span>
+                <span class="ticker__word ticker__word--pink">dining</span>
+                <span class="ticker__word ticker__word--yellow">education</span>
+                <span class="ticker__word ticker__word--green">events</span>
+                <span class="ticker__word ticker__word--purple">arts</span>
+                <span class="ticker__word ticker__word--pink">culture</span>
+                <span class="ticker__word ticker__word--yellow">family</span>
+                <span class="ticker__word ticker__word--green">sports</span>
+              </p>
+              <p class="ticker__text ticker__text--duplicate">
+                <span class="ticker__word ticker__word--pink">music</span>
+                <span class="ticker__word ticker__word--yellow">dining</span>
+                <span class="ticker__word ticker__word--green">education</span>
+                <span class="ticker__word ticker__word--purple">events</span>
+                <span class="ticker__word ticker__word--orange">arts</span>
+                <span class="ticker__word ticker__word--pink">culture</span>
+                <span class="ticker__word ticker__word--yellow">family</span>
+                <span class="ticker__word ticker__word--green">sports</span>
+                <span class="ticker__word ticker__word--purple">music</span>
+                <span class="ticker__word ticker__word--pink">dining</span>
+                <span class="ticker__word ticker__word--yellow">education</span>
+                <span class="ticker__word ticker__word--green">events</span>
+                <span class="ticker__word ticker__word--purple">arts</span>
+                <span class="ticker__word ticker__word--pink">culture</span>
+                <span class="ticker__word ticker__word--yellow">family</span>
+                <span class="ticker__word ticker__word--green">sports</span>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Teasers — Figma variant -->
-    <section class="teasers-section teasers-section--figma" data-name="Teasers">
+    <!-- Video Text Component -->
+    <section class="video-text-component">
+      <div class="video-text">
+        <div class="video-text__video-wrapper">
+          <video class="video-text__video" autoplay muted loop playsinline>
+            <source src="assets/_video/outside-day-1.mp4" type="video/mp4" />
+          </video>
+          <div class="video-text__badge">Artist's impression. Opening early 2026.</div>
+        </div>
+        <div class="video-text__content">
+          <div class="video-text__text">
+            <p class="video-text__body">
+              Whether you're here to watch some of the biggest names from the world of music and sports, immerse yourself in unforgettable experiences, or simply relax and enjoy what's on offer with friends and family, you've come to the right place.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <!-- Attractions Teasers Section -->
+    <section class="teasers-section" data-name="Teasers" data-node-id="4879:7976">
       <!-- Medlock Hotel Row -->
-      <div class="teasers-row" data-name="Row">
-        <div class="teasers-col teasers-col--text teasers-col--text-right">
-          <div class="teasers-copy">
-            <div class="teasers-title-group">
-              <div class="teasers-opening teasers-opening--figma">
+      <div class="teasers-row" data-name="Row" data-node-id="4879:7996">
+        <div class="teasers-col teasers-col--text teasers-col--text-right" data-name="Col Text L" data-node-id="4879:7998">
+          <div class="teasers-copy" data-name="Copy" data-node-id="4879:7999">
+            <div class="teasers-title-group" data-name="Title" data-node-id="4902:4806">
+              <div class="teasers-opening" data-name="opening" data-node-id="4868:5899">
+                <div class="teasers-opening-indicator-wrapper" data-name="indicator-box" data-node-id="4854:4952">
+                </div>
                 <div class="teasers-opening-text">Coming soon</div>
               </div>
-              <h2 class="teasers-title teasers-title--right">Medlock Hotel</h2>
+              <h2 class="teasers-title teasers-title--right" data-node-id="4879:8002">MEDLOCK HOTEL</h2>
             </div>
-            <p class="teasers-description teasers-description--right">More than just a place to stay. <span class="teasers-description-bold">The Medlock Hotel</span> is a perfect blend of comfort, style, and excitement.</p>
-            <a href="hotel.html" class="teasers-button teasers-button--orange">More</a>
+            <p class="teasers-description teasers-description--right" data-node-id="4879:8004">More than just a place to stay. <span class="teasers-description-bold">The Medlock Hotel</span> is a perfect blend of comfort, style, and excitement.</p>
+            <button class="teasers-button" data-name="button_default" data-node-id="4879:8009">More</button>
           </div>
         </div>
-        <div class="teasers-col teasers-col--image">
-          <div class="teasers-image-container">
-            <img src="assets/home-hotel.jpg" alt="" class="teasers-image" />
+        <div class="teasers-col teasers-col--image" data-name="Col Img R" data-node-id="4879:8010">
+          <div class="teasers-image-container teasers-image-container--square" data-name="image 18" data-node-id="4879:8011">
+            <video class="teasers-video teasers-image" autoplay muted loop playsinline>
+              <source src="assets/_video/hotel-branding-sq.mp4" type="video/mp4" />
+            </video>
+            <div class="teasers-video-logo">
+              <!-- Use existing SVG asset so it deploys to Netlify reliably -->
+              <img src="assets/hotel/medlock-logo-yellow.png" alt="Medlock Hotel logo" />
+            </div>
+            <div class="teasers-badge">Artist's impression of new design suite.</div>
           </div>
         </div>
       </div>
+
+      <!-- Line Separator -->
+      <div class="teasers-line" data-name="Line" data-node-id="4846:5576"></div>
 
       <!-- Altitude Row -->
-      <div class="teasers-row teasers-row--reverse" data-name="Row">
-        <div class="teasers-col teasers-col--text teasers-col--text-left">
-          <div class="teasers-copy">
-            <div class="teasers-title-group">
-              <div class="teasers-opening teasers-opening--figma">
+      <div class="teasers-row teasers-row--reverse" data-name="Row" data-node-id="4879:8013">
+        <div class="teasers-col teasers-col--text teasers-col--text-left teasers-col--sticky" data-name="Col Text L" data-node-id="4879:8018">
+          <div class="teasers-copy" data-name="Copy" data-node-id="4879:8019">
+            <div class="teasers-title-group" data-name="Title" data-node-id="4902:4822">
+              <div class="teasers-opening" data-name="opening" data-node-id="4868:5899">
+                <div class="teasers-opening-indicator-wrapper" data-name="indicator-box" data-node-id="4854:4952">
+                </div>
                 <div class="teasers-opening-text">Coming soon</div>
               </div>
-              <h2 class="teasers-title">Altitude<br>Sky Walk</h2>
+              <h2 class="teasers-title" data-node-id="4879:8020">ALTITUDE SKY WALK</h2>
             </div>
-            <p class="teasers-description">Experience <span class="teasers-description-bold">Altitude Sky Walk</span> — the Etihad Stadium's thrilling new roofwalk experience that takes you higher than ever before.</p>
+            <p class="teasers-description" data-node-id="4879:8021">Experience <span class="teasers-description-bold">Altitude Sky Walk</span> - the Etihad Stadium's thrilling new roofwalk experience that takes you higher than ever before.</p>
           </div>
         </div>
-        <div class="teasers-col teasers-col--image teasers-col--image-left">
-          <div class="teasers-image-container">
-            <img src="assets/altitude/altitude-sq.png" alt="" class="teasers-image" />
+        <div class="teasers-col teasers-col--image teasers-col--image-left" data-name="Col Img L" data-node-id="4902:4868">
+          <div class="teasers-image-bg" data-name="Img" data-node-id="4902:4869">
+            <div class="teasers-image-container teasers-image-container--square" data-name="image - 4:3" data-node-id="4902:4871">
+              <video class="teasers-video teasers-image" autoplay muted loop playsinline>
+                <source src="assets/_video/altitude-sq.mp4" type="video/mp4" />
+              </video>
+              <div class="teasers-altitude-logo">
+                <img src="assets/altitude/altitude-logo.png" alt="Altitude" />
+              </div>
+              <div class="teasers-badge">Artist's impression. Opening early 2026.</div>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- Food & Drink Row -->
-      <div class="teasers-row" data-name="Row">
-        <div class="teasers-col teasers-col--text teasers-col--text-right">
-          <div class="teasers-copy">
-            <div class="teasers-title-group">
-              <div class="teasers-opening teasers-opening--figma">
+      <div class="teasers-row" data-name="Row" data-node-id="4879:8031">
+        <div class="teasers-col teasers-col--text teasers-col--text-right" data-name="Col Text L" data-node-id="4879:8033">
+          <div class="teasers-copy teasers-copy--food-drink" data-name="Copy" data-node-id="4879:8034">
+            <div class="teasers-title-group" data-name="Title" data-node-id="4902:4836">
+              <div class="teasers-opening" data-name="opening" data-node-id="4868:5899">
+                <div class="teasers-opening-indicator-wrapper" data-name="indicator-box" data-node-id="4854:4952">
+                </div>
                 <div class="teasers-opening-text">Coming soon</div>
               </div>
-              <h2 class="teasers-title teasers-title--right">Food and Drink</h2>
+              <h2 class="teasers-title teasers-title--right" data-node-id="4902:4838">FOOD AND DRINK</h2>
             </div>
-            <p class="teasers-description teasers-description--right">Whether you're looking for a laid-back cappuccino and croissant or bustling street food from around the world, the <span class="teasers-description-underline">bars, cafes and restaurants</span> at Medlock Square have something for everyone.</p>
-            <a href="food-and-drink.html" class="teasers-button teasers-button--orange">More</a>
+            <p class="teasers-description teasers-description--right" data-node-id="4879:8038">Whether you're looking for a laid-back cappuccino and croissant or bustling street food from around the world, the <span class="teasers-description-underline">bars, cafes and restaurants</span> at Medlock Square have someone for everyone.</p>
+            <button class="teasers-button" data-name="button_default" data-node-id="4879:8040">More</button>
           </div>
         </div>
-        <div class="teasers-col teasers-col--image">
-          <div class="teasers-image-container">
-            <img src="assets/foodanddrink/food-drink-1.png" alt="" class="teasers-image" />
+        <div class="teasers-col teasers-col--image" data-name="Col R" data-node-id="4879:8044">
+          <div class="teasers-image-container teasers-image-container--square" data-name="Logo Grid" data-node-id="4879:8045">
+            <div class="teasers-logo-grid">
+              <img src="assets/FB-logos/fb-background.png" alt="" class="teasers-logo-background" />
+              <div class="teasers-logo-grid-container">
+                <div class="teasers-logo-item teasers-logo-item--166">
+                  <img src="assets/FB-logos/market-hall.png" alt="Market Hall" class="teasers-logo-image" />
+                </div>
+                <div class="teasers-logo-item teasers-logo-item--166">
+                  <img src="assets/FB-logos/hotel-brasserie.png" alt="Hotel Brasserie" class="teasers-logo-image" />
+                </div>
+                <div class="teasers-logo-item teasers-logo-item--166">
+                  <img src="assets/FB-logos/small-plates.png" alt="Small Plates" class="teasers-logo-image" />
+                </div>
+                <div class="teasers-logo-item teasers-logo-item--199">
+                  <img src="assets/FB-logos/canalside.png" alt="Canal Side" class="teasers-logo-image" />
+                </div>
+                <div class="teasers-logo-item teasers-logo-item--199">
+                  <img src="assets/FB-logos/zadies.png" alt="Zadies" class="teasers-logo-image" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- Etihad Stadium Row -->
-      <div class="teasers-row teasers-row--reverse" data-name="Row">
-        <div class="teasers-col teasers-col--text teasers-col--text-left">
-          <div class="teasers-copy">
-            <div class="teasers-title-group">
-              <h2 class="teasers-title">Etihad Stadium</h2>
+      <div class="teasers-row teasers-row--reverse" data-name="Row" data-node-id="4879:8053">
+        <div class="teasers-col teasers-col--text teasers-col--text-left teasers-col--etihad" data-name="Col Text L" data-node-id="4879:8058">
+          <div class="teasers-copy" data-name="Copy" data-node-id="4879:8059">
+            <div class="teasers-title-group" data-name="Title" data-node-id="4902:4823">
+              <h2 class="teasers-title" data-node-id="4902:4825">ETIHAD STADIUM</h2>
             </div>
-            <div class="teasers-description">
-              <p>Not just a football ground — it's a world-class sporting and entertainment destination.</p>
-              <p>Home to <span class="teasers-description-bold">Manchester City FC</span>, the Etihad offers visitors the chance to step inside the world of top-tier football.</p>
+            <div class="teasers-description" data-node-id="4879:8064">
+              <p>Whether you're looking for a laid-back cappuccino and croissant or bustling street food from around the world, the bars, cafes and restaurants at Medlock Square have someone for everyone.</p>
             </div>
           </div>
         </div>
-        <div class="teasers-col teasers-col--image teasers-col--image-left">
-          <div class="teasers-image-container">
-            <img src="assets/home-stadium.jpg" alt="" class="teasers-image" />
+        <div class="teasers-col teasers-col--image teasers-col--image-left" data-name="Col Img R" data-node-id="4879:8055">
+          <div class="teasers-image-container teasers-image-container--small" data-name="image 18" data-node-id="4879:8057">
+            <video class="teasers-video teasers-image" autoplay muted loop playsinline>
+              <source src="assets/_video/stadium-sq.mp4" type="video/mp4" />
+            </video>
           </div>
         </div>
       </div>
 
       <!-- Co-op Live Row -->
-      <div class="teasers-row" data-name="Row">
-        <div class="teasers-col teasers-col--text teasers-col--text-right">
-          <div class="teasers-copy">
-            <div class="teasers-title-group">
-              <h2 class="teasers-title teasers-title--right">Co-op Live</h2>
+      <div class="teasers-row" data-name="Row" data-node-id="4879:8086">
+        <div class="teasers-col teasers-col--text teasers-col--text-right" data-name="Col Text L" data-node-id="4879:8088">
+          <div class="teasers-copy" data-name="Copy" data-node-id="4879:8089">
+            <div class="teasers-title-group" data-name="Title" data-node-id="4902:4851">
+              <h2 class="teasers-title teasers-title--right" data-node-id="4902:4853">CO-OP LIVE</h2>
             </div>
-            <p class="teasers-description teasers-description--right">The UK's largest entertainment area, offering the ultimate live music experience, attracting some of the world's biggest acts, from Drake, Lady Gaga and Billie Eilish, to name but a few.</p>
+            <p class="teasers-description teasers-description--right" data-node-id="4879:8094">Co-op Live is the UK's largest entertainment arena and offers the ultimate live music experience, attracting some of the world's biggest acts, from Drake, Lady Gaga and Billie Eilish, to name but a few.</p>
           </div>
         </div>
-        <div class="teasers-col teasers-col--image">
-          <div class="teasers-image-container">
-            <img src="assets/home-coop-live.jpg" alt="" class="teasers-image" />
+        <div class="teasers-col teasers-col--image" data-name="Col Img R" data-node-id="4879:8115">
+          <div class="teasers-image-container teasers-image-container--small" data-name="image 18" data-node-id="4879:8117">
+            <video class="teasers-video teasers-image" autoplay muted loop playsinline>
+              <source src="assets/_video/co-op-live-sq.mp4" type="video/mp4" />
+            </video>
+            <div class="teasers-badge">Footage from Instagram</div>
           </div>
         </div>
       </div>
 
-    </section>
-
-    <!-- CTA Banner -->
-    <section class="cta-banner">
-      <a href="attractions.html" class="cta-banner__link">View all experiences</a>
+      <!-- Button Group -->
+      <div class="teasers-button-group" data-name="Button Group" data-node-id="4879:8119">
+        <a href="attractions.html" class="teasers-button" data-name="button_default" data-node-id="4879:8121">View all things to do</a>
+      </div>
     </section>
 
     <!-- Footer Component -->
     <footer class="footer-component footer-component--dark">
       <div class="footer__top">
         <div class="footer__logo-wrap">
-          <a href="index-archive.html" class="footer__logo-link" title="Switch to original design">
+          <a href="index.html" class="footer__logo-link">
             <svg width="196" height="196" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" class="footer__logo" aria-label="Logo">
               <path d="M2.36269 15.4541H0.0672184V0.191978H4.46526L5.62264 11.0387H5.81554L6.97292 0.191978H11.1974V15.4541H8.74757L8.92117 4.33868H8.72828L7.22368 15.4541H3.94444L2.42056 4.33868H2.22766L2.36269 15.4541Z" fill="#1f1d1e" />
               <path d="M15.0499 8.67736V13.4H18.1169V15.4541H12.3493V0.191978H18.0205V2.24613H15.0499V6.6424H17.2296V8.67736H15.0499Z" fill="#1f1d1e" />
@@ -240,10 +363,22 @@
               <path d="M19.8735 40.3539C22.0918 40.3539 23.4035 42.1777 23.4035 45.3069V51.0278C23.4035 54.157 22.0918 56 19.8735 56C17.6745 56 16.3435 54.157 16.3435 51.0278V45.3069C16.3435 42.1777 17.6745 40.3539 19.8735 40.3539ZM19.8735 42.5808C19.3334 42.5808 19.044 42.984 19.044 43.7327V52.602C19.044 53.3699 19.3334 53.7731 19.8735 53.7731C20.4329 53.7731 20.7029 53.3699 20.7029 52.602V43.7327C20.7029 42.984 20.4329 42.5808 19.8735 42.5808Z" fill="#1f1d1e" />
               <path d="M11.9433 40.3539C14.1423 40.3539 15.454 42.1969 15.454 45.3069V51.0278C15.454 54.157 14.1423 56 11.9433 56C9.80216 56 8.4326 54.2914 8.4326 51.6805V49.0888L11.1331 48.9544V52.602C11.1331 53.3699 11.4032 53.7731 11.9433 53.7731C12.4641 53.7731 12.7535 53.3699 12.7535 52.602V43.7327C12.7535 42.984 12.4834 42.5808 11.9433 42.5808C11.4032 42.5808 11.1331 42.984 11.1331 43.7327V47.553L8.4326 47.3994V44.7502C8.4326 42.1009 9.80216 40.3539 11.9433 40.3539Z" fill="#1f1d1e" />
               <path d="M4.70668 40.5459H7.40723V55.808H4.70668V49.3384H4.51378L2.93203 55.808H0.154318L2.08328 48.4553L0 40.5459H2.83558L4.51378 47.2842H4.70668V40.5459Z" fill="#1f1d1e" />
-              <path d="M44.271 35.8542C42.1684 35.8542 40.8181 34.2992 40.8181 31.8803V30.3637L43.403 30.2101V32.5906C43.403 33.3201 43.7116 33.7233 44.271 33.7233C44.8111 33.7233 45.1005 33.3201 45.1005 32.5906V31.5731C45.1005 28.5399 41.1268 28.8663 41.1268 24.8539V24.086C41.1268 21.7247 42.4192 20.2081 44.3867 20.2081C46.3929 20.2081 47.6853 21.7247 47.6853 24.086V25.5259L45.1776 25.6794V23.4333C45.1776 22.7038 44.9076 22.339 44.4253 22.339C43.9624 22.339 43.7309 22.7038 43.7309 23.4333V24.4124C43.7309 27.1193 47.801 27.388 47.801 30.978V31.8803C47.801 34.2992 46.4122 35.8542 44.271 35.8542Z" fill="#1f1d1e" />
-              <path d="M55.5693 25.1803V30.9012C55.5693 33.2433 54.7784 34.8175 53.3896 35.4127V35.5087C53.3896 35.8734 53.5632 36.0078 53.9297 36.0078H54.682V38.0619H53.3896C51.4413 38.0619 50.7083 37.4092 50.7083 35.7006V35.4319C49.3002 34.8367 48.5093 33.2433 48.5093 30.9012V25.1803C48.5093 22.0511 49.821 20.2081 52.0393 20.2081C54.2383 20.2081 55.5693 22.0511 55.5693 25.1803ZM51.2099 23.6061V32.4754C51.2099 33.2241 51.4799 33.6273 52.0393 33.6273C52.5794 33.6273 52.8688 33.2241 52.8688 32.4754V23.6061C52.8688 22.8382 52.5794 22.435 52.0393 22.435C51.4799 22.435 51.2099 22.8382 51.2099 23.6061Z" fill="#1f1d1e" />
-              <path d="M11.729 20.3142C13.8316 20.3142 15.1819 21.8692 15.1819 24.2881V25.8047L12.597 25.9583V23.5778C12.597 22.8483 12.2884 22.4451 11.729 22.4451C11.1889 22.4451 10.8995 22.8483 10.8995 23.5778V24.5953C10.8995 27.6285 14.8732 27.3021 14.8732 31.3145V32.0824C14.8732 34.4437 13.5808 35.9603 11.6133 35.9603C9.60714 35.9603 8.31473 34.4437 8.31473 32.0824V30.6425L10.8224 30.489V32.7351C10.8224 33.4646 11.0924 33.8294 11.5747 33.8294C12.0376 33.8294 12.2691 33.4646 12.2691 32.7351V31.756C12.2691 29.0491 8.19899 28.7804 8.199 25.1904V24.2881C8.199 21.8692 9.58785 20.3142 11.729 20.3142Z" fill="#1f1d1e" />
-              <path d="M0.430687 30.9881L0.430687 25.2672C0.430687 22.9251 1.22156 21.3509 2.61042 20.7557V20.6597C2.61042 20.295 2.43681 20.1606 2.07031 20.1606H1.31801L1.31801 18.1065L2.61042 18.1065C4.55868 18.1065 5.29168 18.7592 5.29168 20.4678V20.7365C6.69983 21.3317 7.4907 22.9251 7.4907 25.2672L7.4907 30.9881C7.4907 34.1173 6.17901 35.9603 3.96069 35.9603C1.76167 35.9603 0.430686 34.1173 0.430687 30.9881ZM4.79015 32.5623L4.79015 23.693C4.79015 22.9443 4.5201 22.5411 3.9607 22.5411C3.42059 22.5411 3.13124 22.9443 3.13124 23.693L3.13124 32.5623C3.13124 33.3302 3.42058 33.7334 3.96069 33.7334C4.52009 33.7334 4.79015 33.3302 4.79015 32.5623Z" fill="#1f1d1e" />
+              <path
+                d="M44.271 35.8542C42.1684 35.8542 40.8181 34.2992 40.8181 31.8803V30.3637L43.403 30.2101V32.5906C43.403 33.3201 43.7116 33.7233 44.271 33.7233C44.8111 33.7233 45.1005 33.3201 45.1005 32.5906V31.5731C45.1005 28.5399 41.1268 28.8663 41.1268 24.8539V24.086C41.1268 21.7247 42.4192 20.2081 44.3867 20.2081C46.3929 20.2081 47.6853 21.7247 47.6853 24.086V25.5259L45.1776 25.6794V23.4333C45.1776 22.7038 44.9076 22.339 44.4253 22.339C43.9624 22.339 43.7309 22.7038 43.7309 23.4333V24.4124C43.7309 27.1193 47.801 27.388 47.801 30.978V31.8803C47.801 34.2992 46.4122 35.8542 44.271 35.8542Z"
+                fill="#1f1d1e"
+              />
+              <path
+                d="M55.5693 25.1803V30.9012C55.5693 33.2433 54.7784 34.8175 53.3896 35.4127V35.5087C53.3896 35.8734 53.5632 36.0078 53.9297 36.0078H54.682V38.0619H53.3896C51.4413 38.0619 50.7083 37.4092 50.7083 35.7006V35.4319C49.3002 34.8367 48.5093 33.2433 48.5093 30.9012V25.1803C48.5093 22.0511 49.821 20.2081 52.0393 20.2081C54.2383 20.2081 55.5693 22.0511 55.5693 25.1803ZM51.2099 23.6061V32.4754C51.2099 33.2241 51.4799 33.6273 52.0393 33.6273C52.5794 33.6273 52.8688 33.2241 52.8688 32.4754V23.6061C52.8688 22.8382 52.5794 22.435 52.0393 22.435C51.4799 22.435 51.2099 22.8382 51.2099 23.6061Z"
+                fill="#1f1d1e"
+              />
+              <path
+                d="M11.729 20.3142C13.8316 20.3142 15.1819 21.8692 15.1819 24.2881V25.8047L12.597 25.9583V23.5778C12.597 22.8483 12.2884 22.4451 11.729 22.4451C11.1889 22.4451 10.8995 22.8483 10.8995 23.5778V24.5953C10.8995 27.6285 14.8732 27.3021 14.8732 31.3145V32.0824C14.8732 34.4437 13.5808 35.9603 11.6133 35.9603C9.60714 35.9603 8.31473 34.4437 8.31473 32.0824V30.6425L10.8224 30.489V32.7351C10.8224 33.4646 11.0924 33.8294 11.5747 33.8294C12.0376 33.8294 12.2691 33.4646 12.2691 32.7351V31.756C12.2691 29.0491 8.19899 28.7804 8.199 25.1904V24.2881C8.199 21.8692 9.58785 20.3142 11.729 20.3142Z"
+                fill="#1f1d1e"
+              />
+              <path
+                d="M0.430687 30.9881L0.430687 25.2672C0.430687 22.9251 1.22156 21.3509 2.61042 20.7557V20.6597C2.61042 20.295 2.43681 20.1606 2.07031 20.1606H1.31801L1.31801 18.1065L2.61042 18.1065C4.55868 18.1065 5.29168 18.7592 5.29168 20.4678V20.7365C6.69983 21.3317 7.4907 22.9251 7.4907 25.2672L7.4907 30.9881C7.4907 34.1173 6.17901 35.9603 3.96069 35.9603C1.76167 35.9603 0.430686 34.1173 0.430687 30.9881ZM4.79015 32.5623L4.79015 23.693C4.79015 22.9443 4.5201 22.5411 3.9607 22.5411C3.42059 22.5411 3.13124 22.9443 3.13124 23.693L3.13124 32.5623C3.13124 33.3302 3.42058 33.7334 3.96069 33.7334C4.52009 33.7334 4.79015 33.3302 4.79015 32.5623Z"
+                fill="#1f1d1e"
+              />
             </svg>
           </a>
         </div>
@@ -285,12 +420,5 @@
         </div>
       </div>
     </footer>
-
-    <!-- Version toggle badge -->
-    <a href="index-archive.html" class="version-badge" title="Switch to original design">
-      <span class="version-badge__dot"></span>
-      Figma design — click logo to switch
-    </a>
-
   </body>
 </html>

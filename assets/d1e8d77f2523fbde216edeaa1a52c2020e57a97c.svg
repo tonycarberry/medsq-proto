@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="16" viewBox="0 0 1200 16" fill="none">
+  <!-- Simple separator line (fallback for missing original asset) -->
+  <path d="M0 8H1200" stroke="#1f1d1e" stroke-width="2" stroke-linecap="round" opacity="0.25"/>
+  <!-- subtle dots to give texture -->
+  <g fill="#1f1d1e" opacity="0.18">
+    <circle cx="120" cy="8" r="1.5"/>
+    <circle cx="240" cy="8" r="1.5"/>
+    <circle cx="360" cy="8" r="1.5"/>
+    <circle cx="480" cy="8" r="1.5"/>
+    <circle cx="600" cy="8" r="1.5"/>
+    <circle cx="720" cy="8" r="1.5"/>
+    <circle cx="840" cy="8" r="1.5"/>
+    <circle cx="960" cy="8" r="1.5"/>
+    <circle cx="1080" cy="8" r="1.5"/>
+  </g>
+</svg>
