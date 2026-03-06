@@ -283,7 +283,7 @@ document.addEventListener("DOMContentLoaded", function () {
           duration: 0.2, // Quick transition per word
           ease: "power1.out",
         },
-        index * 0.05 // Small stagger (0.05s per word) to ensure sequential animation
+        index * 0.05, // Small stagger (0.05s per word) to ensure sequential animation
       );
     });
   }
@@ -337,7 +337,7 @@ document.addEventListener("DOMContentLoaded", function () {
               duration: 0.2, // Quick transition per word
               ease: "power1.out",
             },
-            index * 0.05 // Small stagger (0.05s per word) to ensure sequential animation
+            index * 0.05, // Small stagger (0.05s per word) to ensure sequential animation
           );
         });
 
@@ -361,7 +361,7 @@ document.addEventListener("DOMContentLoaded", function () {
               duration: 0.4, // 0.4 second fade-in
               ease: "power1.out",
             },
-            animationEndTime // Start fade-in when word animation completes
+            animationEndTime, // Start fade-in when word animation completes
           );
         }
       }
@@ -616,7 +616,7 @@ document.addEventListener("DOMContentLoaded", function () {
               duration: 0.2,
               ease: "power2.out",
             },
-            index * 0.08
+            index * 0.08,
           );
         });
 
@@ -631,7 +631,7 @@ document.addEventListener("DOMContentLoaded", function () {
               duration: 0.4,
               ease: "power2.out",
             },
-            descriptionStart
+            descriptionStart,
           );
         }
 
@@ -659,7 +659,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   duration: 0.5,
                   ease: "power2.out",
                 },
-                imagesStart + index * 0.1 // Stagger images
+                imagesStart + index * 0.1, // Stagger images
               );
             });
           }
@@ -749,7 +749,7 @@ document.addEventListener("DOMContentLoaded", function () {
               duration: 0.2, // Duration per word
               ease: "power2.out",
             },
-            index * 0.08 // Stagger delay between words
+            index * 0.08, // Stagger delay between words
           );
         });
 
@@ -790,7 +790,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 duration: 0.2, // Duration per word (same as title)
                 ease: "power2.out",
               },
-              descriptionStartTime + index * 0.08 // Stagger delay between words (same as title)
+              descriptionStartTime + index * 0.08, // Stagger delay between words (same as title)
             );
           });
         }
@@ -855,7 +855,7 @@ document.addEventListener("DOMContentLoaded", function () {
               duration: 0.2, // Duration per word (same as title)
               ease: "power2.out",
             },
-            index * 0.08 // Stagger delay between words (same as title)
+            index * 0.08, // Stagger delay between words (same as title)
           );
         });
       }
@@ -1001,7 +1001,7 @@ document.addEventListener("DOMContentLoaded", function () {
           () => {
             observers.forEach((observer) => observer.disconnect());
           },
-          { once: true }
+          { once: true },
         );
       }
     }
@@ -1066,11 +1066,10 @@ document.addEventListener("DOMContentLoaded", function () {
     ScrollTrigger.refresh();
   }
 
-  // Teasers title scramble text animation (matching hero logo style)
+  // Teasers title fade-in animation
   const teaserTitles = document.querySelectorAll(".teasers-title");
-  const teaserCharSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-  // Scramble text function (same as hero logo)
+  // Scramble text function (used by hero logo, etc.)
   const scrambleElement = (element, config = {}) => {
     const { duration = 3, scrambleRatio = 0.65, chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", once = true, scrambleInterval = 50, target, onStart, onUpdate, onComplete, ease = (t) => t } = config;
 
@@ -1171,48 +1170,21 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   if (teaserTitles.length > 0 && typeof ScrollTrigger !== "undefined") {
-    const rootStyles = getComputedStyle(document.documentElement);
-    // MSQ color palette (same as hero logo)
-    const msqColors = [
-      "#75D8FF", // Blue
-      "#64D187", // Green
-      "#F2FA7D", // Yellow
-      "#9D78FE", // Purple
-      "#FEA5E5", // Pink
-      "#FE8F00", // Orange
-    ];
-    const getRandomMSQColor = () => msqColors[Math.floor(Math.random() * msqColors.length)];
-    const getRandomChar = (charset) => charset[Math.floor(Math.random() * charset.length)] || "A";
-    const baseColor = (rootStyles.getPropertyValue("--theme-text-dark") || "#1f1d1e").trim() || "#1f1d1e";
+    const LETTER_STAGGER = 0.08;
+    const LETTER_DURATION = 0.2;
 
     teaserTitles.forEach((title) => {
-      // Split title text into letters and wrap each in a span (like hero logo)
+      // Split title into letter spans for left-to-right animation
       const text = title.textContent.trim();
       const letters = text.split("");
+      title.innerHTML = letters.map((letter) => `<span class="teasers-title-letter">${letter === " " ? "\u00A0" : letter}</span>`).join("");
 
-      // Clear and rebuild with wrapped letters
-      title.innerHTML = letters.map((letter) => `<span class="teasers-title-letter">${letter === " " ? "&nbsp;" : letter}</span>`).join("");
-
-      // Get all letter elements
       const letterElements = Array.from(title.querySelectorAll(".teasers-title-letter"));
 
-      // Initialize each letter with base color and store original text
-      letterElements.forEach((letter) => {
-        const original = letter.textContent.trim() || letter.innerHTML.trim();
-        if (original.length > 0 && original !== "&nbsp;") {
-          letter.dataset.scrambleWord = original;
-        } else if (original === "&nbsp;") {
-          letter.dataset.scrambleWord = " ";
-        }
-        // Set initial scrambled text (random character) - don't show actual letters yet
-        const isSpace = letter.dataset.scrambleWord === " ";
-        letter.textContent = isSpace ? " " : getRandomChar(teaserCharSet);
-        letter.style.color = baseColor;
-      });
-
-      // Set initial state: letters are invisible
+      // Set initial state: letters start off to the left, invisible
       gsap.set(letterElements, {
         opacity: 0,
+        x: -50,
       });
 
       // Get the parent teaser row for ScrollTrigger
@@ -1220,51 +1192,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const teaserDescription = teaserRow?.querySelector(".teasers-description");
 
       if (teaserRow) {
-        const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
-        let hasScrambled = false;
-        
-        // Track whether scrambling has started (persists across function calls)
-        const scrambleStateAttr = "scrambleStarted";
-
-        // Scramble letters into place function
-        const scrambleIntoPlace = () => {
-          // Prevent multiple calls - check both local flag and data attribute
-          if (hasScrambled || title.dataset[scrambleStateAttr] === "true") {
-            return;
-          }
-          hasScrambled = true;
-          title.dataset[scrambleStateAttr] = "true";
-
-          letterElements.forEach((letter, index) => {
-            const targetValue = letter.dataset.scrambleWord;
-            // Fade in the letter as it starts scrambling
-            gsap.to(letter, {
-              opacity: 1,
-              duration: 0.1,
-              delay: index * 0.06,
-              ease: "none",
-            });
-
-            setTimeout(() => {
-              scrambleElement(letter, {
-                duration: 1.05,
-                scrambleRatio: 0.35,
-                scrambleInterval: 65,
-                chars: teaserCharSet,
-                once: true,
-                target: targetValue,
-                ease: easeOutCubic,
-                onStart: () => {
-                  letter.style.color = getRandomMSQColor();
-                },
-                onComplete: () => {
-                  letter.style.color = baseColor;
-                },
-              });
-            }, index * 60); // Stagger delay between letters (60ms)
-          });
-        };
-
         // Detect if we're on mobile (matches CSS breakpoint)
         const isMobile = window.innerWidth <= 768;
 
@@ -1272,35 +1199,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // On desktop, start later so transition is visible when scrolling down
         const startPoint = isMobile ? "top 30%" : "top 60%";
 
-        // Create ScrollTrigger for scramble animation
-        const st = ScrollTrigger.create({
-          trigger: teaserRow,
-          start: startPoint,
-          once: true,
-          onEnter: scrambleIntoPlace,
-          onEnterBack: scrambleIntoPlace,
-        });
-
-        // IntersectionObserver fallback to ensure titles animate when entering viewport
-        if ("IntersectionObserver" in window) {
-          const observer = new IntersectionObserver(
-            (entries, obs) => {
-              entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                  obs.disconnect();
-                  scrambleIntoPlace();
-                }
-              });
-            },
-            {
-              root: null,
-              threshold: 0.25,
-            }
-          );
-          observer.observe(teaserRow);
-        }
-
-        // Create a timeline for description animation (after title completes)
+        // Create a timeline for title letters + description (scrubbed to scroll)
         const titleTimeline = gsap.timeline({
           scrollTrigger: {
             trigger: teaserRow,
@@ -1310,7 +1209,23 @@ document.addEventListener("DOMContentLoaded", function () {
           },
         });
 
-        // Animate description text with same slide-in effect as title, after title completes
+        // Animate title letters left-to-right (no scramble, no color change)
+        letterElements.forEach((letter, index) => {
+          titleTimeline.to(
+            letter,
+            {
+              opacity: 1,
+              x: 0,
+              duration: LETTER_DURATION,
+              ease: "power2.out",
+            },
+            index * LETTER_STAGGER
+          );
+        });
+
+        const titleEndTime = letterElements.length * LETTER_STAGGER + LETTER_DURATION;
+
+        // Animate description text with same slide-in effect, after title completes
         if (teaserDescription) {
           // Handle both cases: description as <p> tag or as <div> container with <p> tags inside
           let descriptionParagraphs = teaserDescription.querySelectorAll("p");
@@ -1337,11 +1252,8 @@ document.addEventListener("DOMContentLoaded", function () {
             x: -50, // Start from left (negative = left side)
           });
 
-          // Calculate when description should start animating (after all title letters have scrambled)
-          const letterCount = letterElements.length;
-          const scrambleDuration = 1.05; // Duration of scramble animation
-          const staggerDelay = 0.06; // Stagger delay between letters (60ms)
-          const descriptionStartTime = scrambleDuration + letterCount * staggerDelay; // After scramble completes
+          // Calculate when description should start animating (after title letters complete)
+          const descriptionStartTime = titleEndTime;
 
           // Add description word-by-word animation to timeline after title completes
           // Same animation style as title: slide from left to right
@@ -1354,7 +1266,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 duration: 0.2, // Duration per word (same as title)
                 ease: "power2.out",
               },
-              descriptionStartTime + index * 0.08 // Stagger delay between words (same as title)
+              descriptionStartTime + index * 0.08, // Stagger delay between words (same as title)
             );
           });
 
@@ -1378,7 +1290,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 duration: 0.3, // 300ms fade-in
                 ease: "power2.out",
               },
-              buttonStartTime
+              buttonStartTime,
             );
           }
 
@@ -1391,15 +1303,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 duration: 0.3, // 300ms fade-in
                 ease: "power2.out",
               },
-              openingStartTime
+              openingStartTime,
             );
           }
         } else {
           // If no description, fade in button and opening after title completes
-          const letterCount = letterElements.length;
-          const scrambleDuration = 1.05; // Duration of scramble animation
-          const staggerDelay = 0.06; // Stagger delay between letters (60ms)
-          const titleEndTime = scrambleDuration + letterCount * staggerDelay; // After scramble completes
 
           const teaserButton = teaserRow.querySelector(".teasers-button");
           const teaserOpening = teaserRow.querySelector(".teasers-opening");
@@ -1415,7 +1323,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 duration: 0.3, // 300ms fade-in
                 ease: "power2.out",
               },
-              buttonStartTime
+              buttonStartTime,
             );
           }
 
@@ -1428,7 +1336,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 duration: 0.3, // 300ms fade-in
                 ease: "power2.out",
               },
-              openingStartTime
+              openingStartTime,
             );
           }
         }
@@ -1498,7 +1406,7 @@ document.addEventListener("DOMContentLoaded", function () {
               duration: 0.2, // Duration per word (same as title)
               ease: "power2.out",
             },
-            index * 0.08 // Stagger delay between words (same as title)
+            index * 0.08, // Stagger delay between words (same as title)
           );
         });
 
@@ -1522,7 +1430,7 @@ document.addEventListener("DOMContentLoaded", function () {
               duration: 0.3, // 300ms fade-in
               ease: "power2.out",
             },
-            buttonStartTime
+            buttonStartTime,
           );
         }
 
@@ -1535,7 +1443,7 @@ document.addEventListener("DOMContentLoaded", function () {
               duration: 0.3, // 300ms fade-in
               ease: "power2.out",
             },
-            openingStartTime
+            openingStartTime,
           );
         }
       }
