@@ -504,10 +504,6 @@
   position: relative;
 }
 
-.teasers-line {
-  position: relative;
-}
-
 .teasers-line::before {
   content: "";
   position: absolute;

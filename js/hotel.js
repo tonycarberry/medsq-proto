@@ -49,9 +49,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const targetField = document.querySelector(`.js-date-trigger[data-type="${type}"] .booking-form__value`);
         if (targetField) {
           const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-          const date = new Date(2025, 4, parseInt(selectedDay)); // 4 is May
+          const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+          const now = new Date();
+          const date = new Date(now.getFullYear(), now.getMonth(), parseInt(selectedDay));
           const dayName = weekdays[date.getDay()];
-          targetField.textContent = `${dayName} ${selectedDay} May`;
+          targetField.textContent = `${dayName} ${selectedDay} ${monthNames[now.getMonth()]}`;
         }
       });
     });
@@ -147,41 +149,22 @@ document.addEventListener("DOMContentLoaded", function () {
     heroVideo.setAttribute('preload', 'auto');
     
     // Add error handler
-    heroVideo.addEventListener('error', (e) => {
-      console.error("Hero video error:", e, heroVideo.error);
-      console.log("Video src:", heroVideo.currentSrc);
-      console.log("Video readyState:", heroVideo.readyState);
-    });
+    heroVideo.addEventListener('error', () => {});
     
     // Try to play immediately
     const tryPlay = () => {
       if (heroVideo.paused) {
         const playPromise = heroVideo.play();
         if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              console.log("Hero video playing successfully");
-            })
-            .catch(e => {
-              console.log("Hero video play attempt failed:", e.message);
-            });
+          playPromise.catch(() => {});
         }
       }
     };
     
     // Try playing when video is ready
-    heroVideo.addEventListener('loadeddata', () => {
-      console.log("Hero video loadeddata event");
-      tryPlay();
-    });
-    heroVideo.addEventListener('canplay', () => {
-      console.log("Hero video canplay event");
-      tryPlay();
-    });
-    heroVideo.addEventListener('canplaythrough', () => {
-      console.log("Hero video canplaythrough event");
-      tryPlay();
-    });
+    heroVideo.addEventListener('loadeddata', tryPlay);
+    heroVideo.addEventListener('canplay', tryPlay);
+    heroVideo.addEventListener('canplaythrough', tryPlay);
     
     // Try immediately
     tryPlay();
@@ -195,34 +178,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const heroObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting && entry.intersectionRatio > 0.1) {
-          // Play when visible
           tryPlay();
         } else {
-          // Pause when not visible to save resources
           if (!heroVideo.paused) {
             heroVideo.pause();
-            console.log("Hero video paused (not visible)");
           }
         }
       });
     }, { threshold: [0.1] });
     
     heroObserver.observe(heroVideo);
-    
+
     // Fallback: try on any user interaction
-    document.addEventListener('click', () => {
-      tryPlay();
-    }, { once: true });
-    
-    // Log video state
-    console.log("Hero video initialized:", {
-      src: heroVideo.currentSrc,
-      readyState: heroVideo.readyState,
-      paused: heroVideo.paused,
-      muted: heroVideo.muted
-    });
-  } else {
-    console.error("Hero video element not found!");
+    document.addEventListener('click', tryPlay, { once: true });
   }
 
   // Video Playback Control: Only one teaser/room video playing at a time (the most visible)
@@ -260,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function () {
         allContentVideos.forEach((video) => {
           if (video === mostVisibleVideo && maxRatio > 0.1) {
             if (video.paused) {
-              video.play().catch(e => console.log("Video play interrupted", e));
+              video.play().catch(() => {});
             }
           } else {
             if (!video.paused) {

@@ -158,8 +158,8 @@
   border-color: #ffffff;
 }
 
-.footer-component--dark .footer__logo svg {
-  color: #ffffff;
+.footer-component--dark .footer__logo svg,
+.footer-component--dark .footer__logo img {
   filter: brightness(0) invert(1);
 }
 

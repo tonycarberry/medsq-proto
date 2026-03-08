@@ -261,9 +261,6 @@
   padding-top: var(--space-5);
 }
 
-/* Attractions page nav now uses default light theme (white background, dark text) */
-/* Removed dark mode styles to match other pages */
-
 /* Mobile Styles */
 @media (max-width: 1024px) {
   .nav__menu-links {
@@ -275,19 +272,6 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-  }
-
-  .nav__icon-link,
-  .nav__action-group .nav__icon-link,
-  .nav__actions .nav__icon-link {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    width: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
-    position: absolute !important;
-    left: -9999px !important;
   }
 
   .nav__icon,
