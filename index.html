@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="css/footer.css?v=2" />
     <link rel="stylesheet" href="css/styles.css?v=2" />
     <link rel="stylesheet" href="css/home-figma.css?v=2" />
+    <link rel="stylesheet" href="css/home-new.css?v=11" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
     <script src="js/nav.js" defer></script>
@@ -32,7 +33,7 @@
     <nav class="nav-component">
       <div class="nav">
         <div class="nav__logo-wrap">
-          <a href="index.html" class="nav__logo-link">
+          <a href="index-new.html" class="nav__logo-link" title="Switch to new homepage">
             <img src="assets/hero/hero-logo.svg" alt="Medlock Square logo" class="nav__logo" aria-label="Logo" />
           </a>
         </div>
@@ -69,18 +70,15 @@
       </div>
     </nav>
 
-    <!-- Hero Component (Experiment Variation) -->
-    <div class="hero hero--homepage hero--experiment" data-name="Experiment Variant" data-node-id="4520:3000">
+    <!-- Hero Component (Experiment Variation) — hidden, preserved for reference -->
+    <div class="hero hero--homepage hero--experiment" data-name="Experiment Variant" data-node-id="4520:3000" style="display:none">
       <div class="hero__content-wrapper" data-name="Content" data-node-id="4520:3001">
         <div class="hero__zipwire-container" data-name="zipwire-edit experiment" data-node-id="4520:3002">
           <div class="hero__zipwire-background" aria-hidden="true">
-            <!-- Base images that appear in all frames -->
             <div class="hero__zipwire-overflow">
               <img alt="" class="hero__zipwire-base hero__zipwire-overflow-img" src="assets/hero/hero-img-02.png" />
             </div>
             <img alt="" class="hero__zipwire-base hero__zipwire-base-img" src="assets/hero/hero-img-01.png" />
-
-            <!-- Figma-selected hero frames -->
             <img alt="" class="hero__zipwire-frame" data-frame="frame-01" src="assets/hero/hero-img-03.png" />
             <img alt="" class="hero__zipwire-frame" data-frame="frame-02" src="assets/hero/hero-img-04.png" />
             <img alt="" class="hero__zipwire-frame" data-frame="frame-03" src="assets/hero/hero-img-05.png" />
@@ -100,6 +98,20 @@
           <img class="hero__vector-image" src="assets/medlock-square-logo.svg" alt="Medlock Square logo" />
         </div>
       </div>
+    </div>
+
+    <!-- Hero -->
+    <div class="hn-hero hn-hero--v1" id="hn-hero">
+      <video autoplay muted loop playsinline class="hn-hero__video">
+        <source src="assets/_video/Teaser Final.mp4" type="video/mp4" />
+      </video>
+      <span class="hn-hero__vert hn-hero__vert--tl">Extraordinary</span>
+      <span class="hn-hero__vert hn-hero__vert--bl">Welcome to</span>
+      <div class="hn-hero__logo-wrap" style="display:none">
+        <div class="hn-hero__logo" role="img" aria-label="Medlock Square"></div>
+      </div>
+      <span class="hn-hero__vert hn-hero__vert--tr">Welcome to</span>
+      <span class="hn-hero__vert hn-hero__vert--br">Extraordinary</span>
     </div>
 
     <!-- Intro Text Secondary Component -->

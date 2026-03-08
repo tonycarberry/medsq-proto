@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Medlock Square — New</title>
+    <link rel="stylesheet" href="css/fonts.css?v=2" />
+    <link rel="stylesheet" href="css/variables.css?v=5" />
+    <link rel="stylesheet" href="css/nav.css?v=2" />
+    <link rel="stylesheet" href="css/hero.css?v=4" />
+    <link rel="stylesheet" href="css/attraction.css?v=10" />
+    <link rel="stylesheet" href="css/footer.css?v=2" />
+    <link rel="stylesheet" href="css/styles.css?v=2" />
+    <link rel="stylesheet" href="css/home-figma.css?v=3" />
+    <link rel="stylesheet" href="css/home-new.css?v=11" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+    <script src="js/nav.js" defer></script>
+  </head>
+  <body>
+
+    <!-- Nav -->
+    <nav class="nav-component nav-component--figma">
+      <div class="nav">
+        <div class="nav__logo-wrap">
+          <a href="index.html" class="nav__logo-link" title="Switch to previous homepage">
+            <img src="assets/hero/hero-logo.svg" alt="Medlock Square logo" class="nav__logo" aria-label="Logo" />
+          </a>
+        </div>
+        <div class="nav__menu">
+          <div class="nav__menu-links">
+            <a href="hotel.html" class="nav__link">Hotel</a>
+            <a href="attractions.html" class="nav__link">Things to do</a>
+            <a href="food-and-drink.html" class="nav__link">Food &amp; Drink</a>
+            <a href="#" class="nav__link">Offices</a>
+            <a href="conferences-and-events.html" class="nav__link">Conferences &amp; Events</a>
+          </div>
+          <div class="nav__actions">
+            <div class="nav__action-group">
+              <button class="nav__mobile-menu-toggle" aria-label="Toggle menu"></button>
+            </div>
+            <a href="experiments.html" class="nav__button">Stay informed</a>
+          </div>
+        </div>
+      </div>
+      <div class="nav__mobile-menu">
+        <div class="nav__mobile-menu-content">
+          <button class="nav__mobile-close" aria-label="Close menu">×</button>
+          <div class="nav__mobile-menu-links">
+            <a href="hotel.html" class="nav__mobile-link">Hotel</a>
+            <a href="attractions.html" class="nav__mobile-link">Things to do</a>
+            <a href="food-and-drink.html" class="nav__mobile-link">Food &amp; Drink</a>
+            <a href="#" class="nav__mobile-link">Offices</a>
+            <a href="conferences-and-events.html" class="nav__mobile-link">Conferences &amp; Events</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="hn-hero hn-hero--v2" id="hn-hero">
+      <video autoplay muted loop playsinline class="hn-hero__video">
+        <source src="assets/_video/Hero video 3.mp4" type="video/mp4" />
+      </video>
+      <span class="hn-hero__vert hn-hero__vert--tl">Extraordinary</span>
+      <span class="hn-hero__vert hn-hero__vert--bl">Welcome to</span>
+      <div class="hn-hero__logo-wrap">
+        <div class="hn-hero__logo" role="img" aria-label="Medlock Square"></div>
+      </div>
+      <span class="hn-hero__vert hn-hero__vert--tr">Welcome to</span>
+      <span class="hn-hero__vert hn-hero__vert--br">Extraordinary</span>
+      <div class="hn-hero__mask" id="hn-hero-mask"></div>
+    </div>
+
+    <script>
+      (function () {
+        var hero    = document.getElementById('hn-hero');
+        var logo    = hero.querySelector('.hn-hero__logo');
+        var verts   = hero.querySelectorAll('.hn-hero__vert');
+        var mask    = document.getElementById('hn-hero-mask');
+        var video   = hero.querySelector('.hn-hero__video');
+
+        // Figma sequence — bg, logo and vert text all paired per variant
+        var states = [
+          { bg: '#1e1e28', logo: '#ffffff', verts: 'rgba(255,255,255,0.35)' },  // dark + white
+          { bg: '#1e1e28', logo: '#f2fa7d', verts: 'rgba(255,255,255,0.35)' },  // dark + yellow
+          { bg: '#1e1e28', logo: '#9d78fe', verts: 'rgba(255,255,255,0.35)' },  // dark + purple
+          { bg: '#9d78fe', logo: '#1e1e28', verts: 'rgba(30,30,40,0.35)'    },  // purple bg
+          { bg: '#64d187', logo: '#1e1e28', verts: 'rgba(30,30,40,0.35)'    },  // green bg
+          { bg: '#1e1e28', logo: '#64d187', verts: 'rgba(255,255,255,0.35)' },  // dark + green
+          { bg: '#fea5e5', logo: '#64d187', verts: 'rgba(30,30,40,0.35)'    },  // pink bg + green logo
+          { bg: '#1e1e28', logo: '#fea5e5', verts: 'rgba(255,255,255,0.35)' },  // dark + pink
+          { bg: '#ffffff', logo: '#1e1e28', verts: 'rgba(30,30,40,0.35)'    },  // white bg
+        ];
+
+        var stateIndex = 0;
+        var colorTimer = null;
+        var maskTimer  = null;
+
+        var MASK_DUR = 4500;  // square expansion
+
+        function pulseVideo() {
+          video.animate([
+            { transform: 'translate(-50%, -50%) scale(0.8)' },
+            { transform: 'translate(-50%, -50%) scale(1)' }
+          ], { duration: 600, easing: 'ease-out' });
+        }
+
+        function applyState(s) {
+          clearTimeout(maskTimer);
+          pulseVideo();
+
+          mask.style.transition = 'none';
+          mask.style.backgroundColor = s.bg;
+          mask.style.transform = 'translate(-50%, -50%) scale(0)';
+
+          logo.style.backgroundColor = s.logo;
+
+          setTimeout(function () {
+            verts.forEach(function (v) {
+              v.style.transition = 'none';
+              v.style.color = s.verts;
+            });
+          }, 300);
+
+          mask.offsetWidth; // eslint-disable-line no-unused-expressions
+
+          mask.style.transition = 'transform ' + MASK_DUR + 'ms cubic-bezier(0.0, 0.0, 0.2, 1)';
+          mask.style.transform = 'translate(-50%, -50%) scale(25)';
+
+          maskTimer = setTimeout(function () {
+            hero.style.backgroundColor = s.bg;
+            mask.style.transition = 'none';
+            mask.style.transform = 'translate(-50%, -50%) scale(0)';
+          }, MASK_DUR + 50);
+        }
+
+        function startCycling() {
+          stateIndex = 0;
+          applyState(states[stateIndex]);
+
+          colorTimer = setInterval(function () {
+            stateIndex = (stateIndex + 1) % states.length;
+            applyState(states[stateIndex]);
+          }, 6500);
+        }
+
+        startCycling();
+      })();
+    </script>
+
+    <!-- Video Section -->
+    <section class="hn-video-section">
+      <div class="hn-video-section__verts hn-video-section__verts--left">
+        <span>Extraordinary</span>
+        <span>Welcome to</span>
+      </div>
+      <div class="hn-video-section__wrap">
+        <video autoplay muted loop playsinline class="hn-video-section__video">
+          <source src="assets/_video/Teaser Final.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="hn-video-section__verts hn-video-section__verts--right">
+        <span>Welcome to</span>
+        <span>Extraordinary</span>
+      </div>
+    </section>
+
+    <!-- Section Text -->
+    <section class="hn-section-text hn-section-text--white">
+      <div class="hn-section-text__inner">
+        <h2 class="hn-section-text__heading">A destination unlike any other.</h2>
+        <p class="hn-section-text__body">Located in the heart of the action, between the iconic Etihad Stadium and next-generation, live entertainment arena, Co-op Live. Medlock Square is a place where mouth-watering cuisine and world class entertainment experiences converge.</p>
+      </div>
+    </section>
+
+    <!-- Intro Split -->
+    <section class="hn-intro-split">
+      <div class="hn-intro-split__logo-col">
+        <video autoplay muted loop playsinline class="hn-intro-split__video">
+          <source src="assets/_video/Hero video 3.mp4" type="video/mp4" />
+        </video>
+        <img src="assets/medlock-square-logo.svg" alt="Medlock Square" class="hn-intro-split__logo" />
+      </div>
+      <div class="hn-intro-split__text-col">
+        <h2 class="hn-intro-split__heading">A destination unlike any other.</h2>
+        <p class="hn-intro-split__body">Located in the heart of the action, between the iconic Etihad Stadium and next-generation, live entertainment arena, Co-op Live. Medlock Square is a place where mouth-watering cuisine and world class entertainment experiences converge.</p>
+      </div>
+    </section>
+
+    <!-- Ticker Band -->
+    <section class="hn-ticker-band">
+      <div class="hn-ticker-band__video-wrap">
+        <video autoplay muted loop playsinline class="hn-ticker-band__video">
+          <source src="assets/_video/outside-day-wide-1280.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="hn-ticker-band__ticker-wrap" aria-hidden="true">
+        <div class="hn-ticker-band__track">
+          <span>Events</span><span class="hn-ticker-band__sep">·</span>
+          <span>Music</span><span class="hn-ticker-band__sep">·</span>
+          <span>Dining</span><span class="hn-ticker-band__sep">·</span>
+          <span>Education</span><span class="hn-ticker-band__sep">·</span>
+          <span>Arts</span><span class="hn-ticker-band__sep">·</span>
+          <span>Culture</span><span class="hn-ticker-band__sep">·</span>
+          <span>Family</span><span class="hn-ticker-band__sep">·</span>
+          <span>Sports</span><span class="hn-ticker-band__sep">·</span>
+          <span>Events</span><span class="hn-ticker-band__sep">·</span>
+          <span>Music</span><span class="hn-ticker-band__sep">·</span>
+          <span>Dining</span><span class="hn-ticker-band__sep">·</span>
+          <span>Education</span><span class="hn-ticker-band__sep">·</span>
+          <span>Arts</span><span class="hn-ticker-band__sep">·</span>
+          <span>Culture</span><span class="hn-ticker-band__sep">·</span>
+          <span>Family</span><span class="hn-ticker-band__sep">·</span>
+          <span>Sports</span><span class="hn-ticker-band__sep">·</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature Cards -->
+    <section class="hn-teasers">
+
+      <!-- Medlock Hotel -->
+      <div class="hn-teasers__row">
+        <div class="hn-teasers__col hn-teasers__col--text hn-teasers__col--text-right">
+          <div class="hn-teasers__copy">
+            <p class="hn-teasers__label">Coming soon</p>
+            <h2 class="hn-teasers__title hn-teasers__title--right">Medlock Hotel</h2>
+            <p class="hn-teasers__desc hn-teasers__desc--right">More than just a place to stay. <strong>The Medlock Hotel</strong> is a perfect blend of comfort, style, and excitement.</p>
+            <a href="hotel.html" class="hn-teasers__btn">More</a>
+          </div>
+        </div>
+        <div class="hn-teasers__col hn-teasers__col--image">
+          <div class="hn-teasers__img-wrap">
+            <video class="hn-teasers__media" autoplay muted loop playsinline>
+              <source src="assets/_video/hotel-branding-sq.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+
+      <!-- Altitude Sky Walk -->
+      <div class="hn-teasers__row hn-teasers__row--reverse">
+        <div class="hn-teasers__col hn-teasers__col--text hn-teasers__col--text-left">
+          <div class="hn-teasers__copy">
+            <p class="hn-teasers__label">Coming soon</p>
+            <h2 class="hn-teasers__title">Altitude Sky Walk</h2>
+            <p class="hn-teasers__desc">Experience <strong>Altitude Sky Walk</strong> – the Etihad Stadium's thrilling new roofwalk experience that takes you higher than ever before.</p>
+            <button class="hn-teasers__btn">More</button>
+          </div>
+        </div>
+        <div class="hn-teasers__col hn-teasers__col--image">
+          <div class="hn-teasers__img-wrap">
+            <video class="hn-teasers__media" autoplay muted loop playsinline>
+              <source src="assets/_video/altitude-sq.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+
+      <!-- Food & Drink -->
+      <div class="hn-teasers__row">
+        <div class="hn-teasers__col hn-teasers__col--text hn-teasers__col--text-right">
+          <div class="hn-teasers__copy">
+            <p class="hn-teasers__label">Coming soon</p>
+            <h2 class="hn-teasers__title hn-teasers__title--right">Food &amp; Drink</h2>
+            <p class="hn-teasers__desc hn-teasers__desc--right">Whether you're looking for a laid-back cappuccino and croissant or bustling street food from around the world, the bars, cafes and restaurants at Medlock Square have something for everyone.</p>
+            <a href="food-and-drink.html" class="hn-teasers__btn">More</a>
+          </div>
+        </div>
+        <div class="hn-teasers__col hn-teasers__col--image">
+          <div class="hn-teasers__img-wrap">
+            <img src="assets/whatson-burger.jpg" alt="Food and drink at Medlock Square" class="hn-teasers__media" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Co-op Live -->
+      <div class="hn-teasers__row hn-teasers__row--reverse">
+        <div class="hn-teasers__col hn-teasers__col--text hn-teasers__col--text-left">
+          <div class="hn-teasers__copy">
+            <h2 class="hn-teasers__title">Co-op Live</h2>
+            <p class="hn-teasers__desc">Co-op Live is the UK's largest entertainment arena and offers the ultimate live music experience, attracting some of the world's biggest acts, from Drake, Lady Gaga and Billie Eilish, to name but a few.</p>
+            <button class="hn-teasers__btn">More</button>
+          </div>
+        </div>
+        <div class="hn-teasers__col hn-teasers__col--image">
+          <div class="hn-teasers__img-wrap">
+            <video class="hn-teasers__media" autoplay muted loop playsinline>
+              <source src="assets/_video/co-op-live-sq.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+
+      <!-- Etihad Stadium -->
+      <div class="hn-teasers__row">
+        <div class="hn-teasers__col hn-teasers__col--text hn-teasers__col--text-right">
+          <div class="hn-teasers__copy">
+            <p class="hn-teasers__label">Coming soon</p>
+            <h2 class="hn-teasers__title hn-teasers__title--right">Etihad Stadium</h2>
+            <p class="hn-teasers__desc hn-teasers__desc--right">Not just a football ground – it's a world-class sporting and entertainment destination. Home to Manchester City FC, the Etihad offers visitors the chance to step inside the world of top-tier football.</p>
+            <button class="hn-teasers__btn">More</button>
+          </div>
+        </div>
+        <div class="hn-teasers__col hn-teasers__col--image">
+          <div class="hn-teasers__img-wrap">
+            <video class="hn-teasers__media" autoplay muted loop playsinline>
+              <source src="assets/_video/stadium-sq.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Section Text (pre-footer) -->
+    <section class="hn-section-text hn-section-text--light">
+      <div class="hn-section-text__inner">
+        <h2 class="hn-section-text__heading">A destination unlike any other.</h2>
+        <p class="hn-section-text__body">Located in the heart of the action, between the iconic Etihad Stadium and next-generation, live entertainment arena, Co-op Live. Medlock Square is a place where mouth-watering cuisine and world class entertainment experiences converge.</p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="hn-footer">
+      <nav class="hn-footer__nav">
+        <a href="index.html" class="hn-footer__link">Home</a>
+        <a href="hotel.html" class="hn-footer__link">Hotel</a>
+        <a href="attractions.html" class="hn-footer__link">Things to Do</a>
+        <a href="food-and-drink.html" class="hn-footer__link">Food &amp; Drink</a>
+        <a href="#" class="hn-footer__link">Offices</a>
+        <a href="conferences-and-events.html" class="hn-footer__link">Conferences &amp; Events</a>
+      </nav>
+      <div class="hn-footer__social">
+        <a href="#" class="hn-footer__social-link" aria-label="Instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </a>
+        <a href="#" class="hn-footer__social-link" aria-label="TikTok">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.77 1.52V6.78a4.85 4.85 0 01-1-.09z"/></svg>
+        </a>
+        <a href="#" class="hn-footer__social-link" aria-label="Facebook">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <a href="#" class="hn-footer__social-link" aria-label="X">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.722-8.836L2.25 2.25h6.918l4.254 5.633 5.822-5.633zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="#" class="hn-footer__social-link" aria-label="WhatsApp">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </a>
+        <a href="#" class="hn-footer__social-link" aria-label="LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+      </div>
+      <div class="hn-footer__logo-wrap">
+        <img src="assets/medlock-square-logo.svg" alt="Medlock Square" class="hn-footer__logo" />
+      </div>
+      <p class="hn-footer__copyright">© 2026 Copyright. All Rights Reserved.</p>
+    </footer>
+
+  </body>
+</html>
