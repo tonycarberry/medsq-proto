@@ -187,6 +187,14 @@
   transform: scale(1); /* Scale to 100% */
 }
 
+/* Experiment variant — zipwire images smaller and centred, clearly inside the logo text */
+.hero--experiment .hero__zipwire-container {
+  width: 360px;
+  height: 369px;
+  left: 167px;
+  top: 164px;
+}
+
 /* Typography logo experiment (hero variation) */
 .hero--experiment .hero-logo {
   position: absolute;

@@ -17,20 +17,20 @@
     <link rel="stylesheet" href="css/intro-text-secondary.css?v=2" />
     <link rel="stylesheet" href="css/video-text.css?v=1" />
     <link rel="stylesheet" href="css/attraction.css?v=10" />
-    <link rel="stylesheet" href="css/attractions-experiments.css?v=2" />
+    <link rel="stylesheet" href="css/attractions-experiments.css?v=7" />
     <link rel="stylesheet" href="css/footer.css?v=2" />
     <link rel="stylesheet" href="css/styles.css?v=2" />
     <link rel="stylesheet" href="css/home-figma.css?v=2" />
-    <link rel="stylesheet" href="css/home-new.css?v=11" />
+    <link rel="stylesheet" href="css/home-new.css?v=15" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
     <script src="js/nav.js" defer></script>
     <script src="js/animations.js?v=32" defer></script>
-    <script src="js/animations-experiments.js?v=3" defer></script>
+    <script src="js/animations-experiments.js?v=4" defer></script>
   </head>
   <body>
     <!-- Nav Component -->
-    <nav class="nav-component">
+    <nav class="nav-component nav-component--figma">
       <div class="nav">
         <div class="nav__logo-wrap">
           <a href="index-new.html" class="nav__logo-link" title="Switch to new homepage">
@@ -128,81 +128,92 @@
       </div>
     </section>
 
-    <!-- Ticker Component -->
-    <section class="ticker-component">
-      <div class="ticker">
-        <div class="ticker__frame">
-          <div class="ticker__background" aria-hidden="true">
-            <div class="ticker__bg-color"></div>
-            <video class="ticker__video" autoplay muted loop playsinline>
-              <source src="assets/_video/outside-day-wide-1280.mp4" type="video/mp4" />
-            </video>
-          </div>
-          <div class="ticker__content">
-            <div class="ticker__text-wrapper">
-              <p class="ticker__text">
-                <span class="ticker__word ticker__word--pink">music</span>
-                <span class="ticker__word ticker__word--yellow">dining</span>
-                <span class="ticker__word ticker__word--green">education</span>
-                <span class="ticker__word ticker__word--purple">events</span>
-                <span class="ticker__word ticker__word--orange">arts</span>
-                <span class="ticker__word ticker__word--pink">culture</span>
-                <span class="ticker__word ticker__word--yellow">family</span>
-                <span class="ticker__word ticker__word--green">sports</span>
-                <span class="ticker__word ticker__word--purple">music</span>
-                <span class="ticker__word ticker__word--pink">dining</span>
-                <span class="ticker__word ticker__word--yellow">education</span>
-                <span class="ticker__word ticker__word--green">events</span>
-                <span class="ticker__word ticker__word--purple">arts</span>
-                <span class="ticker__word ticker__word--pink">culture</span>
-                <span class="ticker__word ticker__word--yellow">family</span>
-                <span class="ticker__word ticker__word--green">sports</span>
-              </p>
-              <p class="ticker__text ticker__text--duplicate">
-                <span class="ticker__word ticker__word--pink">music</span>
-                <span class="ticker__word ticker__word--yellow">dining</span>
-                <span class="ticker__word ticker__word--green">education</span>
-                <span class="ticker__word ticker__word--purple">events</span>
-                <span class="ticker__word ticker__word--orange">arts</span>
-                <span class="ticker__word ticker__word--pink">culture</span>
-                <span class="ticker__word ticker__word--yellow">family</span>
-                <span class="ticker__word ticker__word--green">sports</span>
-                <span class="ticker__word ticker__word--purple">music</span>
-                <span class="ticker__word ticker__word--pink">dining</span>
-                <span class="ticker__word ticker__word--yellow">education</span>
-                <span class="ticker__word ticker__word--green">events</span>
-                <span class="ticker__word ticker__word--purple">arts</span>
-                <span class="ticker__word ticker__word--pink">culture</span>
-                <span class="ticker__word ticker__word--yellow">family</span>
-                <span class="ticker__word ticker__word--green">sports</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Video Text Component -->
-    <section class="video-text-component">
-      <div class="video-text">
-        <div class="video-text__video-wrapper">
-          <video class="video-text__video" autoplay muted loop playsinline>
-            <source src="assets/_video/outside-day-1.mp4" type="video/mp4" />
+    <!-- Intro Split -->
+    <section class="hn-intro-split">
+      <div class="hn-intro-split__logo-col">
+        <div class="hn-hero hn-hero--v2 hn-hero--mini" id="hn-hero-split">
+          <video autoplay muted loop playsinline class="hn-hero__video">
+            <source src="assets/_video/Hero video 3.mp4" type="video/mp4" />
           </video>
-          <div class="video-text__badge">Artist's impression. Opening early 2026.</div>
-        </div>
-        <div class="video-text__content">
-          <div class="video-text__text">
-            <p class="video-text__body">
-              Whether you're here to watch some of the biggest names from the world of music and sports, immerse yourself in unforgettable experiences, or simply relax and enjoy what's on offer with friends and family, you've come to the right place.
-            </p>
+          <span class="hn-hero__vert hn-hero__vert--tl">Extraordinary</span>
+          <span class="hn-hero__vert hn-hero__vert--bl">Welcome to</span>
+          <div class="hn-hero__logo-wrap">
+            <div class="hn-hero__logo" role="img" aria-label="Medlock Square"></div>
           </div>
+          <span class="hn-hero__vert hn-hero__vert--tr">Welcome to</span>
+          <span class="hn-hero__vert hn-hero__vert--br">Extraordinary</span>
+          <div class="hn-hero__mask" id="hn-hero-split-mask"></div>
         </div>
       </div>
+      <div class="hn-intro-split__text-col">
+        <h2 class="hn-intro-split__heading">A destination unlike any other.</h2>
+        <p class="hn-intro-split__body">Located in the heart of the action, between the iconic Etihad Stadium and next-generation, live entertainment arena, Co-op Live. Medlock Square is a place where mouth-watering cuisine and world class entertainment experiences converge.</p>
+      </div>
     </section>
+    <script>
+      (function () {
+        var hero  = document.getElementById('hn-hero-split');
+        var logo  = hero.querySelector('.hn-hero__logo');
+        var verts = hero.querySelectorAll('.hn-hero__vert');
+        var mask  = document.getElementById('hn-hero-split-mask');
+        var video = hero.querySelector('.hn-hero__video');
+
+        var states = [
+          { bg: '#1e1e28', logo: '#ffffff', verts: 'rgba(255,255,255,0.35)' },
+          { bg: '#1e1e28', logo: '#9d78fe', verts: 'rgba(255,255,255,0.35)' },
+          { bg: '#9d78fe', logo: '#1e1e28', verts: 'rgba(30,30,40,0.35)'    },
+          { bg: '#1e1e28', logo: '#f2fa7d', verts: 'rgba(255,255,255,0.35)' },
+          { bg: '#1e1e28', logo: '#64d187', verts: 'rgba(255,255,255,0.35)' },
+          { bg: '#64d187', logo: '#1e1e28', verts: 'rgba(30,30,40,0.35)'    },
+          { bg: '#fea5e5', logo: '#64d187', verts: 'rgba(30,30,40,0.35)'    },
+          { bg: '#1e1e28', logo: '#fea5e5', verts: 'rgba(255,255,255,0.35)' },
+          { bg: '#ffffff', logo: '#1e1e28', verts: 'rgba(30,30,40,0.35)'    },
+        ];
+
+        var stateIndex = 0;
+        var MASK_DUR   = 3500;
+
+        function applyState(s) {
+          clearTimeout(applyState._timer);
+          video.animate([
+            { transform: 'translate(-50%, -50%) scale(0.8)' },
+            { transform: 'translate(-50%, -50%) scale(1)' }
+          ], { duration: 600, easing: 'ease-out' });
+
+          mask.style.transition = 'none';
+          mask.style.backgroundColor = s.bg;
+          mask.style.transform = 'translate(-50%, -50%) scale(0)';
+          logo.style.backgroundColor = s.logo;
+
+          setTimeout(function () {
+            verts.forEach(function (v) {
+              v.style.transition = 'none';
+              v.style.color = s.verts;
+            });
+          }, 300);
+
+          mask.offsetWidth;
+          mask.style.transition = 'transform ' + MASK_DUR + 'ms cubic-bezier(0.0, 0.0, 0.2, 1)';
+          mask.style.transform = 'translate(-50%, -50%) scale(25)';
+
+          applyState._timer = setTimeout(function () {
+            hero.style.backgroundColor = s.bg;
+            mask.style.transition = 'none';
+            mask.style.transform = 'translate(-50%, -50%) scale(0)';
+          }, MASK_DUR + 50);
+        }
+
+        applyState(states[0]);
+        setInterval(function () {
+          stateIndex = (stateIndex + 1) % states.length;
+          applyState(states[stateIndex]);
+        }, 5500);
+      })();
+    </script>
 
     <!-- Attractions Teasers Section -->
-    <section class="teasers-section" data-name="Teasers" data-node-id="4879:7976">
+    <section class="teasers-section teasers-section--home" data-name="Teasers" data-node-id="4879:7976">
       <!-- Medlock Hotel Row -->
       <div class="teasers-row" data-name="Row" data-node-id="4879:7996">
         <div class="teasers-col teasers-col--text teasers-col--text-right" data-name="Col Text L" data-node-id="4879:7998">
@@ -220,12 +231,9 @@
           </div>
         </div>
         <div class="teasers-col teasers-col--image" data-name="Col Img R" data-node-id="4879:8010">
-          <div class="teasers-image-container teasers-image-container--square" data-name="image 18" data-node-id="4879:8011">
-            <video class="teasers-video teasers-image" autoplay muted loop playsinline>
-              <source src="assets/_video/hotel-branding-sq.mp4" type="video/mp4" />
-            </video>
+          <div class="teasers-image-container teasers-image-container--square" data-name="image 18" data-node-id="4879:8011" style="background-color: #f2fa7d;">
+            <img class="teasers-image" src="assets/feature-hotel.jpg" alt="Medlock Hotel suite" />
             <div class="teasers-video-logo">
-              <!-- Use existing SVG asset so it deploys to Netlify reliably -->
               <img src="assets/hotel/medlock-logo-yellow.png" alt="Medlock Hotel logo" />
             </div>
             <div class="teasers-badge">Artist's impression of new design suite.</div>
@@ -253,13 +261,9 @@
         </div>
         <div class="teasers-col teasers-col--image teasers-col--image-left" data-name="Col Img L" data-node-id="4902:4868">
           <div class="teasers-image-bg" data-name="Img" data-node-id="4902:4869">
-            <div class="teasers-image-container teasers-image-container--square" data-name="image - 4:3" data-node-id="4902:4871">
-              <video class="teasers-video teasers-image" autoplay muted loop playsinline>
-                <source src="assets/_video/altitude-sq.mp4" type="video/mp4" />
-              </video>
-              <div class="teasers-altitude-logo">
-                <img src="assets/altitude/altitude-logo.png" alt="Altitude" />
-              </div>
+            <div class="teasers-image-container teasers-image-container--square" data-name="image - 4:3" data-node-id="4902:4871" style="background-color: #9d78fe;">
+              <img class="teasers-image" src="assets/feature-altitude.png" alt="Altitude Sky Walk" />
+
               <div class="teasers-badge">Artist's impression. Opening early 2026.</div>
             </div>
           </div>
@@ -283,27 +287,8 @@
           </div>
         </div>
         <div class="teasers-col teasers-col--image" data-name="Col R" data-node-id="4879:8044">
-          <div class="teasers-image-container teasers-image-container--square" data-name="Logo Grid" data-node-id="4879:8045">
-            <div class="teasers-logo-grid">
-              <img src="assets/FB-logos/fb-background.png" alt="" class="teasers-logo-background" />
-              <div class="teasers-logo-grid-container">
-                <div class="teasers-logo-item teasers-logo-item--166">
-                  <img src="assets/FB-logos/market-hall.png" alt="Market Hall" class="teasers-logo-image" />
-                </div>
-                <div class="teasers-logo-item teasers-logo-item--166">
-                  <img src="assets/FB-logos/hotel-brasserie.png" alt="Hotel Brasserie" class="teasers-logo-image" />
-                </div>
-                <div class="teasers-logo-item teasers-logo-item--166">
-                  <img src="assets/FB-logos/small-plates.png" alt="Small Plates" class="teasers-logo-image" />
-                </div>
-                <div class="teasers-logo-item teasers-logo-item--199">
-                  <img src="assets/FB-logos/canalside.png" alt="Canal Side" class="teasers-logo-image" />
-                </div>
-                <div class="teasers-logo-item teasers-logo-item--199">
-                  <img src="assets/FB-logos/zadies.png" alt="Zadies" class="teasers-logo-image" />
-                </div>
-              </div>
-            </div>
+          <div class="teasers-image-container teasers-image-container--square" data-name="Logo Grid" data-node-id="4879:8045" style="background-color: #64d187;">
+            <img class="teasers-image" src="assets/feature-food.jpg" alt="Food and drink at Medlock Square" />
           </div>
         </div>
       </div>
@@ -321,10 +306,8 @@
           </div>
         </div>
         <div class="teasers-col teasers-col--image teasers-col--image-left" data-name="Col Img R" data-node-id="4879:8055">
-          <div class="teasers-image-container teasers-image-container--small" data-name="image 18" data-node-id="4879:8057">
-            <video class="teasers-video teasers-image" autoplay muted loop playsinline>
-              <source src="assets/_video/stadium-sq.mp4" type="video/mp4" />
-            </video>
+          <div class="teasers-image-container teasers-image-container--small" data-name="image 18" data-node-id="4879:8057" style="background-color: #75d8ff;">
+            <img class="teasers-image" src="assets/feature-stadium.jpg" alt="Etihad Stadium" />
           </div>
         </div>
       </div>
@@ -340,11 +323,8 @@
           </div>
         </div>
         <div class="teasers-col teasers-col--image" data-name="Col Img R" data-node-id="4879:8115">
-          <div class="teasers-image-container teasers-image-container--small" data-name="image 18" data-node-id="4879:8117">
-            <video class="teasers-video teasers-image" autoplay muted loop playsinline>
-              <source src="assets/_video/co-op-live-sq.mp4" type="video/mp4" />
-            </video>
-            <div class="teasers-badge">Footage from Instagram</div>
+          <div class="teasers-image-container teasers-image-container--small" data-name="image 18" data-node-id="4879:8117" style="background-color: #fea5e5;">
+            <img class="teasers-image" src="assets/feature-coop-live.jpg" alt="Co-op Live arena" />
           </div>
         </div>
       </div>

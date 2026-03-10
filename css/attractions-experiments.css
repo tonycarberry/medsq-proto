@@ -302,6 +302,38 @@
   object-position: 50% 50%;
 }
 
+/* Home page: white section background, no side padding so rows are full-width */
+.teasers-section--home {
+  background-color: #ffffff;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Home page: rows span full viewport width (no max-width constraint) */
+.teasers-section--home .teasers-row {
+  max-width: none;
+}
+
+/* Home page: equal padding on both sides of text columns so copy is centred */
+.teasers-section--home .teasers-col--text-left,
+.teasers-section--home .teasers-col--text-right {
+  padding-left: var(--site-margin, 56px);
+  padding-right: var(--site-margin, 56px);
+  align-items: flex-start;
+}
+
+/* Home page: Area JP font to match index-new feature cards */
+.teasers-section--home .teasers-title {
+  font-family: "Area JP Trial Normal", "Area JP", "Arial Black", Arial, sans-serif;
+  font-weight: 900;
+  font-size: 56px;
+  line-height: 1;
+  letter-spacing: -2.24px;
+  white-space: normal;
+}
+
+/* Home page: images fill the container fully; brand colour shows as the initial reveal state */
+
 .teasers-video-logo {
   position: absolute;
   inset: 0;

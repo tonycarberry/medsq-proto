@@ -1336,67 +1336,48 @@ document.addEventListener("DOMContentLoaded", function () {
       if (teaserRow && teaserImage) {
         // Check if this is a reverse row (image on the left)
         const isReverseRow = teaserRow.classList.contains("teasers-row--reverse");
-        
-        // Set initial state based on row direction
+
+        // Apply clip-path to the IMAGE itself (not the container), so the brand colour
+        // background on the container is always visible and acts as the starting state.
+        // Set initial state: image fully masked
         if (isReverseRow) {
-          // For reverse rows (image on left): mask from left, reveal right to left
-          gsap.set(container, {
-            clipPath: "inset(0 0 0 100%)", // Fully masked - 100% from left
+          // Image on left: mask starts at left edge, reveals left-to-right
+          gsap.set(teaserImage, {
+            clipPath: "inset(0 100% 0 0)",
+            scale: 1,
+            transformOrigin: "center center",
           });
         } else {
-          // For normal rows (image on right): mask from right, reveal left to right
-          gsap.set(container, {
-            clipPath: "inset(0 100% 0 0)", // Fully masked - 100% from right
+          // Image on right: mask starts at right edge, reveals right-to-left
+          gsap.set(teaserImage, {
+            clipPath: "inset(0 0 0 100%)",
+            scale: 1,
+            transformOrigin: "center center",
           });
         }
 
-        // Set initial state for image: normal scale and position
-        gsap.set(teaserImage, {
-          scale: 1,
-          x: 0,
-          transformOrigin: "center center",
-        });
-
-        // Create scroll-triggered animation for mask reveal
-        if (isReverseRow) {
-          // Mask reveals from right to left (for images on the left)
-          gsap.to(container, {
-            clipPath: "inset(0 0 0 0%)", // Fully revealed - 0% from left
-            ease: "none", // Linear easing - no easing
-            scrollTrigger: {
-              trigger: teaserRow,
-              start: "top 100%", // Start when the top of the row enters the viewport from the bottom
-              end: "top 40%", // End when the top of the row is 40% down from the top of the viewport
-              scrub: 0.15, // Slower, smoother scroll-linked animation
-              // markers: true, // Uncomment for debugging
-            },
-          });
-        } else {
-          // Mask reveals from left to right (for images on the right)
-          gsap.to(container, {
-            clipPath: "inset(0 0% 0 0)", // Fully revealed - 0% from right
-            ease: "none", // Linear easing - no easing
-            scrollTrigger: {
-              trigger: teaserRow,
-              start: "top 100%", // Start when the top of the row enters the viewport from the bottom
-              end: "top 40%", // End when the top of the row is 40% down from the top of the viewport
-              scrub: 0.15, // Slower, smoother scroll-linked animation
-              // markers: true, // Uncomment for debugging
-            },
-          });
-        }
-
-        // Create scroll-triggered animation for image zoom
-        // Images zoom to 110% as user scrolls
+        // Scroll-triggered mask reveal on the image
+        const revealClipPath = isReverseRow ? "inset(0 0% 0 0)" : "inset(0 0 0 0%)";
         gsap.to(teaserImage, {
-          scale: 1.1, // Zoom to 110%
-          ease: "none", // Linear easing for smooth scroll-linked movement
+          clipPath: revealClipPath,
+          ease: "none",
           scrollTrigger: {
             trigger: teaserRow,
-            start: "top bottom", // Start when row enters viewport
-            end: "bottom top", // End when row leaves viewport
-            scrub: 0.15, // Smooth scroll-linked animation (matches mask reveal timing)
-            // markers: true, // Uncomment for debugging
+            start: "top 100%",
+            end: "top 40%",
+            scrub: 0.15,
+          },
+        });
+
+        // Scroll-triggered zoom on the image (runs over the full row visibility)
+        gsap.to(teaserImage, {
+          scale: 1.1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: teaserRow,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.15,
           },
         });
       }

@@ -46,6 +46,12 @@
   z-index: 3;
   width: 720px;
   max-width: calc(100% - 80px);
+  animation: hn-logo-in 0.3s ease-in forwards;
+}
+
+@keyframes hn-logo-in {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
 }
 
 .hn-hero__logo {
@@ -122,6 +128,12 @@
   height: 560px;
   object-fit: cover;
   opacity: 1;
+  animation: hn-video-in 0.3s ease-in 0.15s both;
+}
+
+@keyframes hn-video-in {
+  from { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+  to   { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
 }
 
 .hn-hero {
@@ -239,35 +251,60 @@
   display: flex;
   width: 100%;
   min-height: 720px;
-  background-color: #1e1e28;
 }
 
 .hn-intro-split__logo-col {
   width: 50%;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
   min-height: 720px;
+  background-color: #1e1e28;
 }
 
+/* Expanding square mask — same colour-burst mechanic as hn-hero__mask */
+.hn-intro-split__mask {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: 1;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Small centred video — sits above mask, behind logo */
 .hn-intro-split__video {
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 382px;
   height: 382px;
   object-fit: cover;
-  z-index: 0;
+  z-index: 2;
 }
 
+/* Large CSS-masked logo — colour controlled by JS */
 .hn-intro-split__logo {
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
   width: 480px;
   max-width: 90%;
-  height: auto;
-  /* Approximate CSS filter to achieve #9d78fe purple from black SVG */
-  filter: invert(56%) sepia(89%) saturate(500%) hue-rotate(218deg) brightness(108%);
+  aspect-ratio: 743 / 746;
+  background-color: #ffffff;
+  -webkit-mask-image: url('../assets/medlock-square-logo.svg');
+  mask-image: url('../assets/medlock-square-logo.svg');
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
 }
 
 .hn-intro-split__text-col {
@@ -276,7 +313,8 @@
   flex-direction: column;
   justify-content: center;
   padding: 80px 80px 80px 64px;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #1e1e28;
   box-sizing: border-box;
 }
 
@@ -286,17 +324,58 @@
   font-size: 48px;
   line-height: 1.05;
   letter-spacing: -1.92px;
-  color: #ffffff;
+  color: #1e1e28;
   margin: 0 0 24px;
+  max-width: 480px;
 }
 
 .hn-intro-split__body {
   font-family: var(--primary-family, sans-serif);
   font-size: 20px;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(30, 30, 40, 0.75);
   margin: 0;
+  max-width: 480px;
 }
+
+.hn-intro-split__full-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+/* Mini hero — contained inside hn-intro-split left column */
+.hn-hero--mini {
+  min-height: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+.hn-hero--mini .hn-hero__logo-wrap {
+  width: 420px;
+  max-width: calc(100% - 56px);
+}
+
+.hn-hero--mini.hn-hero--v2 .hn-hero__video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 330px;
+  height: 330px;
+  object-fit: cover;
+  opacity: 1;
+}
+
+.hn-hero--mini .hn-hero__vert--tl { top: 40px; }
+.hn-hero--mini .hn-hero__vert--bl { bottom: 40px; }
+.hn-hero--mini .hn-hero__vert--tr { top: 40px; }
+.hn-hero--mini .hn-hero__vert--br { bottom: 40px; }
 
 /* ------------------------------------------
    Ticker Band
@@ -380,28 +459,38 @@
 }
 
 .hn-teasers__col {
-  width: 50%;
   box-sizing: border-box;
 }
 
 .hn-teasers__col--text {
+  flex: 1;
   display: flex;
   align-items: center;
-  background-color: #ffffff;
-  padding: 80px 48px;
-}
-
-.hn-teasers__col--text-right {
   justify-content: flex-end;
+  background-color: #ffffff;
+  padding: 80px 64px 80px 80px;
 }
 
-.hn-teasers__col--text-left {
-  justify-content: flex-start;
+.hn-teasers__col--image {
+  width: 600px;
+  max-width: 600px;
+  flex-shrink: 0;
+  position: relative;
 }
+
+/* Brand colour backgrounds per row — visible around portrait image crops */
+.hn-teasers__row:nth-child(1) .hn-teasers__col--image { background-color: #f2fa7d; }
+.hn-teasers__row:nth-child(2) .hn-teasers__col--image { background-color: #9d78fe; }
+.hn-teasers__row:nth-child(3) .hn-teasers__col--image { background-color: #64d187; }
+.hn-teasers__row:nth-child(4) .hn-teasers__col--image { background-color: #75d8ff; }
+.hn-teasers__row:nth-child(5) .hn-teasers__col--image { background-color: #fea5e5; }
 
 .hn-teasers__copy {
-  max-width: 416px;
+  max-width: 508px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .hn-teasers__label {
@@ -414,40 +503,40 @@
   margin: 0 0 8px;
 }
 
+
 .hn-teasers__title {
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: 700;
-  font-size: 48px;
+  font-family: "Area JP Trial Normal", "Area JP", "Arial Black", Arial, sans-serif;
+  font-weight: 900;
+  font-size: 56px;
   line-height: 1;
-  letter-spacing: -1.5px;
+  letter-spacing: -2.24px;
   color: #1f1d1e;
   text-transform: uppercase;
   margin: 0 0 20px;
 }
 
-.hn-teasers__title--right {
-  text-align: right;
+.hn-teasers__title span {
+  transition: none !important;
 }
+
 
 .hn-teasers__desc {
   font-family: var(--primary-family, sans-serif);
-  font-size: 16px;
+  font-size: 20px;
   line-height: 1.6;
   color: #1f1d1e;
   margin: 0 0 32px;
 }
 
-.hn-teasers__desc--right {
-  text-align: right;
-}
 
 .hn-teasers__btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 14px 28px;
-  border: 1.5px solid #1f1d1e;
-  background: transparent;
+  padding: 20px 24px;
+  border: none;
+  background: #e6e6f0;
+  border-radius: 0;
   font-family: var(--primary-family, sans-serif);
   font-size: 13px;
   font-weight: 700;
@@ -456,22 +545,13 @@
   color: #1f1d1e;
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease;
-}
-
-.hn-teasers__btn:hover {
-  background-color: #1f1d1e;
-  color: #ffffff;
-}
-
-.hn-teasers__col--image {
-  overflow: hidden;
+  transition: background-color 0.25s ease;
 }
 
 .hn-teasers__img-wrap {
   width: 100%;
   height: 100%;
-  min-height: 600px;
+  min-height: 536px; /* 600px row minus 2×32px padding */
   overflow: hidden;
 }
 
@@ -562,6 +642,20 @@
 }
 
 /* ------------------------------------------
+   Wide — image switches from square to 4:3
+   ------------------------------------------ */
+@media (min-width: 1400px) {
+  .hn-teasers__row {
+    height: 600px;
+  }
+
+  .hn-teasers__col--image {
+    width: 800px;
+    max-width: 800px;
+  }
+}
+
+/* ------------------------------------------
    Mobile
    ------------------------------------------ */
 @media (max-width: 768px) {
@@ -645,22 +739,20 @@
     font-size: 40px;
   }
 
-  .hn-teasers__row,
-  .hn-teasers__row--reverse {
+  .hn-teasers__row {
     flex-direction: column;
     min-height: auto;
   }
 
-  .hn-teasers__col {
+  .hn-teasers__col--text,
+  .hn-teasers__col--image {
     width: 100%;
+    max-width: 100%;
+    flex: none;
   }
 
   .hn-teasers__col--text {
     padding: 48px 24px;
-  }
-
-  .hn-teasers__col--text-right {
-    justify-content: flex-start;
     order: 1;
   }
 
@@ -670,11 +762,6 @@
 
   .hn-teasers__title {
     font-size: 36px;
-    text-align: left !important;
-  }
-
-  .hn-teasers__desc {
-    text-align: left !important;
   }
 
   .hn-teasers__img-wrap {

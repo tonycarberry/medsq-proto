@@ -1474,8 +1474,10 @@ document.addEventListener("DOMContentLoaded", function () {
             });
           }
 
+          // Pick one random colour for the whole title (not per-letter)
+          const titleColor = getRandomMSQColor();
+
           letterElements.forEach((letter, index) => {
-            const targetColor = getRandomMSQColor();
             gsap.to(letter, {
               opacity: 1,
               duration: 0.1,
@@ -1486,7 +1488,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Skip color scrambling for hotel page teasers
             if (!teaserRow.closest(".teasers-section--hotel")) {
               gsap.to(letter, {
-                color: targetColor,
+                color: titleColor,
                 duration: 0.6,
                 delay: index * 0.045,
                 ease: easeOutCubic,

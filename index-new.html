@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="css/footer.css?v=2" />
     <link rel="stylesheet" href="css/styles.css?v=2" />
     <link rel="stylesheet" href="css/home-figma.css?v=3" />
-    <link rel="stylesheet" href="css/home-new.css?v=11" />
+    <link rel="stylesheet" href="css/home-new.css?v=32" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
     <script src="js/nav.js" defer></script>
@@ -86,11 +86,11 @@
         // Figma sequence — bg, logo and vert text all paired per variant
         var states = [
           { bg: '#1e1e28', logo: '#ffffff', verts: 'rgba(255,255,255,0.35)' },  // dark + white
-          { bg: '#1e1e28', logo: '#f2fa7d', verts: 'rgba(255,255,255,0.35)' },  // dark + yellow
           { bg: '#1e1e28', logo: '#9d78fe', verts: 'rgba(255,255,255,0.35)' },  // dark + purple
           { bg: '#9d78fe', logo: '#1e1e28', verts: 'rgba(30,30,40,0.35)'    },  // purple bg
-          { bg: '#64d187', logo: '#1e1e28', verts: 'rgba(30,30,40,0.35)'    },  // green bg
+          { bg: '#1e1e28', logo: '#f2fa7d', verts: 'rgba(255,255,255,0.35)' },  // dark + yellow
           { bg: '#1e1e28', logo: '#64d187', verts: 'rgba(255,255,255,0.35)' },  // dark + green
+          { bg: '#64d187', logo: '#1e1e28', verts: 'rgba(30,30,40,0.35)'    },  // green bg
           { bg: '#fea5e5', logo: '#64d187', verts: 'rgba(30,30,40,0.35)'    },  // pink bg + green logo
           { bg: '#1e1e28', logo: '#fea5e5', verts: 'rgba(255,255,255,0.35)' },  // dark + pink
           { bg: '#ffffff', logo: '#1e1e28', verts: 'rgba(30,30,40,0.35)'    },  // white bg
@@ -100,7 +100,7 @@
         var colorTimer = null;
         var maskTimer  = null;
 
-        var MASK_DUR = 4500;  // square expansion
+        var MASK_DUR = 3500;  // square expansion
 
         function pulseVideo() {
           video.animate([
@@ -145,7 +145,7 @@
           colorTimer = setInterval(function () {
             stateIndex = (stateIndex + 1) % states.length;
             applyState(states[stateIndex]);
-          }, 6500);
+          }, 5500);
         }
 
         startCycling();
@@ -153,7 +153,7 @@
     </script>
 
     <!-- Video Section -->
-    <section class="hn-video-section">
+    <section class="hn-video-section" style="display:none">
       <div class="hn-video-section__verts hn-video-section__verts--left">
         <span>Extraordinary</span>
         <span>Welcome to</span>
@@ -169,30 +169,76 @@
       </div>
     </section>
 
-    <!-- Section Text -->
-    <section class="hn-section-text hn-section-text--white">
-      <div class="hn-section-text__inner">
-        <h2 class="hn-section-text__heading">A destination unlike any other.</h2>
-        <p class="hn-section-text__body">Located in the heart of the action, between the iconic Etihad Stadium and next-generation, live entertainment arena, Co-op Live. Medlock Square is a place where mouth-watering cuisine and world class entertainment experiences converge.</p>
-      </div>
-    </section>
-
     <!-- Intro Split -->
     <section class="hn-intro-split">
-      <div class="hn-intro-split__logo-col">
-        <video autoplay muted loop playsinline class="hn-intro-split__video">
-          <source src="assets/_video/Hero video 3.mp4" type="video/mp4" />
+      <div class="hn-intro-split__logo-col" id="hn-intro-split-col">
+        <div class="hn-intro-split__mask" id="hn-intro-split-mask"></div>
+        <video autoplay muted loop playsinline class="hn-intro-split__video" id="hn-intro-split-video">
+          <source src="assets/_video/Teaser Final.mp4" type="video/mp4" />
         </video>
-        <img src="assets/medlock-square-logo.svg" alt="Medlock Square" class="hn-intro-split__logo" />
+        <div class="hn-intro-split__logo" role="img" aria-label="Medlock Square" id="hn-intro-split-logo"></div>
       </div>
       <div class="hn-intro-split__text-col">
         <h2 class="hn-intro-split__heading">A destination unlike any other.</h2>
         <p class="hn-intro-split__body">Located in the heart of the action, between the iconic Etihad Stadium and next-generation, live entertainment arena, Co-op Live. Medlock Square is a place where mouth-watering cuisine and world class entertainment experiences converge.</p>
       </div>
     </section>
+    <script>
+      (function () {
+        var col   = document.getElementById('hn-intro-split-col');
+        var logo  = document.getElementById('hn-intro-split-logo');
+        var mask  = document.getElementById('hn-intro-split-mask');
+        var video = document.getElementById('hn-intro-split-video');
+
+        var states = [
+          { bg: '#1e1e28', logo: '#ffffff' },
+          { bg: '#1e1e28', logo: '#9d78fe' },
+          { bg: '#9d78fe', logo: '#1e1e28' },
+          { bg: '#1e1e28', logo: '#f2fa7d' },
+          { bg: '#1e1e28', logo: '#64d187' },
+          { bg: '#64d187', logo: '#1e1e28' },
+          { bg: '#fea5e5', logo: '#64d187' },
+          { bg: '#1e1e28', logo: '#fea5e5' },
+          { bg: '#ffffff', logo: '#1e1e28' },
+        ];
+
+        var stateIndex = 0;
+        var MASK_DUR   = 3500;
+
+        function applyState(s) {
+          clearTimeout(applyState._timer);
+
+          video.animate([
+            { transform: 'translate(-50%, -50%) scale(0.8)' },
+            { transform: 'translate(-50%, -50%) scale(1)' }
+          ], { duration: 600, easing: 'ease-out' });
+
+          mask.style.transition = 'none';
+          mask.style.backgroundColor = s.bg;
+          mask.style.transform = 'translate(-50%, -50%) scale(0)';
+          logo.style.backgroundColor = s.logo;
+
+          mask.offsetWidth;
+          mask.style.transition = 'transform ' + MASK_DUR + 'ms cubic-bezier(0.0, 0.0, 0.2, 1)';
+          mask.style.transform = 'translate(-50%, -50%) scale(25)';
+
+          applyState._timer = setTimeout(function () {
+            col.style.backgroundColor = s.bg;
+            mask.style.transition = 'none';
+            mask.style.transform = 'translate(-50%, -50%) scale(0)';
+          }, MASK_DUR + 50);
+        }
+
+        applyState(states[0]);
+        setInterval(function () {
+          stateIndex = (stateIndex + 1) % states.length;
+          applyState(states[stateIndex]);
+        }, 5500);
+      })();
+    </script>
 
     <!-- Ticker Band -->
-    <section class="hn-ticker-band">
+    <section class="hn-ticker-band" style="display:none">
       <div class="hn-ticker-band__video-wrap">
         <video autoplay muted loop playsinline class="hn-ticker-band__video">
           <source src="assets/_video/outside-day-wide-1280.mp4" type="video/mp4" />
@@ -225,11 +271,11 @@
 
       <!-- Medlock Hotel -->
       <div class="hn-teasers__row">
-        <div class="hn-teasers__col hn-teasers__col--text hn-teasers__col--text-right">
+        <div class="hn-teasers__col hn-teasers__col--text">
           <div class="hn-teasers__copy">
             <p class="hn-teasers__label">Coming soon</p>
-            <h2 class="hn-teasers__title hn-teasers__title--right">Medlock Hotel</h2>
-            <p class="hn-teasers__desc hn-teasers__desc--right">More than just a place to stay. <strong>The Medlock Hotel</strong> is a perfect blend of comfort, style, and excitement.</p>
+            <h2 class="hn-teasers__title">Medlock Hotel</h2>
+            <p class="hn-teasers__desc">More than just a place to stay. The Medlock Hotel is a perfect blend of comfort, style, and excitement.</p>
             <a href="hotel.html" class="hn-teasers__btn">More</a>
           </div>
         </div>
@@ -243,12 +289,12 @@
       </div>
 
       <!-- Altitude Sky Walk -->
-      <div class="hn-teasers__row hn-teasers__row--reverse">
-        <div class="hn-teasers__col hn-teasers__col--text hn-teasers__col--text-left">
+      <div class="hn-teasers__row">
+        <div class="hn-teasers__col hn-teasers__col--text">
           <div class="hn-teasers__copy">
             <p class="hn-teasers__label">Coming soon</p>
             <h2 class="hn-teasers__title">Altitude Sky Walk</h2>
-            <p class="hn-teasers__desc">Experience <strong>Altitude Sky Walk</strong> – the Etihad Stadium's thrilling new roofwalk experience that takes you higher than ever before.</p>
+            <p class="hn-teasers__desc">Experience Altitude Sky Walk – the Etihad Stadium's thrilling new roofwalk experience that takes you higher than ever before.</p>
             <button class="hn-teasers__btn">More</button>
           </div>
         </div>
@@ -263,11 +309,11 @@
 
       <!-- Food & Drink -->
       <div class="hn-teasers__row">
-        <div class="hn-teasers__col hn-teasers__col--text hn-teasers__col--text-right">
+        <div class="hn-teasers__col hn-teasers__col--text">
           <div class="hn-teasers__copy">
             <p class="hn-teasers__label">Coming soon</p>
-            <h2 class="hn-teasers__title hn-teasers__title--right">Food &amp; Drink</h2>
-            <p class="hn-teasers__desc hn-teasers__desc--right">Whether you're looking for a laid-back cappuccino and croissant or bustling street food from around the world, the bars, cafes and restaurants at Medlock Square have something for everyone.</p>
+            <h2 class="hn-teasers__title">Food &amp; Drink</h2>
+            <p class="hn-teasers__desc">Whether you're looking for a laid-back cappuccino and croissant or bustling street food from around the world, the bars, cafes and restaurants at Medlock Square have something for everyone.</p>
             <a href="food-and-drink.html" class="hn-teasers__btn">More</a>
           </div>
         </div>
@@ -279,9 +325,10 @@
       </div>
 
       <!-- Co-op Live -->
-      <div class="hn-teasers__row hn-teasers__row--reverse">
-        <div class="hn-teasers__col hn-teasers__col--text hn-teasers__col--text-left">
+      <div class="hn-teasers__row">
+        <div class="hn-teasers__col hn-teasers__col--text">
           <div class="hn-teasers__copy">
+            <p class="hn-teasers__label">Coming soon</p>
             <h2 class="hn-teasers__title">Co-op Live</h2>
             <p class="hn-teasers__desc">Co-op Live is the UK's largest entertainment arena and offers the ultimate live music experience, attracting some of the world's biggest acts, from Drake, Lady Gaga and Billie Eilish, to name but a few.</p>
             <button class="hn-teasers__btn">More</button>
@@ -298,11 +345,11 @@
 
       <!-- Etihad Stadium -->
       <div class="hn-teasers__row">
-        <div class="hn-teasers__col hn-teasers__col--text hn-teasers__col--text-right">
+        <div class="hn-teasers__col hn-teasers__col--text">
           <div class="hn-teasers__copy">
             <p class="hn-teasers__label">Coming soon</p>
-            <h2 class="hn-teasers__title hn-teasers__title--right">Etihad Stadium</h2>
-            <p class="hn-teasers__desc hn-teasers__desc--right">Not just a football ground – it's a world-class sporting and entertainment destination. Home to Manchester City FC, the Etihad offers visitors the chance to step inside the world of top-tier football.</p>
+            <h2 class="hn-teasers__title">Etihad Stadium</h2>
+            <p class="hn-teasers__desc">Not just a football ground – it's a world-class sporting and entertainment destination. Home to Manchester City FC, the Etihad offers visitors the chance to step inside the world of top-tier football.</p>
             <button class="hn-teasers__btn">More</button>
           </div>
         </div>
@@ -316,6 +363,70 @@
       </div>
 
     </section>
+
+    <script>
+      (function () {
+        var brandColours = ['#fea5e5', '#9d78fe', '#64d187', '#f2fa7d', '#75d8ff', '#feb236'];
+        var activeRow = null;
+        var lastColourIndex = -1;
+        var letterTimers = [];
+
+        function randomColour() {
+          var idx;
+          do { idx = Math.floor(Math.random() * brandColours.length); }
+          while (idx === lastColourIndex && brandColours.length > 1);
+          lastColourIndex = idx;
+          return brandColours[idx];
+        }
+
+        // Wrap each title character in a span for per-letter colouring
+        document.querySelectorAll('.hn-teasers__title').forEach(function (el) {
+          el.innerHTML = el.textContent.split('').map(function (ch) {
+            return '<span style="transition:none">' + (ch === ' ' ? '&nbsp;' : ch) + '</span>';
+          }).join('');
+        });
+
+        function clearLetterTimers() {
+          letterTimers.forEach(clearTimeout);
+          letterTimers = [];
+        }
+
+        function activate(row) {
+          if (activeRow === row) return;
+
+          // Deactivate previous row instantly
+          if (activeRow) {
+            activeRow.querySelector('.hn-teasers__col--text').style.backgroundColor = '';
+            activeRow.querySelectorAll('.hn-teasers__title span').forEach(function (s) {
+              s.style.color = '';
+            });
+          }
+
+          clearLetterTimers();
+          activeRow = row;
+
+          if (row) {
+            var colour = randomColour();
+            row.querySelector('.hn-teasers__col--text').style.backgroundColor = colour;
+            row.querySelectorAll('.hn-teasers__title span').forEach(function (span, i) {
+              letterTimers.push(setTimeout(function () {
+                span.style.color = colour;
+              }, i * 35));
+            });
+          }
+        }
+
+        document.addEventListener('pointermove', function (e) {
+          var el = document.elementFromPoint(e.clientX, e.clientY);
+          var row = el && el.closest('.hn-teasers__row');
+          activate(row || null);
+        });
+
+        document.addEventListener('pointerleave', function () {
+          activate(null);
+        });
+      })();
+    </script>
 
     <!-- Section Text (pre-footer) -->
     <section class="hn-section-text hn-section-text--light">
