@@ -1445,6 +1445,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 
+        // Shared colour for this row — picked early (when clip-path reveal begins) so
+        // image bg and title animation always use the exact same value.
+        let currentRowColor = getRandomMSQColor();
+
+        // Early ScrollTrigger: fires as soon as the row enters from the bottom.
+        // Picks a new random colour and applies it to the image background immediately,
+        // so it's in place before the clip-path reveal has made any progress.
+        ScrollTrigger.create({
+          trigger: teaserRow,
+          start: "top 100%",
+          end: "bottom top",
+          once: false,
+          onEnter: () => {
+            currentRowColor = getRandomMSQColor();
+            if (imageContainer) imageContainer.style.backgroundColor = currentRowColor;
+          },
+          onEnterBack: () => {
+            currentRowColor = getRandomMSQColor();
+            if (imageContainer) imageContainer.style.backgroundColor = currentRowColor;
+          },
+          onLeave: () => {
+            if (imageContainer) imageContainer.style.backgroundColor = "transparent";
+          },
+          onLeaveBack: () => {
+            if (imageContainer) imageContainer.style.backgroundColor = "transparent";
+          },
+        });
+
         // Reset function to prepare for replay
         const resetScramble = () => {
           // Reset letters to original text and base color
@@ -1475,13 +1503,8 @@ document.addEventListener("DOMContentLoaded", function () {
             });
           }
 
-          // Pick one random colour shared by both the title animation AND the image background
-          const rowColor = getRandomMSQColor();
-
-          // Set image background to the same colour
-          if (imageContainer) {
-            imageContainer.style.backgroundColor = rowColor;
-          }
+          // Reuse the colour already set on the image background by the early trigger
+          const rowColor = currentRowColor;
 
           letterElements.forEach((letter, index) => {
             // Skip color animation for hotel and home page teasers
