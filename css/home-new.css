@@ -312,7 +312,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 80px 80px 80px 64px;
+  padding: 80px 106px;
   background-color: #ffffff;
   color: #1e1e28;
   box-sizing: border-box;
@@ -325,7 +325,7 @@
   line-height: 1.05;
   letter-spacing: -1.92px;
   color: #1e1e28;
-  margin: 0 0 24px;
+  margin: 0 0 40px;
   max-width: 480px;
 }
 

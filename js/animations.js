@@ -1484,8 +1484,8 @@ document.addEventListener("DOMContentLoaded", function () {
           }
 
           letterElements.forEach((letter, index) => {
-            // Skip color scrambling for hotel page teasers
-            if (!teaserRow.closest(".teasers-section--hotel")) {
+            // Skip color animation for hotel and home page teasers
+            if (!teaserRow.closest(".teasers-section--hotel") && !teaserRow.closest(".teasers-section--home")) {
               // Use delayedCall to set styles directly — bypasses GSAP colour interpolation entirely
               gsap.delayedCall(index * 0.045, () => {
                 letter.style.opacity = "1";
@@ -1496,7 +1496,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 letter.style.color = baseColor;
               });
             } else {
-              // Hotel teasers: just fade in opacity, no colour change
+              // Home and hotel teasers: just fade in opacity, no colour change
               gsap.to(letter, {
                 opacity: 1,
                 duration: 0.1,
