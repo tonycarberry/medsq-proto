@@ -1439,11 +1439,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (teaserRow) {
         const teaserOpening = teaserRow.querySelector(".teasers-opening");
+        const imageContainer = teaserRow.querySelector(".teasers-image-container");
         const openingFadeDuration = 0.25;
         const openingBaseScale = 0.8;
 
         const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
-        
+
         // Reset function to prepare for replay
         const resetScramble = () => {
           // Reset letters to original text and base color
@@ -1474,29 +1475,33 @@ document.addEventListener("DOMContentLoaded", function () {
             });
           }
 
-          // Pick one random colour for the whole title (not per-letter)
-          const titleColor = getRandomMSQColor();
+          // Pick one random colour shared by both the title animation AND the image background
+          const rowColor = getRandomMSQColor();
+
+          // Set image background to the same colour
+          if (imageContainer) {
+            imageContainer.style.backgroundColor = rowColor;
+          }
 
           letterElements.forEach((letter, index) => {
-            gsap.to(letter, {
-              opacity: 1,
-              duration: 0.1,
-              delay: index * 0.045,
-              ease: "none",
-            });
-
             // Skip color scrambling for hotel page teasers
             if (!teaserRow.closest(".teasers-section--hotel")) {
+              // Use delayedCall to set styles directly — bypasses GSAP colour interpolation entirely
+              gsap.delayedCall(index * 0.045, () => {
+                letter.style.opacity = "1";
+                letter.style.color = rowColor;
+              });
+              // Flip to base colour after the sweep has passed through
+              gsap.delayedCall(index * 0.045 + 0.6, () => {
+                letter.style.color = baseColor;
+              });
+            } else {
+              // Hotel teasers: just fade in opacity, no colour change
               gsap.to(letter, {
-                color: titleColor,
-                duration: 0.6,
+                opacity: 1,
+                duration: 0.1,
                 delay: index * 0.045,
-                ease: easeOutCubic,
-                yoyo: true,
-                repeat: 1,
-                onComplete: () => {
-                  letter.style.color = baseColor;
-                },
+                ease: "none",
               });
             }
           });
@@ -1948,4 +1953,55 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   }
+
+  // -------------------------------------------------------
+  // Video priority: only play the most-visible video
+  // Compares visible fraction of each video container and
+  // plays whichever occupies more of the viewport, pausing
+  // the other. Runs only when both containers are present.
+  // -------------------------------------------------------
+  (function () {
+    var heroEl = document.getElementById("hn-hero");
+    var splitEl = document.getElementById("hn-hero-split");
+    if (!heroEl || !splitEl) return;
+
+    var heroVideo = heroEl.querySelector("video");
+    var splitVideo = splitEl.querySelector("video");
+    if (!heroVideo || !splitVideo) return;
+
+    function visibleFraction(el) {
+      var rect = el.getBoundingClientRect();
+      if (rect.height === 0) return 0;
+      var top = Math.max(rect.top, 0);
+      var bottom = Math.min(rect.bottom, window.innerHeight);
+      if (bottom <= top) return 0;
+      return (bottom - top) / rect.height;
+    }
+
+    function updateVideoPlayback() {
+      var heroFraction = visibleFraction(heroEl);
+      var splitFraction = visibleFraction(splitEl);
+
+      if (heroFraction >= splitFraction) {
+        if (heroVideo.paused) heroVideo.play();
+        if (!splitVideo.paused) splitVideo.pause();
+      } else {
+        if (splitVideo.paused) splitVideo.play();
+        if (!heroVideo.paused) heroVideo.pause();
+      }
+    }
+
+    var ticking = false;
+    window.addEventListener("scroll", function () {
+      if (!ticking) {
+        requestAnimationFrame(function () {
+          updateVideoPlayback();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    updateVideoPlayback();
+  })();
 });

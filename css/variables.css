@@ -88,7 +88,6 @@ p,
 .sticky-left-section__description p,
 .hero__subtitle {
   text-wrap: pretty;
-  text-wrap: balance; /* Fallback */
   orphans: 2;
   widows: 2;
 }

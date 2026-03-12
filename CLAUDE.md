@@ -15,7 +15,7 @@ npx serve .
 python3 -m http.server 8080
 ```
 
-Then open `http://localhost:8080/index.html`.
+Then open `http://localhost:3000/index.html`.
 
 There are no tests, no linting, and no build process.
 

@@ -67,7 +67,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  min-height: 500px;
+  min-height: 700px;
   /* Match Figma: content is vertically centered within the row */
   padding-top: 0;
   padding-bottom: 0;
@@ -104,7 +104,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  min-height: 500px;
+  min-height: 700px;
   justify-content: center;
   align-items: flex-end;
   /* Image should sit flush to the row edge */
@@ -305,21 +305,12 @@
 /* Home page: white section background, no side padding so rows are full-width */
 .teasers-section--home {
   background-color: #ffffff;
-  padding-left: 0;
-  padding-right: 0;
+  padding: 0;
 }
 
 /* Home page: rows span full viewport width (no max-width constraint) */
 .teasers-section--home .teasers-row {
   max-width: none;
-}
-
-/* Home page: equal padding on both sides of text columns so copy is centred */
-.teasers-section--home .teasers-col--text-left,
-.teasers-section--home .teasers-col--text-right {
-  padding-left: var(--site-margin, 56px);
-  padding-right: var(--site-margin, 56px);
-  align-items: flex-start;
 }
 
 /* Home page: Area JP font to match index-new feature cards */
@@ -330,6 +321,109 @@
   line-height: 1;
   letter-spacing: -2.24px;
   white-space: normal;
+}
+
+/* -------------------------------------------------------
+   Home teasers v2: full-bleed images + Figma design update
+   ------------------------------------------------------- */
+
+/* Text columns: left-aligned, 120px from the left viewport edge on normal rows */
+.teasers-section--home .teasers-col--text,
+.teasers-section--home .teasers-col--text-left,
+.teasers-section--home .teasers-col--text-right {
+  padding: 80px 64px 80px 120px;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* Reversed rows (image-left, text-right): text in the right column uses 64px left padding */
+.teasers-section--home .teasers-row--reverse .teasers-col--text,
+.teasers-section--home .teasers-row--reverse .teasers-col--text-left,
+.teasers-section--home .teasers-row--reverse .teasers-col--text-right {
+  padding-left: 64px;
+}
+
+/* Remove all right-alignment — everything left in home context */
+.teasers-section--home .teasers-col--text-right {
+  align-items: flex-start;
+}
+.teasers-section--home .teasers-col--text-right .teasers-copy {
+  align-items: flex-start;
+}
+.teasers-section--home .teasers-col--text-right .teasers-title-group {
+  align-items: flex-start;
+}
+.teasers-section--home .teasers-title--right {
+  text-align: left;
+}
+.teasers-section--home .teasers-description--right {
+  text-align: left;
+}
+
+/* Image columns: stretch to full row height, no fixed aspect ratio */
+.teasers-section--home .teasers-col--image,
+.teasers-section--home .teasers-col--image-left {
+  position: relative;
+  min-height: 450px; /* 4:3 floor for rows with short text */
+}
+
+.teasers-section--home .teasers-image-container,
+.teasers-section--home .teasers-image-container--square,
+.teasers-section--home .teasers-image-container--small {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: unset;
+}
+
+/* Altitude row has an extra .teasers-image-bg wrapper — make it fill the column too */
+.teasers-section--home .teasers-image-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Coming soon: plain text label, no bordered pill */
+.teasers-section--home .teasers-opening {
+  border: none;
+  padding: 0;
+  height: auto;
+  border-radius: 0;
+  background: transparent;
+  justify-content: flex-start;
+}
+
+.teasers-section--home .teasers-opening-text {
+  font-family: var(--primary-family, sans-serif);
+  font-size: 16px;
+  font-weight: 700;
+  font-style: normal;
+  letter-spacing: 0;
+  color: #1e1e28;
+  text-transform: uppercase;
+}
+
+/* CTA button: Figma pill style */
+.teasers-section--home .teasers-button {
+  background-color: #e6e6f0;
+  border-radius: 0;
+  padding: 16px 24px;
+  font-family: var(--primary-family, sans-serif);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: #1e1e28;
+  border: none;
+}
+
+.teasers-section--home .teasers-button::after {
+  display: none;
+}
+
+.teasers-section--home .teasers-button:hover {
+  background-color: #d8d8ea;
 }
 
 /* Home page: images fill the container fully; brand colour shows as the initial reveal state */
